@@ -3,6 +3,8 @@
 #include <iostream>
 #include "ShaderLoader.h"
 
+// Window variable
+GLFWwindow* Window;
 
 // Position Program container
 GLuint Program_PositionOnly;
@@ -10,7 +12,7 @@ GLuint VBO_Tri;
 GLuint VAO_Tri;
 
 // ColorFade Porgram container
-GLfloat Program_ColorFade;
+GLuint Program_ColorFade;
 
 // Program vars
 float CurrentTime;
@@ -26,7 +28,8 @@ GLfloat Verticies_Tri[] = {
 void InitialSetup()
 {
 	// Set the color of the window for when the buffer is cleared
-	glClearColor(0.3f, 0.0f, 1.0f, 1.0f);
+	//glClearColor(0.3f, 0.0f, 1.0f, 1.0f); // Purple
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Black
 	// Maps the range of the window size to NDC (-1 -> 1)
 	glViewport(0, 0, 800, 800);
 }
@@ -39,12 +42,12 @@ void Update()
 	CurrentTime = (float)glfwGetTime();
 }
 
-void Render(GLFWwindow* _Window, GLuint _Program)
+void Render()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	// Bind the program and VAO
-	glUseProgram(_Program);
+	glUseProgram(Program_ColorFade);
 	glBindVertexArray(VAO_Tri);
 
 	// Send variables to the shaders via Uniform
@@ -58,13 +61,13 @@ void Render(GLFWwindow* _Window, GLuint _Program)
 	glBindVertexArray(0);
 	glUseProgram(0);
 
-	glfwSwapBuffers(_Window);
+	glfwSwapBuffers(Window);
 }
 
 int main()
 {
 	//	-= Setup App =-
-	GLFWwindow* Window = nullptr;
+	Window = nullptr;
 	// Init glfw 4.6
 	glfwInit();
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
@@ -99,9 +102,11 @@ int main()
 	// Setup GL functionality
 	InitialSetup();
 
-	// -= SECOND PROGRAM =-
-	Program_PositionOnly = ShaderLoader::CreateProgram(		"Resources/Shaders/PositionOnly.vert",
-															"Resources/Shaders/FixedColor.frag");
+	// -= PROGRAMS =-
+	//Program_PositionOnly = ShaderLoader::CreateProgram(		"Resources/Shaders/PositionOnly.vert",
+	//														"Resources/Shaders/FixedColor.frag");
+	Program_ColorFade = ShaderLoader::CreateProgram(		"Resources/Shaders/PositionOnly.vert",
+															"Resources/Shaders/VertexColorFade.frag");
 	// 1) Generate the VAO for a triangle
 	glGenVertexArrays(1, &VAO_Tri);
 	glBindVertexArray(VAO_Tri);
@@ -124,7 +129,7 @@ int main()
 		Update();
 
 		// Render all the objects
-		Render(Window, Program_PositionOnly);
+		Render();
 	}
 
 	// When main loop breaks, terminate program properly
