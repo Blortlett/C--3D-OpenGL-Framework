@@ -26,11 +26,11 @@ void InitialSetup()
 }
 
 
-void Render(GLFWwindow* _Window, GLuint _Program_FixedTri)
+void Render(GLFWwindow* _Window, GLuint _Program)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	glUseProgram(_Program_FixedTri);
+	glUseProgram(_Program);
 	glBindVertexArray(VAO_Tri);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 	glBindVertexArray(0);
@@ -82,27 +82,27 @@ int main()
 	}
 
 	// -= FIRST PROGRAM =-
-	GLuint Program_FixedTri = ShaderLoader::CreateProgram(	"Resources/Shaders/FixedTriangle.vert",
-															"Resources/Shaders/FixedColor.frag");
+	//GLuint Program_FixedTri = ShaderLoader::CreateProgram(	"Resources/Shaders/FixedTriangle.vert",
+	//															"Resources/Shaders/FixedColor.frag");
 	// Add vertex attribute setup here
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(1);
+	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
+	//glEnableVertexAttribArray(0);
+	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	//glEnableVertexAttribArray(1);
 
 	// -= SECOND PROGRAM =-
-	Program_PositionOnly = ShaderLoader::CreateProgram(		"Resources/Shaders/FixedTriangle.vert",
+	Program_PositionOnly = ShaderLoader::CreateProgram(		"Resources/Shaders/PositionOnly.vert",
 															"Resources/Shaders/FixedColor.frag");
-	// Generate the VAO for a triangle
+	// 1) Generate the VAO for a triangle
 	glGenVertexArrays(1, &VAO_Tri);
 	glBindVertexArray(VAO_Tri);
 	
-	// Generate the VBO for a Triangle
+	// 2) Generate the VBO for a Triangle
 	glGenBuffers(1, &VBO_Tri);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO_Tri);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Verticies_Tri), Verticies_Tri, GL_STATIC_DRAW);
 
-	// Set the Vertex Attribute information (how to interpret the vertex data)
+	// 3) Set the Vertex Attribute information (how to interpret the vertex data)
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
 
