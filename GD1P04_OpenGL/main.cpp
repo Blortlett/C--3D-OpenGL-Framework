@@ -4,44 +4,61 @@
 #include "ShaderLoader.h"
 
 
-// New variables
+// Position Program container
 GLuint Program_PositionOnly;
 GLuint VBO_Tri;
 GLuint VAO_Tri;
 
+// ColorFade Porgram container
+GLfloat Program_ColorFade;
+
+// Program vars
+float CurrentTime;
+
 // Verticies
 GLfloat Verticies_Tri[] = {
-	// Position
-	 0.0f, 0.0f, 0.0f,
-	-0.5f, 0.8f, 0.0f,
-	 0.5f, 0.8f, 0.0f,
+	// Position			// Color
+	 0.0f, 0.0f, 0.0f,	1.0f, 0.0f, 0.0f,
+	-0.5f, 0.8f, 0.0f,	0.0f, 1.0f, 0.0f,
+	 0.5f, 0.8f, 0.0f,	0.0f, 0.0f, 1.0f,
 };
 
 void InitialSetup()
 {
 	// Set the color of the window for when the buffer is cleared
-	glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
+	glClearColor(0.3f, 0.0f, 1.0f, 1.0f);
 	// Maps the range of the window size to NDC (-1 -> 1)
 	glViewport(0, 0, 800, 800);
-}
-
-
-void Render(GLFWwindow* _Window, GLuint _Program)
-{
-	glClear(GL_COLOR_BUFFER_BIT);
-
-	glUseProgram(_Program);
-	glBindVertexArray(VAO_Tri);
-	glDrawArrays(GL_TRIANGLES, 0, 3);
-	glBindVertexArray(0);
-	glUseProgram(0);
-
-	glfwSwapBuffers(_Window);
 }
 
 void Update()
 {
 	glfwPollEvents();
+
+	// Get the current time
+	CurrentTime = (float)glfwGetTime();
+}
+
+void Render(GLFWwindow* _Window, GLuint _Program)
+{
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	// Bind the program and VAO
+	glUseProgram(_Program);
+	glBindVertexArray(VAO_Tri);
+
+	// Send variables to the shaders via Uniform
+	GLint CurrentTimeLoc = glGetUniformLocation(Program_ColorFade, "CurrentTime");
+	glUniform1f(CurrentTimeLoc, CurrentTime);
+
+	// Render the triangle
+	glDrawArrays(GL_TRIANGLES, 0, 3);
+
+	// Unbind asstets to prevent accidental use/modification
+	glBindVertexArray(0);
+	glUseProgram(0);
+
+	glfwSwapBuffers(_Window);
 }
 
 int main()
@@ -54,8 +71,6 @@ int main()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 
-	// Setup GL functionality
-	InitialSetup();
 	// create GLFW controlled window
 	Window = glfwCreateWindow(800, 800, "First OpenGL Window", NULL, NULL);
 
@@ -81,14 +96,8 @@ int main()
 		return -1;
 	}
 
-	// -= FIRST PROGRAM =-
-	//GLuint Program_FixedTri = ShaderLoader::CreateProgram(	"Resources/Shaders/FixedTriangle.vert",
-	//															"Resources/Shaders/FixedColor.frag");
-	// Add vertex attribute setup here
-	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
-	//glEnableVertexAttribArray(0);
-	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-	//glEnableVertexAttribArray(1);
+	// Setup GL functionality
+	InitialSetup();
 
 	// -= SECOND PROGRAM =-
 	Program_PositionOnly = ShaderLoader::CreateProgram(		"Resources/Shaders/PositionOnly.vert",
@@ -103,8 +112,10 @@ int main()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Verticies_Tri), Verticies_Tri, GL_STATIC_DRAW);
 
 	// 3) Set the Vertex Attribute information (how to interpret the vertex data)
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(1);
 
 	//	-= Main Loop =-
 	while (glfwWindowShouldClose(Window) == false)
