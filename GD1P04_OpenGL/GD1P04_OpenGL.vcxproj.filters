@@ -37,5 +37,8 @@
     <None Include="Resources\Shaders\FixedTriangle.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
+    <None Include="Resources\Shaders\PositionOnly.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
