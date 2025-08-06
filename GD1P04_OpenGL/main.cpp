@@ -19,10 +19,16 @@ float CurrentTime;
 
 // Verticies
 GLfloat Verticies_Tri[] = {
+	// -= First Triangle
 	// Position			// Color
-	 0.0f, 0.0f, 0.0f,	1.0f, 0.0f, 0.0f,
-	-0.5f, 0.8f, 0.0f,	0.0f, 1.0f, 0.0f,
-	 0.5f, 0.8f, 0.0f,	0.0f, 0.0f, 1.0f,
+	 0.0f, -0.8f, 0.0f,	1.0f, 0.0f, 0.0f,
+	-0.5f, 0.0f, 0.0f,	0.0f, 1.0f, 0.0f,
+	 0.5f, 0.0f, 0.0f,	0.0f, 0.0f, 1.0f,
+	 // Second Triangle
+	// Position			// Color
+	 0.0f, 0.8f, 0.0f,	0.75f, 0.0f, 1.0f,
+	-0.5f, 0.0f, 0.0f,	0.0f, 1.0f, 0.0f,
+	 0.5f, 0.0f, 0.0f,	0.0f, 0.0f, 1.0f,
 };
 
 void InitialSetup()
@@ -54,8 +60,11 @@ void Render()
 	GLint CurrentTimeLoc = glGetUniformLocation(Program_ColorFade, "CurrentTime");
 	glUniform1f(CurrentTimeLoc, CurrentTime);
 
-	// Render the triangle
+	// Render the first triangle
 	glDrawArrays(GL_TRIANGLES, 0, 3);
+
+	// Render the second triangle
+	glDrawArrays(GL_TRIANGLES, 3, 3);
 
 	// Unbind asstets to prevent accidental use/modification
 	glBindVertexArray(0);
@@ -103,7 +112,7 @@ int main()
 	InitialSetup();
 
 	// -= PROGRAMS =-
-	//Program_PositionOnly = ShaderLoader::CreateProgram(		"Resources/Shaders/PositionOnly.vert",
+	//Program_PositionOnly = ShaderLoader::CreateProgram(	"Resources/Shaders/PositionOnly.vert",
 	//														"Resources/Shaders/FixedColor.frag");
 	Program_ColorFade = ShaderLoader::CreateProgram(		"Resources/Shaders/PositionOnly.vert",
 															"Resources/Shaders/VertexColorFade.frag");
