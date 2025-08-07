@@ -2,12 +2,16 @@
 #include <glfw3.h>
 #include <iostream>
 #include "ShaderLoader.h"
+#include <glm.hpp>
+#include <gtc/matrix_transform.hpp>
+#include <gtc/type_ptr.hpp>
 
 // Window variable
 GLFWwindow* Window;
 
 // ColorFade Porgram container
 GLuint Program_ColorFade;
+GLuint Program_WorldSpace;
 
 // VAO and VBO for first tri/quad
 GLuint VBO_Tri;
@@ -16,6 +20,7 @@ GLuint VAO_Tri;
 // VAO and VBO for second quad
 GLuint VBO_Quad;
 GLuint VAO_Quad;
+GLuint EBO_Quad;
 
 // Program vars
 float CurrentTime;
@@ -43,6 +48,14 @@ GLfloat Vertices_Quad[] = {
 	 0.5f, 0.8f, 0.0f,  1.0f, 0.0f, 1.0f 
 };
 
+GLuint Indices_Quad[] = {
+	0, 1, 2,
+	0, 2, 3,
+};
+
+glm::vec3 QuadPosition = glm::vec3(0.5f, 0.5f, 0.5f);
+glm::mat4 TranslationMat;
+
 void InitialSetup()
 {
 	// Set the color of the window for when the buffer is cleared
@@ -58,6 +71,9 @@ void Update()
 
 	// Get the current time
 	CurrentTime = (float)glfwGetTime();
+
+	// Calculate Model Matrix
+	TranslationMat = glm::translate(glm::mat4(1.0f), QuadPosition);
 }
 
 void Render()
@@ -65,12 +81,15 @@ void Render()
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	// Bind the program and VAO
-	glUseProgram(Program_ColorFade);
+	glUseProgram(Program_WorldSpace);
 	glBindVertexArray(VAO_Tri);
 
 	// Send variables to the shaders via Uniform
-	GLint CurrentTimeLoc = glGetUniformLocation(Program_ColorFade, "CurrentTime");
+	GLint CurrentTimeLoc = glGetUniformLocation(Program_WorldSpace, "CurrentTime");
 	glUniform1f(CurrentTimeLoc, CurrentTime);
+	// Worldspace
+	GLint TranslationMatLoc = glGetUniformLocation(Program_WorldSpace, "TranslationMat");
+	glUniformMatrix4fv(TranslationMatLoc, 1, GL_FALSE, glm::value_ptr(TranslationMat));
 
 	// Render First Quad
 	// Render the first triangle
@@ -80,7 +99,7 @@ void Render()
 
 	// Render second quad
 	glBindVertexArray(VAO_Quad);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 	// Unbind asstets to prevent accidental use/modification
 	glBindVertexArray(0);
@@ -100,7 +119,7 @@ int main()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 
 	// create GLFW controlled window
-	Window = glfwCreateWindow(800, 800, "First OpenGL Window", NULL, NULL);
+	Window = glfwCreateWindow(800, 800, "BigGL", NULL, NULL);
 
 
 	// Error Check
@@ -128,7 +147,7 @@ int main()
 	InitialSetup();
 
 	// -= PROGRAMS =-
-	Program_ColorFade = ShaderLoader::CreateProgram(		"Resources/Shaders/PositionOnly.vert",
+	Program_WorldSpace = ShaderLoader::CreateProgram(		"Resources/Shaders/WorldSpace.vert",
 															"Resources/Shaders/VertexColorFade.frag");
 
 	// -= Setup first Tri/Quad
@@ -155,12 +174,17 @@ int main()
 	glGenVertexArrays(1, &VAO_Quad);
 	glBindVertexArray(VAO_Quad);
 
-	// 2) Generate the VBO for the second quad
+	// 2) Generate the EBO for the second quad
+	glGenBuffers(1, &EBO_Quad);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_Quad);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices_Quad), Indices_Quad, GL_STATIC_DRAW);
+
+	// 3) Generate the VBO for the second quad
 	glGenBuffers(1, &VBO_Quad);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO_Quad);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices_Quad), Vertices_Quad, GL_STATIC_DRAW);
 
-	// 3) Set the Vertex Attribute information (same format as first quad)
+	// 4) Set the Vertex Attribute information (same format as first quad)
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
