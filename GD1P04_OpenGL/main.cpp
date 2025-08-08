@@ -53,8 +53,16 @@ GLuint Indices_Quad[] = {
 	0, 2, 3,
 };
 
+// -= Quad Transform =-
+// Quad Position
 glm::vec3 QuadPosition = glm::vec3(0.5f, 0.5f, 0.5f);
 glm::mat4 TranslationMat;
+// Quad Rotation
+float QuadRotationAngle = 45.0f;
+glm::mat4 RotationMat;
+// Quad Scale
+glm::vec3 QuadScale = glm::vec3(0.5f, 0.5f, 1.0f);
+glm::mat4 ScaleMat;
 
 void InitialSetup()
 {
@@ -74,6 +82,10 @@ void Update()
 
 	// Calculate Model Matrix
 	TranslationMat = glm::translate(glm::mat4(1.0f), QuadPosition);
+	// Calculate Rotation Matrix
+	RotationMat = glm::rotate(glm::mat4(1.0f), glm::radians(QuadRotationAngle), glm::vec3(0.0f, 0.0f, 1.0f));
+	// Calculate Scale Matrix
+	ScaleMat = glm::scale(glm::mat4(1.0f), QuadScale);
 }
 
 void Render()
@@ -87,9 +99,20 @@ void Render()
 	// Send variables to the shaders via Uniform
 	GLint CurrentTimeLoc = glGetUniformLocation(Program_WorldSpace, "CurrentTime");
 	glUniform1f(CurrentTimeLoc, CurrentTime);
-	// Worldspace
+	// Worldspace Transform
+	// Position
 	GLint TranslationMatLoc = glGetUniformLocation(Program_WorldSpace, "TranslationMat");
 	glUniformMatrix4fv(TranslationMatLoc, 1, GL_FALSE, glm::value_ptr(TranslationMat));
+	// Rotation
+	GLint RotationMatLoc = glGetUniformLocation(Program_WorldSpace, "RotationMat");
+	glUniformMatrix4fv(RotationMatLoc, 1, GL_FALSE, glm::value_ptr(RotationMat));
+	// Scale
+	GLint ScaleMatLoc = glGetUniformLocation(Program_WorldSpace, "ScaleMat");
+	glUniformMatrix4fv(ScaleMatLoc, 1, GL_FALSE, glm::value_ptr(ScaleMat));
+	// You could combine all matrices and pass the combination to the shader (ie combine with cpu pass one matrix to gpu) 
+	// e.g.:
+	//QuadModelMat = TranslationMat * RotationMat * ScaleMat;
+	// TODO ^^
 
 	// Render First Quad
 	// Render the first triangle

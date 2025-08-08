@@ -6,6 +6,8 @@ layout (location = 1) in vec3 Color;
 
 // Inputs
 uniform mat4 TranslationMat;
+uniform mat4 RotationMat;
+uniform mat4 ScaleMat;
 
 // Outputs to Fragment shader
 out vec3 FragColor;
@@ -13,6 +15,6 @@ out vec3 FragColor;
 // Shader functionality
 void main ()
 {
-	gl_Position = TranslationMat * vec4(Position, 1.0f);
+	gl_Position = TranslationMat * RotationMat * ScaleMat * vec4(Position, 1.0f);
 	FragColor = Color;
 }
