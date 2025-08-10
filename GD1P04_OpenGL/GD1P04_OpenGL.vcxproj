@@ -149,9 +149,14 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ShaderLoader.cpp" />
+    <ClCompile Include="Shape.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Hexagon.h" />
+    <ClInclude Include="Quad.h" />
+    <ClInclude Include="Renderer.h" />
     <ClInclude Include="ShaderLoader.h" />
+    <ClInclude Include="Shape.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\FixedColor.frag" />

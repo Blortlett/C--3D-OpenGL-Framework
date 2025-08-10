@@ -1,7 +1,11 @@
 #include <glew.h>
 #include <glfw3.h>
 #include <iostream>
+#include <memory>
 #include "ShaderLoader.h"
+#include "Renderer.h"
+#include "Quad.h"
+#include "Hexagon.h"
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
@@ -9,184 +13,134 @@
 // Window variable
 GLFWwindow* Window;
 
-// ColorFade Porgram container
-GLuint Program_ColorFade;
+// Renderer and shapes
+Renderer* renderer;
+Hexagon* hexagon1;
+Hexagon* hexagon2;
+
+// Shader program
 GLuint Program_WorldSpace;
-
-// VAO and VBO for quad
-GLuint VBO_Quad;
-GLuint VAO_Quad;
-GLuint EBO_Quad;
-
-// Program vars
-float CurrentTime;
-
-// Vertices for second quad (top-right, using triangle strip)
-GLfloat Vertices_Quad[] = {
-	// Position         // Color
-	 -0.5f,  0.5f, 0.0f,  1.0f, 0.0f, 0.0f,
-	 -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
-	  0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 1.0f,
-	  0.5f,  0.5f, 0.0f,  0.0f, 1.0f, 1.0f
-};
-
-GLuint Indices_Quad[] = {
-	0, 1, 2,
-	0, 2, 3,
-};
-
-// -= Quad Transform =-
-// Quad Position
-glm::vec3 QuadPosition = glm::vec3(0.0f, 0.0f, 0.0f);
-glm::mat4 TranslationMat;
-// Quad Rotation
-float QuadRotationAngle = 45.0f;
-glm::mat4 RotationMat;
-// Quad Scale
-glm::vec3 QuadScale = glm::vec3(0.5f, 0.5f, 1.0f);
-glm::mat4 ScaleMat;
 
 void InitialSetup()
 {
-	// Set the color of the window for when the buffer is cleared
-	//glClearColor(0.3f, 0.0f, 1.0f, 1.0f); // Purple
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Black
-	// Maps the range of the window size to NDC (-1 -> 1)
-	glViewport(0, 0, 800, 800);
+    // Set the color of the window for when the buffer is cleared
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Black
+    // Maps the range of the window size to NDC (-1 -> 1)
+    glViewport(0, 0, 800, 800);
+}
+
+void CreateShapes()
+{
+    // Create renderer
+    renderer = new Renderer(Program_WorldSpace);
+
+    // Create first hexagon with gradient
+    hexagon1 = new Hexagon(glm::vec3(-0.6f, -0.4f, 0.0f), glm::vec3(0.4f, 0.4f, 1.0f), 0.0f);
+    hexagon1->setGradientColors(glm::vec3(1.0f, 1.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f)); // Yellow to red
+    hexagon1->initialize();
+    renderer->addShape(hexagon1);
+
+    // Create second hexagon with uniform color
+    hexagon2 = new Hexagon(glm::vec3(0.6f, -0.4f, 0.0f), glm::vec3(0.35f, 0.35f, 1.0f), 30.0f);
+    hexagon2->setUniformColor(glm::vec3(0.0f, 0.8f, 0.6f)); // Teal
+    hexagon2->initialize();
+    renderer->addShape(hexagon2);
 }
 
 void Update()
 {
-	glfwPollEvents();
+    glfwPollEvents();
 
-	// Get the current time
-	CurrentTime = (float)glfwGetTime();
+    // Get the current time and update renderer
+    float currentTime = (float)glfwGetTime();
+    renderer->updateTime(currentTime);
 
-	// Calculate Model Matrix
-	TranslationMat = glm::translate(glm::mat4(1.0f), QuadPosition);
-	// Calculate Rotation Matrix
-	RotationMat = glm::rotate(glm::mat4(1.0f), glm::radians(QuadRotationAngle), glm::vec3(0.0f, 0.0f, 1.0f));
-	// Calculate Scale Matrix
-	ScaleMat = glm::scale(glm::mat4(1.0f), QuadScale);
+    // Animate shapes
+    if (hexagon1)
+    {
+        hexagon1->setRotation(currentTime * -45.0f); // Counter-rotate
+    }
+
+    // Move hexagon2 in a circle
+    if (hexagon2)
+    {
+        float radius = 0.3f;
+        float x = 0.6f + radius * cos(currentTime);
+        float y = -0.4f + radius * sin(currentTime);
+        hexagon2->setPosition(glm::vec3(x, y, 0.0f));
+    }
 }
 
 void Render()
 {
-	glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT);
 
-	// Bind the program and VAO
-	glUseProgram(Program_WorldSpace);
-	glBindVertexArray(VAO_Quad);
+    // Render all shapes using the renderer
+    renderer->renderAll();
 
-	// Send variables to the shaders via Uniform
-	GLint CurrentTimeLoc = glGetUniformLocation(Program_WorldSpace, "CurrentTime");
-	glUniform1f(CurrentTimeLoc, CurrentTime);
-	// Worldspace Transform
-	// Position
-	GLint TranslationMatLoc = glGetUniformLocation(Program_WorldSpace, "TranslationMat");
-	glUniformMatrix4fv(TranslationMatLoc, 1, GL_FALSE, glm::value_ptr(TranslationMat));
-	// Rotation
-	GLint RotationMatLoc = glGetUniformLocation(Program_WorldSpace, "RotationMat");
-	glUniformMatrix4fv(RotationMatLoc, 1, GL_FALSE, glm::value_ptr(RotationMat));
-	// Scale
-	GLint ScaleMatLoc = glGetUniformLocation(Program_WorldSpace, "ScaleMat");
-	glUniformMatrix4fv(ScaleMatLoc, 1, GL_FALSE, glm::value_ptr(ScaleMat));
-	// You could combine all matrices and pass the combination to the shader (ie combine with cpu pass one matrix to gpu) 
-	// e.g.:
-	//QuadModelMat = TranslationMat * RotationMat * ScaleMat;
-	// TODO ^^
-
-
-
-	// Render quad
-	glBindVertexArray(VAO_Quad);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-	// Unbind asstets to prevent accidental use/modification
-	glBindVertexArray(0);
-	glUseProgram(0);
-
-	glfwSwapBuffers(Window);
+    glfwSwapBuffers(Window);
 }
 
 int main()
 {
-	//	-= Setup App =-
-	Window = nullptr;
-	// Init glfw 4.6
-	glfwInit();
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+    //	-= Setup App =-
+    Window = nullptr;
+    // Init glfw 4.6
+    glfwInit();
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 
-	// create GLFW controlled window
-	Window = glfwCreateWindow(800, 800, "BigGL", NULL, NULL);
+    // create GLFW controlled window
+    Window = glfwCreateWindow(800, 800, "BigGL - Refactored", NULL, NULL);
 
+    // Error Check
+    if (Window == NULL)
+    {
+        std::cout << "GLFW failed to initialize properly. Terminating program." << std::endl;
+        system("pause");
+        glfwTerminate();
+        return -1;
+    }
+    glfwMakeContextCurrent(Window);
 
-	// Error Check
-	if (Window == NULL)
-	{
-		std::cout << "GLFW failted to initialize properly. Terminating program." << std::endl;
-		system("pause");
+    // Init GLEW to populate OpenGL function pointers & error check
+    if (glewInit() != GLEW_OK)
+    {
+        std::cout << "GLEW failed to initialize properly. Terminating Program." << std::endl;
+        system("pause");
+        glfwTerminate();
+        return -1;
+    }
 
-		glfwTerminate();
-		return -1;
-	}
-	glfwMakeContextCurrent(Window);
+    // Setup GL functionality
+    InitialSetup();
 
-	// Init GLEW to populate OpenGL function pointers & error check
-	if (glewInit() != GLEW_OK)
-	{
-		std::cout << "GLEW failed to initialize properly. Terminating Program." << std::endl;
-		system("pause");
+    // -= PROGRAMS =-
+    Program_WorldSpace = ShaderLoader::CreateProgram("Resources/Shaders/WorldSpace.vert",
+        "Resources/Shaders/VertexColorFade.frag");
 
-		glfwTerminate();
-		return -1;
-	}
+    if (Program_WorldSpace == 0)
+    {
+        std::cout << "Failed to create shader program. Terminating." << std::endl;
+        glfwTerminate();
+        return -1;
+    }
 
-	// Setup GL functionality
-	InitialSetup();
+    // Create shapes
+    CreateShapes();
 
-	// -= PROGRAMS =-
-	Program_WorldSpace = ShaderLoader::CreateProgram(		"Resources/Shaders/WorldSpace.vert",
-															"Resources/Shaders/VertexColorFade.frag");
+    //	-= Main Loop =-
+    while (glfwWindowShouldClose(Window) == false)
+    {
+        // Update all objects and run the processes
+        Update();
 
+        // Render all the objects
+        Render();
+    }
 
-	// -= Setup second quad =-
-	// 1) Generate the VAO for the second quad
-	glGenVertexArrays(1, &VAO_Quad);
-	glBindVertexArray(VAO_Quad);
-
-	// 2) Generate the EBO for the second quad
-	glGenBuffers(1, &EBO_Quad);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_Quad);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices_Quad), Indices_Quad, GL_STATIC_DRAW);
-
-	// 3) Generate the VBO for the second quad
-	glGenBuffers(1, &VBO_Quad);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO_Quad);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices_Quad), Vertices_Quad, GL_STATIC_DRAW);
-
-	// 4) Set the Vertex Attribute information (same format as first quad)
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(1);
-
-	// Unbind VAO for second quad
-	glBindVertexArray(0);
-
-	//	-= Main Loop =-
-	while (glfwWindowShouldClose(Window) == false)
-	{
-		// Update all objects and run the processes
-		Update();
-
-		// Render all the objects
-		Render();
-	}
-
-	// When main loop breaks, terminate program properly
-	glfwTerminate();
-	return 0;
+    // When main loop breaks, terminate program properly
+    glfwTerminate();
+    return 0;
 }
