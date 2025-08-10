@@ -21,6 +21,13 @@ Hexagon* hexagon2;
 // Shader program
 GLuint Program_WorldSpace;
 
+
+// Hex animation params
+float HexMaxScale = 1.5f;
+float HexMinScale = 0.5f;
+bool IsHexGrowing = true;
+float HexScaleIncrement = .02f;
+
 void InitialSetup()
 {
     // Set the color of the window for when the buffer is cleared
@@ -58,7 +65,42 @@ void Update()
     // Animate shapes
     if (hexagon1)
     {
+        // Rotating Hexagon
         hexagon1->setRotation(currentTime * -45.0f); // Counter-rotate
+
+        // oscillating the scale between 50% and 150 % of the original size
+        if (IsHexGrowing)
+        {
+            // Check if grown out of bounds
+            if (hexagon1->getScale().x > 1.5f || hexagon1->getScale().y > 1.5f)
+            {
+                IsHexGrowing = false;
+            }
+            else
+            {
+                // Grow hex
+                glm::vec3 newScale = hexagon1->getScale();
+                newScale.x += HexScaleIncrement;
+                newScale.y += HexScaleIncrement;
+                hexagon1->setScale(newScale);
+            }
+        }
+        else // Hexagon shrinking
+        {
+            // Check if shrunk out of bounds
+            if (hexagon1->getScale().x < 0.5f || hexagon1->getScale().y < 0.5f)
+            {
+                IsHexGrowing = true;
+            }
+            else
+            {
+                // Shrink hex
+                glm::vec3 newScale = hexagon1->getScale();
+                newScale.x -= HexScaleIncrement;
+                newScale.y -= HexScaleIncrement;
+                hexagon1->setScale(newScale);
+            }
+        }
     }
 
     // Move hexagon2 in a circle
