@@ -100,6 +100,25 @@ void Shape::unbind()
     glBindVertexArray(0);
 }
 
+void Shape::shareVAO(const Shape* other)
+{
+    if (!other) return;
+
+    // Clean up our own buffers if they exist
+    if (VAO != 0 && VAO != other->VAO) glDeleteVertexArrays(1, &VAO);
+    if (VBO != 0 && VBO != other->VBO) glDeleteBuffers(1, &VBO);
+    if (EBO != 0 && EBO != other->EBO) glDeleteBuffers(1, &EBO);
+
+    // Share the other shape's buffers
+    VAO = other->VAO;
+    VBO = other->VBO;
+    EBO = other->EBO;
+
+    // Copy the vertex and index data for consistency
+    vertices = other->vertices;
+    indices = other->indices;
+}
+
 void Shape::regenerate()
 {
     // Clean up existing buffers

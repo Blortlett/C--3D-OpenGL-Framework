@@ -51,6 +51,7 @@ public:
     virtual void render();
     void bind();
     void unbind();
+    void shareVAO(const Shape* other);
 
     // Utility
     virtual void regenerate(); // Regenerate vertices and buffers

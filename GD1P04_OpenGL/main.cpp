@@ -21,7 +21,6 @@ Hexagon* hexagon2;
 // Shader program
 GLuint Program_WorldSpace;
 
-
 // Hex animation params
 float HexMaxScale = 1.5f;
 float HexMinScale = 0.5f;
@@ -50,7 +49,7 @@ void CreateShapes()
     // Create second hexagon with uniform color
     hexagon2 = new Hexagon(glm::vec3(0.6f, -0.4f, 0.0f), glm::vec3(0.35f, 0.35f, 1.0f), 30.0f);
     hexagon2->setUniformColor(glm::vec3(0.0f, 0.8f, 0.6f)); // Teal
-    hexagon2->initialize();
+    hexagon2->shareVAO(hexagon1);
     renderer->addShape(hexagon2);
 }
 
