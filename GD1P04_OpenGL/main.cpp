@@ -62,53 +62,44 @@ void Update()
     renderer->updateTime(currentTime);
 
     // Animate shapes
-    if (hexagon1)
-    {
-        // Rotating Hexagon
-        hexagon1->setRotation(currentTime * -45.0f); // Counter-rotate
+    // Rotating Hexagon
+    hexagon1->setRotation(currentTime *  45.0f); // rotate
+    hexagon2->setRotation(currentTime * -45.0f); // rotate
 
-        // oscillating the scale between 50% and 150 % of the original size
-        if (IsHexGrowing)
+    // oscillating the scale between 50% and 150% of the original size
+    if (IsHexGrowing)
+    {
+        // Check if hex has grown out of bounds
+        if (hexagon1->getScale().x > 1.5f || hexagon1->getScale().y > 1.5f)
         {
-            // Check if grown out of bounds
-            if (hexagon1->getScale().x > 1.5f || hexagon1->getScale().y > 1.5f)
-            {
-                IsHexGrowing = false;
-            }
-            else
-            {
-                // Grow hex
-                glm::vec3 newScale = hexagon1->getScale();
-                newScale.x += HexScaleIncrement;
-                newScale.y += HexScaleIncrement;
-                hexagon1->setScale(newScale);
-            }
+            IsHexGrowing = false;
         }
-        else // Hexagon shrinking
+        else
         {
-            // Check if shrunk out of bounds
-            if (hexagon1->getScale().x < 0.5f || hexagon1->getScale().y < 0.5f)
-            {
-                IsHexGrowing = true;
-            }
-            else
-            {
-                // Shrink hex
-                glm::vec3 newScale = hexagon1->getScale();
-                newScale.x -= HexScaleIncrement;
-                newScale.y -= HexScaleIncrement;
-                hexagon1->setScale(newScale);
-            }
+            // Grow hex
+            glm::vec3 newScale = hexagon1->getScale();
+            newScale.x += HexScaleIncrement;
+            newScale.y += HexScaleIncrement;
+            hexagon1->setScale(newScale);
+            hexagon2->setScale(newScale);
         }
     }
-
-    // Move hexagon2 in a circle
-    if (hexagon2)
+    else // Hexagon shrinking
     {
-        float radius = 0.3f;
-        float x = 0.6f + radius * cos(currentTime);
-        float y = -0.4f + radius * sin(currentTime);
-        hexagon2->setPosition(glm::vec3(x, y, 0.0f));
+        // Check if shrunk out of bounds
+        if (hexagon1->getScale().x < 0.5f || hexagon1->getScale().y < 0.5f)
+        {
+            IsHexGrowing = true;
+        }
+        else
+        {
+            // Shrink hex
+            glm::vec3 newScale = hexagon1->getScale();
+            newScale.x -= HexScaleIncrement;
+            newScale.y -= HexScaleIncrement;
+            hexagon1->setScale(newScale);
+            hexagon2->setScale(newScale);
+        }
     }
 }
 

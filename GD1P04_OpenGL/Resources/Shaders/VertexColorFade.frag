@@ -8,12 +8,12 @@ out vec4 FinalColor;
 
 void main()
 {
-    // Oscillating mix ratio using sine wave (0.0 to 1.0)
+    // Oscillating mix ratio using the sine wave (0.0 to 1.0)
     float mixRatio = (sin(CurrentTime * 2.0) + 1.0) * 0.5;
     
-    // Blend the original vertex color with the uniform blend color
+    // Blend the original color with the blend color
     vec3 blendedColor = mix(FragColor, BlendColor, mixRatio);
     
     // Apply the original fade effect
-    FinalColor = vec4(blendedColor, 1.0f) * abs(sin(CurrentTime));
+    FinalColor = vec4(blendedColor, 0.f);
 }

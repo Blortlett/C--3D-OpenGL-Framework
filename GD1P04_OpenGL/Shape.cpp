@@ -104,7 +104,7 @@ void Shape::shareVAO(const Shape* other)
 {
     if (!other) return;
 
-    // Clean up our own buffers if they exist
+    // Clean up shape's own buffers if they exist
     if (VAO != 0 && VAO != other->VAO) glDeleteVertexArrays(1, &VAO);
     if (VBO != 0 && VBO != other->VBO) glDeleteBuffers(1, &VBO);
     if (EBO != 0 && EBO != other->EBO) glDeleteBuffers(1, &EBO);

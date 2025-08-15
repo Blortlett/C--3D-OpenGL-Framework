@@ -2,7 +2,6 @@
 #include <glew.h>
 #include <vector>
 #include <glm.hpp>
-#include <gtc/matrix_transform.hpp>
 
 class Shape
 {

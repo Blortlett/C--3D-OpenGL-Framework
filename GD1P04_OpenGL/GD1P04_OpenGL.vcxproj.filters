@@ -5,10 +5,6 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
@@ -16,18 +12,60 @@
     <Filter Include="Resource Files\Shaders">
       <UniqueIdentifier>{a29cc21e-56ae-47dd-ba51-e709910041b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shapes">
+      <UniqueIdentifier>{71375e23-6a29-4b55-a857-81d4eb1485e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shapes\Quad">
+      <UniqueIdentifier>{0920596d-a90a-4d0c-a406-d58ce9b1f5a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shapes\Hexagon">
+      <UniqueIdentifier>{42f9d4d8-b6cf-4783-9a05-747ee99f15db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System">
+      <UniqueIdentifier>{4952ade9-469d-4539-b844-e1b2682bf155}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System\Renderer">
+      <UniqueIdentifier>{2ba66b91-0bd1-4c6a-9b9c-ba25863ec012}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System\ShaderLoader">
+      <UniqueIdentifier>{53d6a317-3ee5-4f0d-b758-71a45813cb15}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ShaderLoader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Hexagon.cpp">
+      <Filter>Shapes\Hexagon</Filter>
+    </ClCompile>
+    <ClCompile Include="Shape.cpp">
+      <Filter>Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderLoader.cpp">
+      <Filter>System\ShaderLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="Quad.cpp">
+      <Filter>Shapes\Quad</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>System\Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Hexagon.h">
+      <Filter>Shapes\Hexagon</Filter>
+    </ClInclude>
+    <ClInclude Include="Quad.h">
+      <Filter>Shapes\Quad</Filter>
+    </ClInclude>
+    <ClInclude Include="Shape.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
     <ClInclude Include="ShaderLoader.h">
-      <Filter>Header Files</Filter>
+      <Filter>System\ShaderLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>System\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

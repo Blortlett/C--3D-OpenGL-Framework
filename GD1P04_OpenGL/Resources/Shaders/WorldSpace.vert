@@ -1,6 +1,6 @@
 #version 460 core
 
-// Vertex Data Interpretation
+// Vertex Data
 layout (location = 0) in vec3 Position;
 layout (location = 1) in vec3 Color;
 
