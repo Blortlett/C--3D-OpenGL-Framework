@@ -134,7 +134,7 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 
     // create GLFW controlled window
-    Window = glfwCreateWindow(800, 800, "BigGL - Refactored", NULL, NULL);
+    Window = glfwCreateWindow(800, 800, "BigGL - Hexagon Adventure!", NULL, NULL);
 
     // Error Check
     if (Window == NULL)
@@ -159,8 +159,8 @@ int main()
     InitialSetup();
 
     // -= PROGRAMS =-
-    Program_WorldSpace = ShaderLoader::CreateProgram("Resources/Shaders/WorldSpace.vert",
-        "Resources/Shaders/VertexColorFade.frag");
+    Program_WorldSpace = ShaderLoader::CreateProgram(   "Resources/Shaders/WorldSpace.vert",
+                                                        "Resources/Shaders/VertexColorFade.frag");
 
     if (Program_WorldSpace == 0)
     {
