@@ -79,6 +79,13 @@ void Renderer::renderAll()
         glUniform1f(currentTimeLoc, currentTime);
     }
 
+    // Send blend color to shader (example: bright cyan)
+    GLint blendColorLoc = glGetUniformLocation(shaderProgram, "BlendColor");
+    if (blendColorLoc != -1)
+    {
+        glUniform3f(blendColorLoc, 0.0f, 1.0f, 1.0f); // Cyan color
+    }
+
     // Render all shapes
     for (auto& shape : shapes)
     {
