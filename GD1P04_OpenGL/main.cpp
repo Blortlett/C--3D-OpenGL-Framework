@@ -10,16 +10,18 @@
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
 
+#include "cTextureLoader.h"
+
 // Window variable
 GLFWwindow* Window;
 
 // Renderer and shapes
 Renderer* renderer;
-Hexagon* hexagon1;
-Hexagon* hexagon2;
+Quad* Quad1;
 
 // Shader program
 GLuint Program_WorldSpace;
+GLuint Program_Texture;
 
 // Hex animation params
 float HexMaxScale = 1.5f;
@@ -40,17 +42,13 @@ void CreateShapes()
     // Create renderer
     renderer = new Renderer(Program_WorldSpace);
 
-    // Create first hexagon with gradient
-    hexagon1 = new Hexagon(glm::vec3(-0.6f, -0.4f, 0.0f), glm::vec3(0.4f, 0.4f, 1.0f), 0.0f);
-    hexagon1->setGradientColors(glm::vec3(1.0f, 1.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f)); // Yellow to red
-    hexagon1->initialize();
-    renderer->addShape(hexagon1);
-
-    // Create second hexagon with uniform color
-    hexagon2 = new Hexagon(glm::vec3(0.6f, -0.4f, 0.0f), glm::vec3(0.35f, 0.35f, 1.0f), 30.0f);
-    hexagon2->setUniformColor(glm::vec3(0.0f, 0.8f, 0.6f)); // Teal
-    hexagon2->shareVAO(hexagon1);
-    renderer->addShape(hexagon2);
+    // Load Texture
+    cTextureLoader::GetInstance().LoadTexture("Lancer-Walk02.png");
+    
+    // Create Quad
+    Quad1 = new Quad(glm::vec3(-0.6f, -0.4f, 0.0f), glm::vec3(0.4f, 0.4f, 1.0f), 0.0f);
+    Quad1->initialize();
+    renderer->addShape(Quad1);
 }
 
 void Update()
@@ -60,47 +58,6 @@ void Update()
     // Get the current time and update renderer
     float currentTime = (float)glfwGetTime();
     renderer->updateTime(currentTime);
-
-    // Animate shapes
-    // Rotating Hexagon
-    hexagon1->setRotation(currentTime *  45.0f); // rotate
-    hexagon2->setRotation(currentTime * -45.0f); // rotate
-
-    // oscillating the scale between 50% and 150% of the original size
-    if (IsHexGrowing)
-    {
-        // Check if hex has grown out of bounds
-        if (hexagon1->getScale().x > 1.5f || hexagon1->getScale().y > 1.5f)
-        {
-            IsHexGrowing = false;
-        }
-        else
-        {
-            // Grow hex
-            glm::vec3 newScale = hexagon1->getScale();
-            newScale.x += HexScaleIncrement;
-            newScale.y += HexScaleIncrement;
-            hexagon1->setScale(newScale);
-            hexagon2->setScale(newScale);
-        }
-    }
-    else // Hexagon shrinking
-    {
-        // Check if shrunk out of bounds
-        if (hexagon1->getScale().x < 0.5f || hexagon1->getScale().y < 0.5f)
-        {
-            IsHexGrowing = true;
-        }
-        else
-        {
-            // Shrink hex
-            glm::vec3 newScale = hexagon1->getScale();
-            newScale.x -= HexScaleIncrement;
-            newScale.y -= HexScaleIncrement;
-            hexagon1->setScale(newScale);
-            hexagon2->setScale(newScale);
-        }
-    }
 }
 
 void Render()
@@ -149,12 +106,12 @@ int main()
     InitialSetup();
 
     // -= PROGRAMS =-
-    Program_WorldSpace = ShaderLoader::CreateProgram(   "Resources/Shaders/WorldSpace.vert",
-                                                        "Resources/Shaders/VertexColorFade.frag");
-
+    Program_WorldSpace = ShaderLoader::CreateProgram("Resources/Shaders/Texture.vert",
+                                              "Resources/Shaders/Texture.frag");
+    
     if (Program_WorldSpace == 0)
     {
-        std::cout << "Failed to create shader program. Terminating." << std::endl;
+        std::cout << "Failed to create world space shader program. Terminating." << std::endl;
         glfwTerminate();
         return -1;
     }

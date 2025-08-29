@@ -52,6 +52,13 @@ void Renderer::renderAll()
         glUniform3f(blendColorLoc, 0.0f, 1.0f, 1.0f); // Send this colour (Cyan)
     }
 
+    // Set up texture uniform
+    GLint textureLoc = glGetUniformLocation(shaderProgram, "Texture0");
+    if (textureLoc != -1)
+    {
+        glUniform1i(textureLoc, 0); // Texture unit 0
+    }
+
     // Render all shapes
     for (auto& shape : shapes)
     {

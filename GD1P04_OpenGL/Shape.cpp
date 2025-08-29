@@ -1,5 +1,6 @@
 #include "Shape.h"
 #include <gtc/type_ptr.hpp>
+#include "cTextureLoader.h"
 
 Shape::Shape(glm::vec3 pos, glm::vec3 scl, float rotAngle)
     : position(pos), scale(scl), rotationAngle(rotAngle), rotationAxis(0.0f, 0.0f, 1.0f)
@@ -81,6 +82,12 @@ void Shape::updateTransforms()
 void Shape::render()
 {
     bind();
+
+    // Activate and bind the texture
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, cTextureLoader::GetInstance().Texture_Position);
+    // Below code goes into renderer?
+    //glUniform1i(glGetUniformLocation(Program_Texture, "Texture0"), 0);
 
     if (!indices.empty())
     {

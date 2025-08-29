@@ -5,7 +5,7 @@
 class cTextureLoader
 {
 private:
-    GLuint Texture_Position;
+    
     const std::string mResourcePath = "Resources/Textures/";
     
     // Singleton mumbo jumbo
@@ -18,6 +18,8 @@ private:
     cTextureLoader& operator=(cTextureLoader&&) = delete;
 
 public:
+    GLuint Texture_Position;
+    
     // Singleton access point
     static cTextureLoader& GetInstance()
     {
