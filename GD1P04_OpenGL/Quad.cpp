@@ -14,11 +14,11 @@ void Quad::generateVertices()
 {
     // Vertices for quad (Position + Color)
     vertices = {
-        // Position         // Color
-        -0.5f,  0.5f, 0.0f,  color1.r, color1.g, color1.b, // Top-left
-        -0.5f, -0.5f, 0.0f,  color2.r, color2.g, color2.b, // Bottom-left
-         0.5f, -0.5f, 0.0f,  color3.r, color3.g, color3.b, // Bottom-right
-         0.5f,  0.5f, 0.0f,  color4.r, color4.g, color4.b  // Top-right
+        // Position             // Color                        // Texture Coords
+        -0.5f,  0.5f, 0.0f,     color1.r, color1.g, color1.b,   0.0f, 1.0f,     // Top-left
+        -0.5f, -0.5f, 0.0f,     color2.r, color2.g, color2.b,   0.0f, 0.0f,     // Bottom-left
+         0.5f, -0.5f, 0.0f,     color3.r, color3.g, color3.b,   1.0f, 0.0f,     // Bottom-right
+         0.5f,  0.5f, 0.0f,     color4.r, color4.g, color4.b,   1.0f, 1.0f,     // Top-right
     };
 
     // Indices for two triangles
