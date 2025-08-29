@@ -30,6 +30,9 @@
     <Filter Include="System\ShaderLoader">
       <UniqueIdentifier>{53d6a317-3ee5-4f0d-b758-71a45813cb15}</UniqueIdentifier>
     </Filter>
+    <Filter Include="System\TextureLoader">
+      <UniqueIdentifier>{96c60848-bf71-4c38-9392-2640d27abdad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -50,6 +53,9 @@
     <ClCompile Include="Renderer.cpp">
       <Filter>System\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="cTextureLoader.cpp">
+      <Filter>System\TextureLoader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Hexagon.h">
@@ -66,6 +72,9 @@
     </ClInclude>
     <ClInclude Include="Renderer.h">
       <Filter>System\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="cTextureLoader.h">
+      <Filter>System\TextureLoader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
