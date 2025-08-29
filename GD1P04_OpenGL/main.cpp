@@ -20,14 +20,7 @@ Renderer* renderer;
 Quad* Quad1;
 
 // Shader program
-GLuint Program_WorldSpace;
 GLuint Program_Texture;
-
-// Hex animation params
-float HexMaxScale = 1.5f;
-float HexMinScale = 0.5f;
-bool IsHexGrowing = true;
-float HexScaleIncrement = .02f;
 
 void InitialSetup()
 {
@@ -40,13 +33,10 @@ void InitialSetup()
 void CreateShapes()
 {
     // Create renderer
-    renderer = new Renderer(Program_WorldSpace);
-
-    // Load Texture
-    cTextureLoader::GetInstance().LoadTexture("Lancer-Walk02.png");
+    renderer = new Renderer(Program_Texture);
     
     // Create Quad
-    Quad1 = new Quad(glm::vec3(-0.6f, -0.4f, 0.0f), glm::vec3(0.4f, 0.4f, 1.0f), 0.0f);
+    Quad1 = new Quad(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(5.0f, -1.0f, 1.0f), 0.0f);
     Quad1->initialize();
     renderer->addShape(Quad1);
 }
@@ -106,16 +96,19 @@ int main()
     InitialSetup();
 
     // -= PROGRAMS =-
-    Program_WorldSpace = ShaderLoader::CreateProgram("Resources/Shaders/Texture.vert",
+    Program_Texture = ShaderLoader::CreateProgram("Resources/Shaders/Texture.vert",
                                               "Resources/Shaders/Texture.frag");
     
-    if (Program_WorldSpace == 0)
+    if (Program_Texture == 0)
     {
         std::cout << "Failed to create world space shader program. Terminating." << std::endl;
         glfwTerminate();
         return -1;
     }
 
+    // Load Texture
+    cTextureLoader::GetInstance().LoadTexture("Lancer-Walk02.png");
+    
     // Create shapes
     CreateShapes();
 

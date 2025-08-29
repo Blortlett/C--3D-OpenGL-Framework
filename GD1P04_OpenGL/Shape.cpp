@@ -83,11 +83,12 @@ void Shape::render()
 {
     bind();
 
+    // Get texture from the singleton instance
+    cTextureLoader& textureLoader = cTextureLoader::GetInstance();
+    
     // Activate and bind the texture
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, cTextureLoader::GetInstance().Texture_Position);
-    // Below code goes into renderer?
-    //glUniform1i(glGetUniformLocation(Program_Texture, "Texture0"), 0);
+    glBindTexture(GL_TEXTURE_2D, textureLoader.Texture_Position);
 
     if (!indices.empty())
     {
@@ -95,7 +96,7 @@ void Shape::render()
     }
     else
     {
-        glDrawArrays(GL_TRIANGLES, 0, (GLsizei)(vertices.size() / 6)); // 6 components per vertex
+        glDrawArrays(GL_TRIANGLES, 0, (GLsizei)(vertices.size() / 8)); // 8 components per vertex
     }
 
     unbind();

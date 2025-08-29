@@ -67,27 +67,19 @@ void Renderer::renderAll()
             // Update transforms
             shape->updateTransforms();
 
-            // Send transform matrices to shader
-            GLint translationLoc = glGetUniformLocation(shaderProgram, "TranslationMat");
-            if (translationLoc != -1)
+            // Calculate combined model matrix: Scale * Rotation * Translation
+            // Note: OpenGL matrices are applied in reverse order
+            glm::mat4 modelMat = shape->getTranslationMatrix() * 
+                               shape->getRotationMatrix() * 
+                               shape->getScaleMatrix();
+
+            // Send combined model matrix to shader
+            GLint modelMatLoc = glGetUniformLocation(shaderProgram, "ModelMat");
+            if (modelMatLoc != -1)
             {
-                glUniformMatrix4fv(translationLoc, 1, GL_FALSE,
-                    glm::value_ptr(shape->getTranslationMatrix()));
+                glUniformMatrix4fv(modelMatLoc, 1, GL_FALSE, glm::value_ptr(modelMat));
             }
 
-            GLint rotationLoc = glGetUniformLocation(shaderProgram, "RotationMat");
-            if (rotationLoc != -1)
-            {
-                glUniformMatrix4fv(rotationLoc, 1, GL_FALSE,
-                    glm::value_ptr(shape->getRotationMatrix()));
-            }
-
-            GLint scaleLoc = glGetUniformLocation(shaderProgram, "ScaleMat");
-            if (scaleLoc != -1)
-            {
-                glUniformMatrix4fv(scaleLoc, 1, GL_FALSE,
-                    glm::value_ptr(shape->getScaleMatrix()));
-            }
 
             // Render the shape
             shape->render();
