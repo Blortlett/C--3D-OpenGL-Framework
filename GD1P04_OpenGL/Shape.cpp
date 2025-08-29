@@ -86,9 +86,12 @@ void Shape::render()
     // Get texture from the singleton instance
     cTextureLoader& textureLoader = cTextureLoader::GetInstance();
     
-    // Activate and bind the texture
+    // Activate and bind the textures
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, textureLoader.Texture_Position);
+    glBindTexture(GL_TEXTURE_2D, textureLoader.Texture_Lancer);
+    
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, textureLoader.Texture_Orc);
 
     if (!indices.empty())
     {

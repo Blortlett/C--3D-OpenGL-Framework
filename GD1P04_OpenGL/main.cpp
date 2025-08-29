@@ -100,7 +100,7 @@ int main()
 
     // -= PROGRAMS =-
     Program_Texture = ShaderLoader::CreateProgram("Resources/Shaders/Texture.vert",
-                                              "Resources/Shaders/Texture.frag");
+                                              "Resources/Shaders/TextureMix.frag");
     
     if (Program_Texture == 0)
     {
@@ -111,6 +111,7 @@ int main()
 
     // Load Texture
     cTextureLoader::GetInstance().LoadTexture("Lancer-Walk02.png");
+    cTextureLoader::GetInstance().LoadTexture("Elite Orc-Walk.png");
     
     // Create shapes
     CreateShapes();

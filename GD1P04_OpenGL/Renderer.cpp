@@ -58,6 +58,11 @@ void Renderer::renderAll()
     {
         glUniform1i(textureLoc, 0); // Texture unit 0
     }
+    textureLoc = glGetUniformLocation(shaderProgram, "Texture1");
+    if (textureLoc != -1)
+    {
+        glUniform1i(textureLoc, 1); // Texture unit 1
+    }
 
     // Render all shapes
     for (auto& shape : shapes)
