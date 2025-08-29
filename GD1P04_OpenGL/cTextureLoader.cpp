@@ -3,16 +3,18 @@
 #include <glew.h>
 #include <stb_image.h>
 
-void cTextureLoader::LoadTexture() // const char* fileName)
+void cTextureLoader::LoadTexture(const char* fileName)
 {
     // Texture properties (Assigned by stbi_load())
     int ImageWidth;
     int ImageHeight;
     int ImageComponents;
 
+    std::string fullPath = mResourcePath + fileName;
+
     // Load Texture
     unsigned char* ImageData = stbi_load(
-        "Resources/Textures/Lancer-Walk02.png",
+        fullPath.c_str(),
         &ImageWidth, &ImageHeight, &ImageComponents, 0
     );
 

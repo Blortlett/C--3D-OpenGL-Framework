@@ -6,6 +6,7 @@ class cTextureLoader
 {
 private:
     GLuint Texture_Position;
+    const std::string mResourcePath = "Resources/Textures/";
     
     // Singleton mumbo jumbo
     cTextureLoader() = default;
@@ -24,5 +25,5 @@ public:
         return instance;
     }
 
-    void LoadTexture(); // const char* fileName);
+    void LoadTexture(const char* fileName);
 };
