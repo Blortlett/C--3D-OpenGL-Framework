@@ -9,8 +9,11 @@ void cTextureLoader::LoadTexture(const char* fileName)
     int ImageWidth;
     int ImageHeight;
     int ImageComponents;
-
+    // Generate full filepath
     std::string fullPath = mResourcePath + fileName;
+
+    // Set stb to flip textures so they align with the way OpenGL reads textures
+    stbi_set_flip_vertically_on_load(true);
 
     // Load Texture
     unsigned char* ImageData = stbi_load(
@@ -28,6 +31,12 @@ void cTextureLoader::LoadTexture(const char* fileName)
     // Populate the texture with the image data
     glTexImage2D(   GL_TEXTURE_2D, 0, LoadedComponents, ImageWidth, ImageHeight, 0,
                     LoadedComponents, GL_UNSIGNED_BYTE, ImageData);
+
+    // QUICK HACK! Pixel perfect rendering... deleteable
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     // Generate the mipmaps, free the memory and unbind the texture
     glGenerateMipmap(GL_TEXTURE_2D);

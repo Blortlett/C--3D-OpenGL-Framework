@@ -36,7 +36,10 @@ void CreateShapes()
     renderer = new Renderer(Program_Texture);
     
     // Create Quad
-    Quad1 = new Quad(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(5.0f, -1.0f, 1.0f), 0.0f);
+    glm::vec3 quadPosition = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 quadScale = glm::vec3(8.0f, 1.0f, 1.0f);
+    float quadRotation = 0.0f;
+    Quad1 = new Quad(quadPosition, quadScale, quadRotation);
     Quad1->initialize();
     renderer->addShape(Quad1);
 }
