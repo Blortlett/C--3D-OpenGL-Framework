@@ -10,6 +10,7 @@ class Renderer
 private:
     std::vector<Shape*> shapes;
     GLuint shaderProgram;
+    GLuint CameraShaderProgram;
     float currentTime;
 
 public:

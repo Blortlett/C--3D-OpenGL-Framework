@@ -21,13 +21,18 @@ Quad* Quad1;
 
 // Shader program
 GLuint Program_Texture;
+GLuint Program_Camera;
 
 void InitialSetup()
 {
     // Set the color of the window for when the buffer is cleared
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Black
+    glClearColor(0.5f, 0.0f, 0.5f, 1.0f); // Black
     // Maps the range of the window size to NDC (-1 -> 1)
     glViewport(0, 0, 800, 800);
+
+    // Enable Blending. Global effect. Enables rendering texture alpha
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void CreateShapes()
@@ -100,7 +105,9 @@ int main()
 
     // -= PROGRAMS =-
     Program_Texture = ShaderLoader::CreateProgram("Resources/Shaders/Texture.vert",
-                                              "Resources/Shaders/TextureMix.frag");
+                                              "Resources/Shaders/TextureMix.frag"); // Texture.frag
+    Program_Camera = ShaderLoader::CreateProgram("Resources/Shaders/ClipSpace.vert",
+                                                 "Resources/Shaders/ClipSpace.frag");
     
     if (Program_Texture == 0)
     {

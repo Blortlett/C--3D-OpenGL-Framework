@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera\cCamera.cpp" />
     <ClCompile Include="cTextureLoader.cpp" />
     <ClCompile Include="Hexagon.cpp" />
     <ClCompile Include="main.cpp" />
@@ -160,6 +161,7 @@
     <ClCompile Include="Shape.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera\cCamera.h" />
     <ClInclude Include="cTextureLoader.h" />
     <ClInclude Include="Hexagon.h" />
     <ClInclude Include="Quad.h" />
@@ -173,6 +175,9 @@
     <None Include="Resources\Shaders\PositionOnly.vert" />
     <None Include="Resources\Shaders\VertexColorFade.frag" />
     <None Include="Resources\Shaders\WorldSpace.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Shaders\ClipSpace.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
