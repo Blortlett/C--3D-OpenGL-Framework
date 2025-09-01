@@ -7,11 +7,16 @@ in vec2 FragTexCoords;
 // Uniform Inputs
 uniform sampler2D Texture0;
 uniform sampler2D Texture1;
+uniform float CurrentTime;
 
 // Output
 out vec4 FinalColor;
 
 void main()
-{                                                                                       // This float is the blend ratio (Tex0% / Tex1%)
-    FinalColor = mix(texture(Texture0, FragTexCoords), texture(Texture1, FragTexCoords), 0.5f);
+{
+    // Blend factor
+    float blendFactor = (sin(CurrentTime * 2.0) + 1.0) * 0.5;
+    
+    // Mix texture based on Blend Factor
+    FinalColor = mix(texture(Texture0, FragTexCoords), texture(Texture1, FragTexCoords), blendFactor);
 }

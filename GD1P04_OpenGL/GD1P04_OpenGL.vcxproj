@@ -177,6 +177,7 @@
     <None Include="Resources\Shaders\FixedTriangle.vert" />
     <None Include="Resources\Shaders\PositionOnly.vert" />
     <None Include="Resources\Shaders\Texture.frag" />
+    <None Include="Resources\Shaders\TextureMix.frag" />
     <None Include="Resources\Shaders\VertexColorFade.frag" />
     <None Include="Resources\Shaders\WorldSpace.vert" />
   </ItemGroup>

@@ -117,5 +117,8 @@
     <None Include="Resources\Shaders\Texture.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
+    <None Include="Resources\Shaders\TextureMix.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

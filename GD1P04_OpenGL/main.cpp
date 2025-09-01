@@ -139,7 +139,7 @@ int main()
 
     // -= PROGRAMS =-
     Program_Shader = ShaderLoader::CreateProgram("Resources/Shaders/ClipSpace.vert",
-                                              "Resources/Shaders/Texture.frag");
+                                              "Resources/Shaders/TextureMix.frag");
     
     if (Program_Shader == 0)
     {
