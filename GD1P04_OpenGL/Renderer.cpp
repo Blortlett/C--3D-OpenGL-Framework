@@ -1,5 +1,6 @@
 #include "Renderer.h"
 #include "Camera/cCamera.h"
+#include "cTextureLoader.h"
 
 #include <iostream>
 #include <ostream>
@@ -116,6 +117,91 @@ void Renderer::renderAll()
 
             // Render the shape
             shape->render();
+        }
+    }
+
+    glUseProgram(0);
+}
+
+void Renderer::RenderAllAnimated()
+{
+    glUseProgram(Quad_Program);
+
+    // Send current time to shader
+    GLint currentTimeLoc = glGetUniformLocation(Quad_Program, "CurrentTime");
+    if (currentTimeLoc != -1)
+    {
+        glUniform1f(currentTimeLoc, currentTime);
+    }
+
+    // Send spritesheet parameters
+    GLint sheetSizeLoc = glGetUniformLocation(Quad_Program, "SheetSize");
+    if (sheetSizeLoc != -1)
+    {
+        glUniform2f(sheetSizeLoc, 8.0f, 1.0f); // Spritesheet XY Dimensions
+    }
+
+    GLint animSpeedLoc = glGetUniformLocation(Quad_Program, "AnimSpeed");
+    if (animSpeedLoc != -1)
+    {
+        glUniform1f(animSpeedLoc, 12.0f); // FPS
+    }
+
+    GLint totalFramesLoc = glGetUniformLocation(Quad_Program, "TotalFrames");
+    if (totalFramesLoc != -1)
+    {
+        glUniform1i(totalFramesLoc, 8); // Total frames in 4x4 grid
+    }
+
+    // Set up animated texture uniform
+    GLint textureLoc = glGetUniformLocation(Quad_Program, "AnimatedTexture");
+    if (textureLoc != -1)
+    {
+        glUniform1i(textureLoc, 0); // Texture unit 0
+    }
+
+    // Render all shapes with animation
+    for (auto& shape : shapes)
+    {
+        if (shape)
+        {
+            // Update transforms
+            shape->updateTransforms();
+
+            // Set up matrices
+            glm::mat4 modelMat = shape->getTranslationMatrix() * 
+                               shape->getRotationMatrix() * 
+                               shape->getScaleMatrix();
+            glm::mat4 viewMat = mCamera.GetViewMat();
+            glm::mat4 projectionMat = mCamera.GetProjectionMat();
+
+            // Send matrices to shader
+            GLint modelMatLoc = glGetUniformLocation(Quad_Program, "ModelMat");
+            GLint viewMatLoc = glGetUniformLocation(Quad_Program, "ViewMat");
+            GLint projMatLoc = glGetUniformLocation(Quad_Program, "ProjectionMat");
+
+            if (modelMatLoc != -1)
+                glUniformMatrix4fv(modelMatLoc, 1, GL_FALSE, glm::value_ptr(modelMat));
+            if (viewMatLoc != -1)
+                glUniformMatrix4fv(viewMatLoc, 1, GL_FALSE, glm::value_ptr(viewMat));
+            if (projMatLoc != -1)
+                glUniformMatrix4fv(projMatLoc, 1, GL_FALSE, glm::value_ptr(projectionMat));
+
+            // Bind Lancer texture for animation
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, cTextureLoader::GetInstance().Texture_Lancer);
+
+            // Render the shape
+            shape->bind();
+            if (!shape->getIndices().empty())
+            {
+                glDrawElements(GL_TRIANGLES, (GLsizei)shape->getIndices().size(), GL_UNSIGNED_INT, 0);
+            }
+            else if (!shape->getVertices().empty())
+            {
+                glDrawArrays(GL_TRIANGLES, 0, (GLsizei)(shape->getVertices().size() / 8));
+            }
+            shape->unbind();
         }
     }
 

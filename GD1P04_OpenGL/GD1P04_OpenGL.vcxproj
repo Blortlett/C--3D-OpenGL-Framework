@@ -183,6 +183,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Shaders\ClipSpace.vert" />
+    <Content Include="Resources\Shaders\TextureAnimate.frag" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

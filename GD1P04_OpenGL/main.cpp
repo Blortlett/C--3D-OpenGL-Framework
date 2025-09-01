@@ -16,16 +16,18 @@
 // Window variable
 GLFWwindow* Window;
 
-// Renderer and shapes
+// Renderers for different shader programs
 Renderer* renderer;
+Renderer* animatedRenderer;
+
+// Shapes
 Quad* QuadItem;
 Quad* QuadAnimated;
 Cube* Cube1;
 
-// Shader program
+// Shader programs
 GLuint Program_Shader;
-
-
+GLuint Program_Animated;
 
 void InitialSetup()
 {
@@ -53,25 +55,27 @@ void InitialSetup()
 
 void CreateShapes(cCamera _SceneCamera)
 {
-    // Create renderer
+    // Create renderers for different shader programs
     renderer = new Renderer(Program_Shader, _SceneCamera);
+    animatedRenderer = new Renderer(Program_Animated, _SceneCamera);
     
-    // Item Quad
+    // Static Item Quad (uses TextureMix shader)
     glm::vec3 quadPosition = glm::vec3(-0.75f, 0.0f, 0.0f);
     glm::vec3 quadScale = glm::vec3(1.0f, 1.0f, 1.0f);
     float quadRotation = 0.0f;
     QuadItem = new Quad(quadPosition, quadScale, quadRotation);
     QuadItem->initialize();
     renderer->addShape(QuadItem);
-    // Animated Quad
+    
+    // Animated Quad (uses TextureAnimate shader)
     quadPosition = glm::vec3(0.75f, 0.0f, 0.0f);
     quadScale = glm::vec3(1.0f, 1.0f, 1.0f);
     quadRotation = 0.0f;
-    QuadItem = new Quad(quadPosition, quadScale, quadRotation);
-    QuadItem->initialize();
-    renderer->addShape(QuadItem);
+    QuadAnimated = new Quad(quadPosition, quadScale, quadRotation);
+    QuadAnimated->initialize();
+    animatedRenderer->addShape(QuadAnimated);
 
-    // Create Cube
+    // Create Cube (uses TextureMix shader)
     glm::vec3 cubePosition = glm::vec3(0.0f, 0.0f, -5.0f);
     glm::vec3 cubeScale = glm::vec3(1.0f, 1.0f, 1.0f);
     float cubeRotation = 0.f;
@@ -84,9 +88,10 @@ void Update()
 {
     glfwPollEvents();
 
-    // Get the current time and update renderer
+    // Get the current time and update both renderers
     float currentTime = (float)glfwGetTime();
     renderer->updateTime(currentTime);
+    animatedRenderer->updateTime(currentTime);
 
     // Animate cube
     Cube1->setRotation(Cube1->getRotation() + 1.0f, glm::vec3(0,1,.3f));
@@ -96,8 +101,11 @@ void Render()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // Render all shapes using the renderer
+    // Render static objects (TextureMix shader)
     renderer->renderAll();
+    
+    // Render animated objects (TextureAnimate shader)
+    animatedRenderer->RenderAllAnimated();
 
     glfwSwapBuffers(Window);
 }
@@ -137,13 +145,18 @@ int main()
     // Setup GL functionality
     InitialSetup();
 
-    // -= PROGRAMS =-
+    // -= SHADER PROGRAMS =-
+    // Static texture mixing shader
     Program_Shader = ShaderLoader::CreateProgram("Resources/Shaders/ClipSpace.vert",
                                               "Resources/Shaders/TextureMix.frag");
     
-    if (Program_Shader == 0)
+    // Animated spritesheet shader
+    Program_Animated = ShaderLoader::CreateProgram("Resources/Shaders/ClipSpace.vert",
+                                                 "Resources/Shaders/TextureAnimate.frag");
+    
+    if (Program_Shader == 0 || Program_Animated == 0)
     {
-        std::cout << "Failed to create shader program. Terminating." << std::endl;
+        std::cout << "Failed to create shader programs. Terminating." << std::endl;
         glfwTerminate();
         return -1;
     }

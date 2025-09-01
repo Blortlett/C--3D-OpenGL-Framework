@@ -29,4 +29,5 @@ public:
     // Rendering
     void updateTime(float time);
     void renderAll();
+    void RenderAllAnimated();
 };

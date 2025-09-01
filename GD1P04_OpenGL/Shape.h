@@ -54,4 +54,6 @@ public:
 
     // Utility
     virtual void regenerate(); // Regenerate vertices and buffers
+    const std::vector<GLfloat>& getVertices() const { return vertices; }
+    const std::vector<GLuint>& getIndices() const { return indices; }
 };
