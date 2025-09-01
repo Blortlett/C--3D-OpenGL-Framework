@@ -54,6 +54,8 @@ void Shape::setupBuffers()
     glEnableVertexAttribArray(2);
 
     glBindVertexArray(0);
+
+    std::cout << "VAO: " << VAO << ", VBO: " << VBO << ", EBO: " << EBO << std::endl;
 }
 
 void Shape::setPosition(glm::vec3 pos)
@@ -85,6 +87,10 @@ void Shape::render()
 
     // Get texture from the singleton instance
     cTextureLoader& textureLoader = cTextureLoader::GetInstance();
+
+    if (textureLoader.Texture_Lancer == 0) {
+        std::cout << "Lancer texture ID is invalid!" << std::endl;
+    }
     
     // Activate and bind the textures
     glActiveTexture(GL_TEXTURE0);

@@ -5,16 +5,20 @@
 #include <gtc/type_ptr.hpp>
 #include "Shape.h"
 
+class cCamera;
+
 class Renderer
 {
 private:
     std::vector<Shape*> shapes;
-    GLuint shaderProgram;
+    GLuint& Quad_Program;
     GLuint CameraShaderProgram;
     float currentTime;
 
+    cCamera& mCamera;
+
 public:
-    Renderer(GLuint program);
+    Renderer(GLuint& Quad_Program, cCamera& _Camera);
     ~Renderer();
 
     // Shape management
@@ -25,11 +29,4 @@ public:
     // Rendering
     void updateTime(float time);
     void renderAll();
-
-    // Shader management
-    void setShaderProgram(GLuint program) { shaderProgram = program; }
-    GLuint getShaderProgram() const { return shaderProgram; }
-
-    // Utility
-    size_t getShapeCount() const { return shapes.size(); }
 };

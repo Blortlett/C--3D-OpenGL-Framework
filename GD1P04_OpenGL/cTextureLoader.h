@@ -1,6 +1,7 @@
 #pragma once
 #include <glew.h>
 #include <string>
+#include <iostream>
 
 class cTextureLoader
 {

@@ -1,8 +1,11 @@
 #include "Renderer.h"
+#include "Camera/cCamera.h"
 
-Renderer::Renderer(GLuint program) : shaderProgram(program), currentTime(0.0f)
-{
-}
+#include <iostream>
+#include <ostream>
+
+Renderer::Renderer(GLuint& _Quad_Program, cCamera& _Camera) : Quad_Program(_Quad_Program), currentTime(0.0f), mCamera(_Camera)
+{};
 
 Renderer::~Renderer()
 {
@@ -34,31 +37,32 @@ void Renderer::updateTime(float time)
 
 void Renderer::renderAll()
 {
-    if (shaderProgram == 0) return;
-
-    glUseProgram(shaderProgram);
+    glUseProgram(Quad_Program);
 
     // Send current time to shader
-    GLint currentTimeLoc = glGetUniformLocation(shaderProgram, "CurrentTime");
+    GLint currentTimeLoc = glGetUniformLocation(Quad_Program, "CurrentTime");
     if (currentTimeLoc != -1)
     {
         glUniform1f(currentTimeLoc, currentTime);
     }
 
     // Send blend color to shader
-    GLint blendColorLoc = glGetUniformLocation(shaderProgram, "BlendColor");
+    GLint blendColorLoc = glGetUniformLocation(Quad_Program, "BlendColor");
     if (blendColorLoc != -1)
     {
         glUniform3f(blendColorLoc, 0.0f, 1.0f, 1.0f); // Send this colour (Cyan)
     }
 
     // Set up texture uniform
-    GLint textureLoc = glGetUniformLocation(shaderProgram, "Texture0");
+    GLint textureLoc = glGetUniformLocation(Quad_Program, "Texture0");
     if (textureLoc != -1)
     {
         glUniform1i(textureLoc, 0); // Texture unit 0
     }
-    textureLoc = glGetUniformLocation(shaderProgram, "Texture1");
+    else {
+        std::cout << "No texture0 uniform location!" << std::endl;
+    }
+    textureLoc = glGetUniformLocation(Quad_Program, "Texture1");
     if (textureLoc != -1)
     {
         glUniform1i(textureLoc, 1); // Texture unit 1
@@ -72,18 +76,42 @@ void Renderer::renderAll()
             // Update transforms
             shape->updateTransforms();
 
-            // Calculate combined model matrix: Scale * Rotation * Translation
-            // Note: OpenGL matrices are applied in reverse order
+            // -= Quad =-
+            // Model Matrix
             glm::mat4 modelMat = shape->getTranslationMatrix() * 
                                shape->getRotationMatrix() * 
                                shape->getScaleMatrix();
+            // -= Camera =-
+            // View Matrix
+            glm::mat4 viewMat = mCamera.GetViewMat();
+            // Camera's Projection Matrix
+            glm::mat4 projectionMat = mCamera.GetProjectionMat();
 
             // Send combined model matrix to shader
-            GLint modelMatLoc = glGetUniformLocation(shaderProgram, "ModelMat");
-            if (modelMatLoc != -1)
+            GLint QuadModelMatLoc = glGetUniformLocation(Quad_Program, "ModelMat");
+            GLint viewMatLoc = glGetUniformLocation(Quad_Program, "ViewMat");
+            GLint projMatLoc = glGetUniformLocation(Quad_Program, "ProjectionMat");
+
+            if (QuadModelMatLoc == -1)
             {
-                glUniformMatrix4fv(modelMatLoc, 1, GL_FALSE, glm::value_ptr(modelMat));
+                std::cout << "Quad Matrix is invalid! @ Renderer::renderAll()" << std::endl;
+                //return;
             }
+            if (viewMatLoc == -1)
+            {
+                std::cout << "View Matrix is invalid! @ Renderer::renderAll()" << std::endl;
+                //return;
+            }
+            if (projMatLoc == -1)
+            {
+                std::cout << "Projection Matrix is invalid! @ Renderer::renderAll()" << std::endl;
+                //return;
+            }
+            
+            glUniformMatrix4fv(QuadModelMatLoc, 1, GL_FALSE, glm::value_ptr(modelMat));
+            glUniformMatrix4fv(viewMatLoc, 1, GL_FALSE, glm::value_ptr(viewMat));
+            glUniformMatrix4fv(projMatLoc, 1, GL_FALSE, glm::value_ptr(projectionMat));
+
 
 
             // Render the shape

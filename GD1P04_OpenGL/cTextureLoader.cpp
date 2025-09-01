@@ -21,6 +21,11 @@ void cTextureLoader::LoadTexture(const char* fileName)
         fullPath.c_str(),
         &ImageWidth, &ImageHeight, &ImageComponents, 0
     );
+    if (!ImageData)
+    {
+        std::cout << "Failed to load texture: " << fullPath << std::endl;
+        return;
+    }
 
     // Create and bind a new texture variable
     if (TimesRun == 0)

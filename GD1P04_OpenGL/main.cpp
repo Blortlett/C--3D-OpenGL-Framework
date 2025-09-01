@@ -11,6 +11,7 @@
 #include <gtc/type_ptr.hpp>
 
 #include "cTextureLoader.h"
+#include "Camera/cCamera.h"
 
 // Window variable
 GLFWwindow* Window;
@@ -20,29 +21,31 @@ Renderer* renderer;
 Quad* Quad1;
 
 // Shader program
-GLuint Program_Texture;
-GLuint Program_Camera;
+GLuint Program_Shader;
+
+
 
 void InitialSetup()
 {
     // Set the color of the window for when the buffer is cleared
-    glClearColor(0.5f, 0.0f, 0.5f, 1.0f); // Black
+    glClearColor(0.01f, 0.01f, 0.05f, 1.0f); // Black
     // Maps the range of the window size to NDC (-1 -> 1)
     glViewport(0, 0, 800, 800);
 
     // Enable Blending. Global effect. Enables rendering texture alpha
     glEnable(GL_BLEND);
+    //glDisable(GL_DEPTH_TEST); // DEBUG
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-void CreateShapes()
+void CreateShapes(cCamera _SceneCamera)
 {
     // Create renderer
-    renderer = new Renderer(Program_Texture);
+    renderer = new Renderer(Program_Shader, _SceneCamera);
     
     // Create Quad
-    glm::vec3 quadPosition = glm::vec3(0.0f, 0.0f, 0.0f);
-    glm::vec3 quadScale = glm::vec3(8.0f, 1.0f, 1.0f);
+    glm::vec3 quadPosition = glm::vec3(400.0f, 0.0f, 0.0f);
+    glm::vec3 quadScale = glm::vec3(8000.0f, 1000.0f, 1.0f); // 8,1,1
     float quadRotation = 0.0f;
     Quad1 = new Quad(quadPosition, quadScale, quadRotation);
     Quad1->initialize();
@@ -79,7 +82,7 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 
     // create GLFW controlled window
-    Window = glfwCreateWindow(800, 800, "BigGL - Hexagon Adventure!", NULL, NULL);
+    Window = glfwCreateWindow(800, 800, "BigGL - Camera Adventure!", NULL, NULL);
 
     // Error Check
     if (Window == NULL)
@@ -104,14 +107,12 @@ int main()
     InitialSetup();
 
     // -= PROGRAMS =-
-    Program_Texture = ShaderLoader::CreateProgram("Resources/Shaders/Texture.vert",
-                                              "Resources/Shaders/TextureMix.frag"); // Texture.frag
-    Program_Camera = ShaderLoader::CreateProgram("Resources/Shaders/ClipSpace.vert",
-                                                 "Resources/Shaders/ClipSpace.frag");
+    Program_Shader = ShaderLoader::CreateProgram("Resources/Shaders/ClipSpace.vert",
+                                              "Resources/Shaders/Texture.frag");
     
-    if (Program_Texture == 0)
+    if (Program_Shader == 0)
     {
-        std::cout << "Failed to create world space shader program. Terminating." << std::endl;
+        std::cout << "Failed to create shader program. Terminating." << std::endl;
         glfwTerminate();
         return -1;
     }
@@ -119,9 +120,12 @@ int main()
     // Load Texture
     cTextureLoader::GetInstance().LoadTexture("Lancer-Walk02.png");
     cTextureLoader::GetInstance().LoadTexture("Elite Orc-Walk.png");
+
+    // Create Scene Camera
+    cCamera Camera1(glm::vec2(800, 800));
     
     // Create shapes
-    CreateShapes();
+    CreateShapes(Camera1);
 
     //	-= Main Loop =-
     while (glfwWindowShouldClose(Window) == false)

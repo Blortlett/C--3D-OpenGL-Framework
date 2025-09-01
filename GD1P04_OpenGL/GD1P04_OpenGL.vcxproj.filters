@@ -33,6 +33,9 @@
     <Filter Include="System\TextureLoader">
       <UniqueIdentifier>{96c60848-bf71-4c38-9392-2640d27abdad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{7555ac40-1507-4b23-aa6d-b019379c971e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -56,6 +59,9 @@
     <ClCompile Include="cTextureLoader.cpp">
       <Filter>System\TextureLoader</Filter>
     </ClCompile>
+    <ClCompile Include="Camera\cCamera.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Hexagon.h">
@@ -76,6 +82,9 @@
     <ClInclude Include="cTextureLoader.h">
       <Filter>System\TextureLoader</Filter>
     </ClInclude>
+    <ClInclude Include="Camera\cCamera.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\FixedColor.frag">
@@ -91,6 +100,12 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="Resources\Shaders\WorldSpace.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\ClipSpace.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\Texture.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>
