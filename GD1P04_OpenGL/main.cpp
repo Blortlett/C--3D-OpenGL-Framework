@@ -18,7 +18,8 @@ GLFWwindow* Window;
 
 // Renderer and shapes
 Renderer* renderer;
-//Quad* Quad1;
+Quad* QuadItem;
+Quad* QuadAnimated;
 Cube* Cube1;
 
 // Shader program
@@ -37,9 +38,17 @@ void InitialSetup()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    // Enable Depth Testing
+    // Enable Depth Testing for 3D
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
+
+    // Cull mesh backfaces
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT); // (BUG: Unwinding anticlockwise somehow? : Hack culling the front face)
+    glFrontFace(GL_CW); // Unwind mesh Clockwise
+
+    // DEBUG
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // Wireframe
 }
 
 void CreateShapes(cCamera _SceneCamera)
@@ -47,16 +56,23 @@ void CreateShapes(cCamera _SceneCamera)
     // Create renderer
     renderer = new Renderer(Program_Shader, _SceneCamera);
     
-    // Create Quad
-    //glm::vec3 quadPosition = glm::vec3(400.0f, 0.0f, 0.0f);
-    //glm::vec3 quadScale = glm::vec3(8000.0f, 1000.0f, 1.0f); // 8,1,1
-    //float quadRotation = 0.0f;
-    //Quad1 = new Quad(quadPosition, quadScale, quadRotation);
-    //Quad1->initialize();
-    //renderer->addShape(Quad1);
+    // Item Quad
+    glm::vec3 quadPosition = glm::vec3(-0.75f, 0.0f, 0.0f);
+    glm::vec3 quadScale = glm::vec3(1.0f, 1.0f, 1.0f);
+    float quadRotation = 0.0f;
+    QuadItem = new Quad(quadPosition, quadScale, quadRotation);
+    QuadItem->initialize();
+    renderer->addShape(QuadItem);
+    // Animated Quad
+    quadPosition = glm::vec3(0.75f, 0.0f, 0.0f);
+    quadScale = glm::vec3(1.0f, 1.0f, 1.0f);
+    quadRotation = 0.0f;
+    QuadItem = new Quad(quadPosition, quadScale, quadRotation);
+    QuadItem->initialize();
+    renderer->addShape(QuadItem);
 
     // Create Cube
-    glm::vec3 cubePosition = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 cubePosition = glm::vec3(0.0f, 0.0f, -5.0f);
     glm::vec3 cubeScale = glm::vec3(1.0f, 1.0f, 1.0f);
     float cubeRotation = 0.f;
     Cube1 = new Cube(cubePosition, cubeScale, cubeRotation);
@@ -73,7 +89,7 @@ void Update()
     renderer->updateTime(currentTime);
 
     // Animate cube
-    Cube1->setRotation(Cube1->getRotation() + 1.0f, glm::vec3(0,1,0));
+    Cube1->setRotation(Cube1->getRotation() + 1.0f, glm::vec3(0,1,.3f));
 }
 
 void Render()
@@ -131,10 +147,6 @@ int main()
         glfwTerminate();
         return -1;
     }
-
-    // Load Texture
-    cTextureLoader::GetInstance().LoadTexture("Lancer-Walk02.png");
-    cTextureLoader::GetInstance().LoadTexture("Elite Orc-Walk.png");
 
     // Create Scene Camera
     cCamera Camera1(glm::vec2(800, 800));

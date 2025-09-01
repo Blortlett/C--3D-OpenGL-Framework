@@ -3,6 +3,13 @@
 #include <glew.h>
 #include <stb_image.h>
 
+cTextureLoader::cTextureLoader()
+{
+    LoadTexture("Lancer-Walk02.png");
+    LoadTexture("Uncooked.png");
+    LoadTexture("Cooked.png");
+}
+
 void cTextureLoader::LoadTexture(const char* fileName)
 {
     // Texture properties (Assigned by stbi_load())
@@ -32,10 +39,16 @@ void cTextureLoader::LoadTexture(const char* fileName)
     {
         glGenTextures(1, &Texture_Lancer);
         glBindTexture(GL_TEXTURE_2D, Texture_Lancer);
-    } else if (TimesRun == 1)
+    } 
+    else if (TimesRun == 1)
     {
-        glGenTextures(1, &Texture_Orc);
-        glBindTexture(GL_TEXTURE_2D, Texture_Orc);
+        glGenTextures(1, &Texture_Food_Cooked);
+        glBindTexture(GL_TEXTURE_2D, Texture_Food_Cooked);
+    }
+    else if (TimesRun == 2)
+    {
+        glGenTextures(1, &Texture_Food_Uncooked);
+        glBindTexture(GL_TEXTURE_2D, Texture_Food_Uncooked);
     }
 
     // Check how many components the loaded image has (RGBA or RGB?)
@@ -45,7 +58,7 @@ void cTextureLoader::LoadTexture(const char* fileName)
     glTexImage2D(   GL_TEXTURE_2D, 0, LoadedComponents, ImageWidth, ImageHeight, 0,
                     LoadedComponents, GL_UNSIGNED_BYTE, ImageData);
 
-    // QUICK HACK! Pixel perfect rendering... deletable
+    // Pixel perfect filtering...
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);

@@ -92,10 +92,10 @@ void Shape::render()
     
     // Activate and bind the textures
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, textureLoader.Texture_Lancer);
+    glBindTexture(GL_TEXTURE_2D, textureLoader.Texture_Food_Uncooked);
     
     glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, textureLoader.Texture_Orc);
+    glBindTexture(GL_TEXTURE_2D, textureLoader.Texture_Food_Cooked);
 
     if (!indices.empty())
     {

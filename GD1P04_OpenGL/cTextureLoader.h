@@ -10,7 +10,7 @@ private:
     const std::string mResourcePath = "Resources/Textures/";
     
     // Singleton mumbo jumbo
-    cTextureLoader() = default;
+    cTextureLoader();
     
     // Delete copy/move constructors
     cTextureLoader(const cTextureLoader&) = delete;
@@ -20,7 +20,8 @@ private:
 
 public:
     GLuint Texture_Lancer;
-    GLuint Texture_Orc;
+    GLuint Texture_Food_Cooked;
+    GLuint Texture_Food_Uncooked;
     
     // Singleton access point
     static cTextureLoader& GetInstance()
