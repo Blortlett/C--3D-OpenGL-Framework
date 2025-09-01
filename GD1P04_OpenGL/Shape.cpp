@@ -54,8 +54,6 @@ void Shape::setupBuffers()
     glEnableVertexAttribArray(2);
 
     glBindVertexArray(0);
-
-    std::cout << "VAO: " << VAO << ", VBO: " << VBO << ", EBO: " << EBO << std::endl;
 }
 
 void Shape::setPosition(glm::vec3 pos)
@@ -105,7 +103,15 @@ void Shape::render()
     }
     else
     {
-        glDrawArrays(GL_TRIANGLES, 0, (GLsizei)(vertices.size() / 8)); // 8 components per vertex
+        // Ensure vertices is not empty to avoid division by zero or invalid access
+        if (!vertices.empty())
+        {
+            glDrawArrays(GL_TRIANGLES, 0, (GLsizei)(vertices.size() / 8)); // Default to 8 for shapes with color
+        }
+        else
+        {
+            std::cout << "Error: No vertices to render!" << std::endl;
+        }
     }
 
     unbind();

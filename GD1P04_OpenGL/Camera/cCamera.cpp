@@ -24,8 +24,10 @@ cCamera::cCamera(glm::vec2 _WindowSize)
     LookAtTarget();
 
     // Init Projection Matrix
-    ProjectionMat = glm::ortho(-_WindowSize.x * 0.5f, _WindowSize.x * 0.5f, -_WindowSize.y * 0.5f, _WindowSize.y * 0.5f, 0.1f, 100.0f);
-
+    // Ortho matrix
+    //ProjectionMat = glm::ortho(-_WindowSize.x * 0.5f, _WindowSize.x * 0.5f, -_WindowSize.y * 0.5f, _WindowSize.y * 0.5f, 0.1f, 100.0f);
+    // Perspective matrix
+    ProjectionMat = glm::perspective(glm::radians(45.0f), (float)_WindowSize.x / (float)_WindowSize.y, 0.1f, 100.0f);
 }
 
 void cCamera::LookAtDirection()

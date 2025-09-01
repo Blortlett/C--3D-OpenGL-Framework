@@ -5,7 +5,7 @@
 #include "ShaderLoader.h"
 #include "Renderer.h"
 #include "Quad.h"
-#include "Hexagon.h"
+#include "Cube.h"
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
@@ -18,7 +18,8 @@ GLFWwindow* Window;
 
 // Renderer and shapes
 Renderer* renderer;
-Quad* Quad1;
+//Quad* Quad1;
+Cube* Cube1;
 
 // Shader program
 GLuint Program_Shader;
@@ -34,8 +35,11 @@ void InitialSetup()
 
     // Enable Blending. Global effect. Enables rendering texture alpha
     glEnable(GL_BLEND);
-    //glDisable(GL_DEPTH_TEST); // DEBUG
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    // Enable Depth Testing
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
 }
 
 void CreateShapes(cCamera _SceneCamera)
@@ -44,12 +48,20 @@ void CreateShapes(cCamera _SceneCamera)
     renderer = new Renderer(Program_Shader, _SceneCamera);
     
     // Create Quad
-    glm::vec3 quadPosition = glm::vec3(400.0f, 0.0f, 0.0f);
-    glm::vec3 quadScale = glm::vec3(8000.0f, 1000.0f, 1.0f); // 8,1,1
-    float quadRotation = 0.0f;
-    Quad1 = new Quad(quadPosition, quadScale, quadRotation);
-    Quad1->initialize();
-    renderer->addShape(Quad1);
+    //glm::vec3 quadPosition = glm::vec3(400.0f, 0.0f, 0.0f);
+    //glm::vec3 quadScale = glm::vec3(8000.0f, 1000.0f, 1.0f); // 8,1,1
+    //float quadRotation = 0.0f;
+    //Quad1 = new Quad(quadPosition, quadScale, quadRotation);
+    //Quad1->initialize();
+    //renderer->addShape(Quad1);
+
+    // Create Cube
+    glm::vec3 cubePosition = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 cubeScale = glm::vec3(1.0f, 1.0f, 1.0f);
+    float cubeRotation = 0.f;
+    Cube1 = new Cube(cubePosition, cubeScale, cubeRotation);
+    Cube1->initialize();
+    renderer->addShape(Cube1);
 }
 
 void Update()
@@ -59,11 +71,14 @@ void Update()
     // Get the current time and update renderer
     float currentTime = (float)glfwGetTime();
     renderer->updateTime(currentTime);
+
+    // Animate cube
+    Cube1->setRotation(Cube1->getRotation() + 1.0f, glm::vec3(0,1,0));
 }
 
 void Render()
 {
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Render all shapes using the renderer
     renderer->renderAll();

@@ -153,6 +153,7 @@
   <ItemGroup>
     <ClCompile Include="Camera\cCamera.cpp" />
     <ClCompile Include="cTextureLoader.cpp" />
+    <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Hexagon.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Quad.cpp" />
@@ -163,6 +164,7 @@
   <ItemGroup>
     <ClInclude Include="Camera\cCamera.h" />
     <ClInclude Include="cTextureLoader.h" />
+    <ClInclude Include="Cube.h" />
     <ClInclude Include="Hexagon.h" />
     <ClInclude Include="Quad.h" />
     <ClInclude Include="Renderer.h" />

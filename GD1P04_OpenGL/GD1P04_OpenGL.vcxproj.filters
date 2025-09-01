@@ -36,6 +36,9 @@
     <Filter Include="Camera">
       <UniqueIdentifier>{7555ac40-1507-4b23-aa6d-b019379c971e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shapes\Cube">
+      <UniqueIdentifier>{eeeb2e23-ad91-4e91-ba01-fe67c81b733a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -62,6 +65,9 @@
     <ClCompile Include="Camera\cCamera.cpp">
       <Filter>Camera</Filter>
     </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>Shapes\Cube</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Hexagon.h">
@@ -84,6 +90,9 @@
     </ClInclude>
     <ClInclude Include="Camera\cCamera.h">
       <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>Shapes\Cube</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
