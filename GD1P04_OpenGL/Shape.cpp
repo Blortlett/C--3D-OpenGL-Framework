@@ -86,8 +86,8 @@ void Shape::render()
     // Get texture from the singleton instance
     cTextureLoader& textureLoader = cTextureLoader::GetInstance();
 
-    if (textureLoader.Texture_Lancer == 0) {
-        std::cout << "Lancer texture ID is invalid!" << std::endl;
+    if (textureLoader.Texture_Orc == 0) {
+        std::cout << "Shape::render() - Texture ID is invalid!" << std::endl;
     }
     
     // Activate and bind the textures

@@ -21,7 +21,7 @@ cCamera::cCamera(glm::vec2 _WindowSize)
     CameraLookDir = glm::vec3(0, 0, -1);
     CameraTargetPos = glm::vec3(0, 0, 0);
     CameraUp = glm::vec3(0, 1, 0);
-    LookAtTarget();
+    LookAtDirection();
 
     // Init Projection Matrix
     // Ortho matrix

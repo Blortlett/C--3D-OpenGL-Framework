@@ -47,13 +47,6 @@ void Renderer::renderAll()
         glUniform1f(currentTimeLoc, currentTime);
     }
 
-    // Send blend color to shader
-    GLint blendColorLoc = glGetUniformLocation(Quad_Program, "BlendColor");
-    if (blendColorLoc != -1)
-    {
-        glUniform3f(blendColorLoc, 0.0f, 1.0f, 1.0f); // Send this colour (Cyan)
-    }
-
     // Set up texture uniform
     GLint textureLoc = glGetUniformLocation(Quad_Program, "Texture0");
     if (textureLoc != -1)
@@ -69,11 +62,31 @@ void Renderer::renderAll()
         glUniform1i(textureLoc, 1); // Texture unit 1
     }
 
+    // Get uniform locations for tiling and flipping 
+    GLint textureTilingLoc = glGetUniformLocation(Quad_Program, "TextureTiling");
+    GLint flipHorizontalLoc = glGetUniformLocation(Quad_Program, "FlipHorizontal");
+
     // Render all shapes
-    for (auto& shape : shapes)
+    for (size_t i = 0; i < shapes.size(); ++i)
     {
+        Shape* shape = shapes[i];
         if (shape)
         {
+            // Set tiling and flipping uniforms based on shape
+            if (textureTilingLoc != -1)
+            {
+                if (i == 0) {
+                    glUniform2f(textureTilingLoc, 2.0f, 2.0f); // 2x2 tiling for QuadItem
+                } else {
+                    glUniform2f(textureTilingLoc, 1.0f, 1.0f); // No tiling for cube
+                }
+            }
+            
+            if (flipHorizontalLoc != -1)
+            {
+                glUniform1i(flipHorizontalLoc, (i == 0) ? GL_TRUE : GL_FALSE); // Flip only QuadItem
+            }
+
             // Update transforms
             shape->updateTransforms();
 
@@ -113,8 +126,6 @@ void Renderer::renderAll()
             glUniformMatrix4fv(viewMatLoc, 1, GL_FALSE, glm::value_ptr(viewMat));
             glUniformMatrix4fv(projMatLoc, 1, GL_FALSE, glm::value_ptr(projectionMat));
 
-
-
             // Render the shape
             shape->render();
         }
@@ -138,7 +149,7 @@ void Renderer::RenderAllAnimated()
     GLint sheetSizeLoc = glGetUniformLocation(Quad_Program, "SheetSize");
     if (sheetSizeLoc != -1)
     {
-        glUniform2f(sheetSizeLoc, 8.0f, 1.0f); // Spritesheet XY Dimensions
+        glUniform2f(sheetSizeLoc, 4.0f, 2.0f); // Spritesheet XY Dimensions
     }
 
     GLint animSpeedLoc = glGetUniformLocation(Quad_Program, "AnimSpeed");
@@ -187,9 +198,9 @@ void Renderer::RenderAllAnimated()
             if (projMatLoc != -1)
                 glUniformMatrix4fv(projMatLoc, 1, GL_FALSE, glm::value_ptr(projectionMat));
 
-            // Bind Lancer texture for animation
+            // Bind texture for animation
             glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, cTextureLoader::GetInstance().Texture_Lancer);
+            glBindTexture(GL_TEXTURE_2D, cTextureLoader::GetInstance().Texture_Orc);
 
             // Render the shape
             shape->bind();
