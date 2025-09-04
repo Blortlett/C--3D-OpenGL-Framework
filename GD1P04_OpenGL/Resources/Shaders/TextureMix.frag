@@ -22,7 +22,7 @@ void main()
     vec2 modifiedTexCoord = FragTexCoords * TextureTiling;
     
     // Apply horizontal flip if enabled
-    if (FlipHorizontal) {
+    if (FlipHorizontal && modifiedTexCoord.y > 1.0) {
         modifiedTexCoord.x = TextureTiling.x - modifiedTexCoord.x;
     }
     
