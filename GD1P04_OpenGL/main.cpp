@@ -1,3 +1,17 @@
+/************************************************
+ Bachelor of Software Engineering
+ Media Design School
+ Auckland
+ New Zealand
+ (c)
+ 2024 Media Design School
+ File Name : main
+ Description : Program start and main loop where updating/rendering takes place
+ Author : Matthew Bartlett
+ Mail : Matthew.Bartlett@mds.ac.nz
+ ************************************************/
+
+
 #include <glew.h>
 #include <glfw3.h>
 #include <iostream>
@@ -29,6 +43,9 @@ Cube* Cube1;
 GLuint Program_Shader;
 GLuint Program_Animated;
 
+// Camera
+cCamera Camera1(glm::vec2(800, 800));
+
 void InitialSetup()
 {
     // Set the color of the window for when the buffer is cleared
@@ -53,14 +70,14 @@ void InitialSetup()
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // Wireframe
 }
 
-void CreateShapes(cCamera _SceneCamera)
+void CreateShapes(cCamera& _SceneCamera)
 {
     // Create renderers for different shader programs
     renderer = new Renderer(Program_Shader, _SceneCamera);
     animatedRenderer = new Renderer(Program_Animated, _SceneCamera);
     
     // Static Item Quad (uses TextureMix shader)
-    glm::vec3 quadPosition = glm::vec3(-0.75f, 0.0f, 0.0f);
+    glm::vec3 quadPosition = glm::vec3(-0.7f, -1.0f, 0.0f);
     glm::vec3 quadScale = glm::vec3(1.0f, 1.0f, 1.0f);
     float quadRotation = 0.0f;
     QuadItem = new Quad(quadPosition, quadScale, quadRotation);
@@ -68,7 +85,7 @@ void CreateShapes(cCamera _SceneCamera)
     renderer->addShape(QuadItem);
     
     // Animated Quad (uses TextureAnimate shader)
-    quadPosition = glm::vec3(0.75f, 0.0f, 0.0f);
+    quadPosition = glm::vec3(1.0f, 1.0f, 0.0f);
     quadScale = glm::vec3(1.0f, 1.0f, 1.0f);
     quadRotation = 0.0f;
     QuadAnimated = new Quad(quadPosition, quadScale, quadRotation);
@@ -76,7 +93,7 @@ void CreateShapes(cCamera _SceneCamera)
     animatedRenderer->addShape(QuadAnimated);
 
     // Create Cube (uses TextureMix shader)
-    glm::vec3 cubePosition = glm::vec3(0.0f, 0.0f, -5.0f);
+    glm::vec3 cubePosition = glm::vec3(0.2f, 0.3f, -5.0f);
     glm::vec3 cubeScale = glm::vec3(1.0f, 1.0f, 1.0f);
     float cubeRotation = 0.f;
     Cube1 = new Cube(cubePosition, cubeScale, cubeRotation);
@@ -95,6 +112,9 @@ void Update()
 
     // Animate cube
     Cube1->setRotation(Cube1->getRotation() + 1.0f, glm::vec3(0,1,.3f));
+
+    // Oscilate camera
+    Camera1.OscilateUpdate(currentTime);
 }
 
 void Render()
@@ -162,7 +182,7 @@ int main()
     }
 
     // Create Scene Camera
-    cCamera Camera1(glm::vec2(800, 800));
+    //Camera1(glm::vec2(800, 800));
     
     // Create shapes
     CreateShapes(Camera1);

@@ -1,3 +1,17 @@
+/************************************************
+ Bachelor of Software Engineering
+ Media Design School
+ Auckland
+ New Zealand
+ (c)
+ 2024 Media Design School
+ File Name : Renderer
+ Description : This class contains functionality need to use a camera and shape classes to render a scene and display to the window
+ Author : Matthew Bartlett
+ Mail : Matthew.Bartlett@mds.ac.nz
+ ************************************************/
+
+
 #include "Renderer.h"
 #include "Camera/cCamera.h"
 #include "cTextureLoader.h"
@@ -92,9 +106,9 @@ void Renderer::renderAll()
 
             // -= Quad =-
             // Model Matrix
-            glm::mat4 modelMat = shape->getTranslationMatrix() * 
-                               shape->getRotationMatrix() * 
-                               shape->getScaleMatrix();
+            glm::mat4 modelMat =    shape->getTranslationMatrix() * 
+                                    shape->getRotationMatrix() * 
+                                    shape->getScaleMatrix();
             // -= Camera =-
             // View Matrix
             glm::mat4 viewMat = mCamera.GetViewMat();
@@ -102,9 +116,9 @@ void Renderer::renderAll()
             glm::mat4 projectionMat = mCamera.GetProjectionMat();
 
             // Send combined model matrix to shader
-            GLint QuadModelMatLoc = glGetUniformLocation(Quad_Program, "ModelMat");
-            GLint viewMatLoc = glGetUniformLocation(Quad_Program, "ViewMat");
-            GLint projMatLoc = glGetUniformLocation(Quad_Program, "ProjectionMat");
+            GLint QuadModelMatLoc = glGetUniformLocation(Quad_Program,  "ModelMat");
+            GLint viewMatLoc = glGetUniformLocation(Quad_Program,       "ViewMat");
+            GLint projMatLoc = glGetUniformLocation(Quad_Program,       "ProjectionMat");
 
             if (QuadModelMatLoc == -1)
             {
@@ -125,6 +139,11 @@ void Renderer::renderAll()
             glUniformMatrix4fv(QuadModelMatLoc, 1, GL_FALSE, glm::value_ptr(modelMat));
             glUniformMatrix4fv(viewMatLoc, 1, GL_FALSE, glm::value_ptr(viewMat));
             glUniformMatrix4fv(projMatLoc, 1, GL_FALSE, glm::value_ptr(projectionMat));
+
+            /*std::cout << "View Matrix:\n";
+            for (int i = 0; i < 4; ++i) {
+                std::cout << viewMat[i][0] << " " << viewMat[i][1] << " " << viewMat[i][2] << " " << viewMat[i][3] << "\n";
+            }*/
 
             // Render the shape
             shape->render();

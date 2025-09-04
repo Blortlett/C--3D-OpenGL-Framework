@@ -1,3 +1,17 @@
+/************************************************
+ Bachelor of Software Engineering
+ Media Design School
+ Auckland
+ New Zealand
+ (c)
+ 2024 Media Design School
+ File Name : ShaderLoader
+ Description : This class loads shaders to be used by main or the renderer class
+ Author : MDS
+ Mail : Matthew.Bartlett@mds.ac.nz
+ ************************************************/
+
+
 #pragma once
 
 // Library Includes

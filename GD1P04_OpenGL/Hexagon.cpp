@@ -1,3 +1,17 @@
+/************************************************
+ Bachelor of Software Engineering
+ Media Design School
+ Auckland
+ New Zealand
+ (c)
+ 2024 Media Design School
+ File Name : Hexagon
+ Description : Extends base class: Shape. Stores information and functionality required to render a hex
+ Author : Matthew Bartlett
+ Mail : Matthew.Bartlett@mds.ac.nz
+ ************************************************/
+
+
 #include "Hexagon.h"
 
 Hexagon::Hexagon(glm::vec3 pos, glm::vec3 scl, float rotAngle)

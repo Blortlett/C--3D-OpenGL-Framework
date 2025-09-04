@@ -1,3 +1,17 @@
+/************************************************
+ Bachelor of Software Engineering
+ Media Design School
+ Auckland
+ New Zealand
+ (c)
+ 2024 Media Design School
+ File Name : Renderer
+ Description : This class contains functionality need to use a camera and shape classes to render a scene and display to the window
+ Author : Matthew Bartlett
+ Mail : Matthew.Bartlett@mds.ac.nz
+ ************************************************/
+
+
 #pragma once
 #include <vector>
 #include <memory>
@@ -12,7 +26,6 @@ class Renderer
 private:
     std::vector<Shape*> shapes;
     GLuint& Quad_Program;
-    GLuint CameraShaderProgram;
     float currentTime;
 
     cCamera& mCamera;

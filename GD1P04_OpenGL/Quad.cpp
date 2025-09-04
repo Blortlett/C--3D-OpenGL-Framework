@@ -1,3 +1,17 @@
+/************************************************
+ Bachelor of Software Engineering
+ Media Design School
+ Auckland
+ New Zealand
+ (c)
+ 2024 Media Design School
+ File Name : Quad
+ Description : Extends base class: Shape. Stores information and functionality required to render a Quad
+ Author : Matthew Bartlett
+ Mail : Matthew.Bartlett@mds.ac.nz
+ ************************************************/
+
+
 #include "Quad.h"
 
 Quad::Quad(glm::vec3 pos, glm::vec3 scl, float rotAngle)
