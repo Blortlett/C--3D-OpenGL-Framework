@@ -101,6 +101,7 @@ cMeshModel::cMeshModel(std::string _FilePath, glm::vec3 _Position,
 	glBindVertexArray(0);
 
 	std::cout << "Loaded OBJ model: " << _FilePath << " (" << DrawCount << " vertices)" << std::endl;
+
 }
 
 cMeshModel::~cMeshModel()
@@ -118,13 +119,19 @@ void cMeshModel::UpdateTransforms()
 
 void cMeshModel::Update(float _DeltaTime)
 {
-	// Leave blank - override in derived classes if needed
 }
 
 void cMeshModel::Render()
 {
 	glBindVertexArray(VAO);
-	glDrawArrays(DrawType, 0, DrawCount);
+
+	if (DrawCount > 0) {
+		glDrawArrays(DrawType, 0, DrawCount);
+	}
+	else {
+		std::cout << "Warning: DrawCount is 0!" << std::endl;
+	}
+
 	glBindVertexArray(0);
 }
 

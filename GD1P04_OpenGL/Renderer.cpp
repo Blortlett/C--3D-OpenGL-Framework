@@ -64,6 +64,12 @@ void Renderer::RenderAllMeshModels()
         glUniform1i(textureLoc, 0); // Texture unit 0
     }
 
+    //// TEMPORARY: Override texture with a solid color for testing
+    //GLint useColorLoc = glGetUniformLocation(Render_Program, "UseDebugColor");
+    //if (useColorLoc != -1) {
+    //    glUniform1i(useColorLoc, 1); // Enable debug color mode
+    //}
+
     // Render all mesh models
     for (auto& model : meshModels)
     {

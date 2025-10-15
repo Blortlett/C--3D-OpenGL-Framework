@@ -34,7 +34,7 @@ GLFWwindow* Window;
 
 // Renderers for different shader programs
 Renderer* renderer;
-Renderer* animatedRenderer;
+//Renderer* animatedRenderer;
 
 // Shapes
 Quad* QuadItem;
@@ -78,10 +78,10 @@ void CreateShapes(cCamera& _SceneCamera)
 {
     // Create renderers for different shader programs
     renderer = new Renderer(Program_Shader, _SceneCamera);
-    animatedRenderer = new Renderer(Program_Animated, _SceneCamera);
+    //animatedRenderer = new Renderer(Program_Animated, _SceneCamera);
 
     // Create and add a mesh model from OBJ file
-    glm::vec3 modelPosition = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 modelPosition = glm::vec3(0.0f, 0.0f, -5.0f);
     glm::vec3 modelScale = glm::vec3(1.f, 1.f, 1.f);
     float modelRotation = 0.0f;
 
@@ -97,7 +97,7 @@ void Update()
     // Get the current time and update both renderers
     float currentTime = (float)glfwGetTime();
     renderer->updateTime(currentTime);
-    animatedRenderer->updateTime(currentTime);
+    //animatedRenderer->updateTime(currentTime);
 
     // Update camera
     Camera1.Update(currentTime);
@@ -152,7 +152,7 @@ int main()
     // -= SHADER PROGRAMS =-
     // Static texture mixing shader
     Program_Shader = ShaderLoader::CreateProgram("Resources/Shaders/ClipSpace.vert",
-                                              "Resources/Shaders/TextureMix.frag");
+                                              "Resources/Shaders/Texture.frag");
     
     // Animated spritesheet shader
     Program_Animated = ShaderLoader::CreateProgram("Resources/Shaders/ClipSpace.vert",
