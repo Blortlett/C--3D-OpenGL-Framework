@@ -81,6 +81,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(ProjectDir)/Dependencies/GLFW;$(ProjectDir)/Dependencies/GLEW;$(ProjectDir)/Dependencies/GLM;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)/Dependencies/GLFW;$(ProjectDir)/Dependencies/GLEW;$(LibraryPath)</LibraryPath>
+    <OutDir>$(ProjectDir)</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(ProjectDir)/Dependencies/GLFW;$(ProjectDir)/Dependencies/GLEW;$(ProjectDir)/Dependencies/GLM;$(IncludePath)</IncludePath>
@@ -151,7 +152,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Camera\cCamera.cpp" />
+    <ClCompile Include="cCamera.cpp" />
+    <ClCompile Include="cInputSystem.cpp" />
+    <ClCompile Include="cMeshModel.cpp" />
     <ClCompile Include="cTextureLoader.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Hexagon.cpp" />
@@ -162,7 +165,11 @@
     <ClCompile Include="Shape.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Camera\cCamera.h" />
+    <ClInclude Include="cCamera.h" />
+    <ClInclude Include="cInputSystem.h" />
+    <ClInclude Include="cMeshModel.h" />
+    <ClInclude Include="cOrbitalCamera.h" />
+    <ClInclude Include="cOscilatingCamera.h" />
     <ClInclude Include="cTextureLoader.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Hexagon.h" />
@@ -170,6 +177,8 @@
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ShaderLoader.h" />
     <ClInclude Include="Shape.h" />
+    <ClInclude Include="tiny_obj_loader.h" />
+    <ClInclude Include="VertexStandard.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\ClipSpace.vert" />

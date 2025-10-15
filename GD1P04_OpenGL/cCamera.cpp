@@ -15,7 +15,6 @@
 #include "cCamera.h"
 
 #include <ext/matrix_clip_space.hpp>
-#include <ext/matrix_transform.hpp>
 
 #include <iostream>
 
@@ -30,20 +29,6 @@ glm::mat4& cCamera::GetViewMat()
     return mViewMat;
 }
 
-void cCamera::OscilateUpdate(float _CurrentTime)
-{
-    // Oscillation parameters
-    const float amplitudeX = .3f;
-    const float frequency = 1.0f;
-
-    // Calculate oscillation offset using sin function
-    float offsetX = amplitudeX * sin(frequency * _CurrentTime);
-
-    // Set camera position
-    CameraPos.x = CameraTargetPos.x + offsetX;
-    LookAtDirection();
-}
-
 cCamera::cCamera(glm::vec2 _WindowSize)
 {
     // Init View Matrix - Default Camera View
@@ -54,7 +39,7 @@ cCamera::cCamera(glm::vec2 _WindowSize)
     LookAtDirection();
 
     // Init Projection Matrix
-    SetProjectionOrtho(_WindowSize);
+    SetProjectionPerspec(_WindowSize);
 }
 
 

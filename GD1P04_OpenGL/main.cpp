@@ -24,8 +24,9 @@
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
 
+#include "cInputSystem.h"
 #include "cTextureLoader.h"
-#include "Camera/cCamera.h"
+#include "cOrbitalCamera.h"
 
 // Window variable
 GLFWwindow* Window;
@@ -44,7 +45,7 @@ GLuint Program_Shader;
 GLuint Program_Animated;
 
 // Camera
-cCamera Camera1(glm::vec2(800, 800));
+cOrbitalCamera Camera1(glm::vec2(800, 800));
 
 void InitialSetup()
 {
@@ -114,7 +115,7 @@ void Update()
     Cube1->setRotation(Cube1->getRotation() + 1.0f, glm::vec3(0,1,.3f));
 
     // Oscilate camera
-    Camera1.OscilateUpdate(currentTime);
+    Camera1.Update(currentTime);
 }
 
 void Render()
@@ -142,6 +143,7 @@ int main()
 
     // create GLFW controlled window
     Window = glfwCreateWindow(800, 800, "BigGL - Camera Adventure!", NULL, NULL);
+    cInputSystem::GetInstance().SetWindow(Window);
 
     // Error Check
     if (Window == NULL)

@@ -13,7 +13,7 @@
 
 
 #include "Renderer.h"
-#include "Camera/cCamera.h"
+#include "cCamera.h"
 #include "cTextureLoader.h"
 
 #include <iostream>
