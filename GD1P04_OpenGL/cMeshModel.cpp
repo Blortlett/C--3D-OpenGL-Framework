@@ -4,8 +4,10 @@
 #include <iostream>
 #include "cMeshModel.h"
 #include "VertexStandard.h"
+#include <gtc/type_ptr.hpp>
 
-cMeshModel::cMeshModel(std::string _FilePath)
+cMeshModel::cMeshModel(std::string _FilePath, glm::vec3 _Position,
+	glm::vec3 _Scale, float _RotationAngle)
 {
 	// -= Parse File =-
 	std::vector<VertexStandard> Vertices;
@@ -84,6 +86,13 @@ cMeshModel::cMeshModel(std::string _FilePath)
 
 cMeshModel::~cMeshModel()
 {
+}
+
+void cMeshModel::UpdateTransforms()
+{
+	mTranslationMat = glm::translate(glm::mat4(1.0f), mPosition);
+	mRotationMat = glm::rotate(glm::mat4(1.0f), glm::radians(mRotationAngle), mRotationAxis);
+	mScaleMat = glm::scale(glm::mat4(1.0f), mScale);
 }
 
 void cMeshModel::Update(float _DeltaTime)

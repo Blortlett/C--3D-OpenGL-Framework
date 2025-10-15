@@ -18,6 +18,7 @@
 #include <memory>
 #include "ShaderLoader.h"
 #include "Renderer.h"
+#include "cMeshModel.h"
 #include "Quad.h"
 #include "Cube.h"
 #include <glm.hpp>
@@ -39,6 +40,8 @@ Renderer* animatedRenderer;
 Quad* QuadItem;
 Quad* QuadAnimated;
 Cube* Cube1;
+// Mesh Model
+cMeshModel* MyModel;
 
 // Shader programs
 GLuint Program_Shader;
@@ -100,6 +103,15 @@ void CreateShapes(cCamera& _SceneCamera)
     Cube1 = new Cube(cubePosition, cubeScale, cubeRotation);
     Cube1->initialize();
     renderer->addShape(Cube1);
+
+    // Create and add a mesh model from OBJ file
+    glm::vec3 modelPosition = glm::vec3(0.0f, 0.0f, -3.0f);
+    glm::vec3 modelScale = glm::vec3(10.0f, 10.0f, 10.0f);
+    float modelRotation = 0.0f;
+
+    MyModel = new cMeshModel("Resources/Models/SM_Item_Chalice_01.obj",
+        modelPosition, modelScale, modelRotation);
+    renderer->addMeshModel(MyModel);
 }
 
 void Update()
@@ -127,6 +139,9 @@ void Render()
     
     // Render animated objects (TextureAnimate shader)
     animatedRenderer->RenderAllAnimated();
+
+    // Render mesh models
+    renderer->RenderAllMeshModels();
 
     glfwSwapBuffers(Window);
 }

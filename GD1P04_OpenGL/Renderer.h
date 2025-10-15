@@ -18,6 +18,7 @@
 #include <glew.h>
 #include <gtc/type_ptr.hpp>
 #include "Shape.h"
+#include "cMeshModel.h"
 
 class cCamera;
 
@@ -25,13 +26,14 @@ class Renderer
 {
 private:
     std::vector<Shape*> shapes;
-    GLuint& Quad_Program;
+    std::vector<cMeshModel*> meshModels;
+    GLuint& Render_Program;
     float currentTime;
 
     cCamera& mCamera;
 
 public:
-    Renderer(GLuint& Quad_Program, cCamera& _Camera);
+    Renderer(GLuint& _Program, cCamera& _Camera);
     ~Renderer();
 
     // Shape management
@@ -39,8 +41,14 @@ public:
     void removeShape(Shape* shape);
     void clearShapes();
 
+    // Mesh models Management
+    void addMeshModel(cMeshModel* model);
+    void removeMeshModel(cMeshModel* model);
+    void clearMeshModels();
+
     // Rendering
     void updateTime(float time);
     void renderAll();
+    void RenderAllMeshModels();
     void RenderAllAnimated();
 };

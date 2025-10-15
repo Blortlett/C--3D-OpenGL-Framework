@@ -19,12 +19,90 @@
 #include <iostream>
 #include <ostream>
 
-Renderer::Renderer(GLuint& _Quad_Program, cCamera& _Camera) : Quad_Program(_Quad_Program), currentTime(0.0f), mCamera(_Camera)
+Renderer::Renderer(GLuint& _Program, cCamera& _Camera) : Render_Program(_Program), currentTime(0.0f), mCamera(_Camera)
 {};
 
 Renderer::~Renderer()
 {
     clearShapes();
+}
+
+void Renderer::addMeshModel(cMeshModel* model)
+{
+    if (model)
+    {
+        meshModels.push_back(model);
+    }
+}
+
+void Renderer::removeMeshModel(cMeshModel* model)
+{
+    meshModels.erase(std::remove(meshModels.begin(), meshModels.end(), model),
+        meshModels.end());
+}
+
+void Renderer::clearMeshModels()
+{
+    meshModels.clear();
+}
+
+void Renderer::RenderAllMeshModels()
+{
+    glUseProgram(Render_Program);
+
+    // Send current time to shader
+    GLint currentTimeLoc = glGetUniformLocation(Render_Program, "CurrentTime");
+    if (currentTimeLoc != -1)
+    {
+        glUniform1f(currentTimeLoc, currentTime);
+    }
+
+    // Set up texture uniform (assuming single texture for now)
+    GLint textureLoc = glGetUniformLocation(Render_Program, "Texture0");
+    if (textureLoc != -1)
+    {
+        glUniform1i(textureLoc, 0); // Texture unit 0
+    }
+
+    // Render all mesh models
+    for (auto& model : meshModels)
+    {
+        if (model)
+        {
+            // Update transforms
+            model->UpdateTransforms();
+
+            // Create model matrix
+            glm::mat4 modelMat = model->GetTranslationMatrix() *
+                model->GetRotationMatrix() *
+                model->GetScaleMatrix();
+
+            // Get camera matrices
+            glm::mat4 viewMat = mCamera.GetViewMat();
+            glm::mat4 projectionMat = mCamera.GetProjectionMat();
+
+            // Send matrices to shader
+            GLint modelMatLoc = glGetUniformLocation(Render_Program, "ModelMat");
+            GLint viewMatLoc = glGetUniformLocation(Render_Program, "ViewMat");
+            GLint projMatLoc = glGetUniformLocation(Render_Program, "ProjectionMat");
+
+            if (modelMatLoc != -1)
+                glUniformMatrix4fv(modelMatLoc, 1, GL_FALSE, glm::value_ptr(modelMat));
+            if (viewMatLoc != -1)
+                glUniformMatrix4fv(viewMatLoc, 1, GL_FALSE, glm::value_ptr(viewMat));
+            if (projMatLoc != -1)
+                glUniformMatrix4fv(projMatLoc, 1, GL_FALSE, glm::value_ptr(projectionMat));
+
+            // Bind texture (you can customize this per model if needed)
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, cTextureLoader::GetInstance().Texture_Food_Uncooked);
+
+            // Render the model
+            model->Render();
+        }
+    }
+
+    glUseProgram(0);
 }
 
 void Renderer::addShape(Shape* shape)
@@ -52,17 +130,17 @@ void Renderer::updateTime(float time)
 
 void Renderer::renderAll()
 {
-    glUseProgram(Quad_Program);
+    glUseProgram(Render_Program);
 
     // Send current time to shader
-    GLint currentTimeLoc = glGetUniformLocation(Quad_Program, "CurrentTime");
+    GLint currentTimeLoc = glGetUniformLocation(Render_Program, "CurrentTime");
     if (currentTimeLoc != -1)
     {
         glUniform1f(currentTimeLoc, currentTime);
     }
 
     // Set up texture uniform
-    GLint textureLoc = glGetUniformLocation(Quad_Program, "Texture0");
+    GLint textureLoc = glGetUniformLocation(Render_Program, "Texture0");
     if (textureLoc != -1)
     {
         glUniform1i(textureLoc, 0); // Texture unit 0
@@ -70,15 +148,15 @@ void Renderer::renderAll()
     else {
         std::cout << "No texture0 uniform location!" << std::endl;
     }
-    textureLoc = glGetUniformLocation(Quad_Program, "Texture1");
+    textureLoc = glGetUniformLocation(Render_Program, "Texture1");
     if (textureLoc != -1)
     {
         glUniform1i(textureLoc, 1); // Texture unit 1
     }
 
     // Get uniform locations for tiling and flipping 
-    GLint textureTilingLoc = glGetUniformLocation(Quad_Program, "TextureTiling");
-    GLint flipHorizontalLoc = glGetUniformLocation(Quad_Program, "FlipHorizontal");
+    GLint textureTilingLoc = glGetUniformLocation(Render_Program, "TextureTiling");
+    GLint flipHorizontalLoc = glGetUniformLocation(Render_Program, "FlipHorizontal");
 
     // Render all shapes
     for (size_t i = 0; i < shapes.size(); ++i)
@@ -116,9 +194,9 @@ void Renderer::renderAll()
             glm::mat4 projectionMat = mCamera.GetProjectionMat();
 
             // Send combined model matrix to shader
-            GLint QuadModelMatLoc = glGetUniformLocation(Quad_Program,  "ModelMat");
-            GLint viewMatLoc = glGetUniformLocation(Quad_Program,       "ViewMat");
-            GLint projMatLoc = glGetUniformLocation(Quad_Program,       "ProjectionMat");
+            GLint QuadModelMatLoc = glGetUniformLocation(Render_Program,  "ModelMat");
+            GLint viewMatLoc = glGetUniformLocation(Render_Program,       "ViewMat");
+            GLint projMatLoc = glGetUniformLocation(Render_Program,       "ProjectionMat");
 
             if (QuadModelMatLoc == -1)
             {
@@ -155,36 +233,36 @@ void Renderer::renderAll()
 
 void Renderer::RenderAllAnimated()
 {
-    glUseProgram(Quad_Program);
+    glUseProgram(Render_Program);
 
     // Send current time to shader
-    GLint currentTimeLoc = glGetUniformLocation(Quad_Program, "CurrentTime");
+    GLint currentTimeLoc = glGetUniformLocation(Render_Program, "CurrentTime");
     if (currentTimeLoc != -1)
     {
         glUniform1f(currentTimeLoc, currentTime);
     }
 
     // Send spritesheet parameters
-    GLint sheetSizeLoc = glGetUniformLocation(Quad_Program, "SheetSize");
+    GLint sheetSizeLoc = glGetUniformLocation(Render_Program, "SheetSize");
     if (sheetSizeLoc != -1)
     {
         glUniform2f(sheetSizeLoc, 4.0f, 2.0f); // Spritesheet XY Dimensions
     }
 
-    GLint animSpeedLoc = glGetUniformLocation(Quad_Program, "AnimSpeed");
+    GLint animSpeedLoc = glGetUniformLocation(Render_Program, "AnimSpeed");
     if (animSpeedLoc != -1)
     {
         glUniform1f(animSpeedLoc, 12.0f); // FPS
     }
 
-    GLint totalFramesLoc = glGetUniformLocation(Quad_Program, "TotalFrames");
+    GLint totalFramesLoc = glGetUniformLocation(Render_Program, "TotalFrames");
     if (totalFramesLoc != -1)
     {
         glUniform1i(totalFramesLoc, 8); // Total frames in 4x4 grid
     }
 
     // Set up animated texture uniform
-    GLint textureLoc = glGetUniformLocation(Quad_Program, "AnimatedTexture");
+    GLint textureLoc = glGetUniformLocation(Render_Program, "AnimatedTexture");
     if (textureLoc != -1)
     {
         glUniform1i(textureLoc, 0); // Texture unit 0
@@ -206,9 +284,9 @@ void Renderer::RenderAllAnimated()
             glm::mat4 projectionMat = mCamera.GetProjectionMat();
 
             // Send matrices to shader
-            GLint modelMatLoc = glGetUniformLocation(Quad_Program, "ModelMat");
-            GLint viewMatLoc = glGetUniformLocation(Quad_Program, "ViewMat");
-            GLint projMatLoc = glGetUniformLocation(Quad_Program, "ProjectionMat");
+            GLint modelMatLoc = glGetUniformLocation(Render_Program, "ModelMat");
+            GLint viewMatLoc = glGetUniformLocation(Render_Program, "ViewMat");
+            GLint projMatLoc = glGetUniformLocation(Render_Program, "ProjectionMat");
 
             if (modelMatLoc != -1)
                 glUniformMatrix4fv(modelMatLoc, 1, GL_FALSE, glm::value_ptr(modelMat));
