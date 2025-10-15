@@ -33,7 +33,7 @@ private:
     cTextureLoader& operator=(cTextureLoader&&) = delete;
 
 public:
-    GLuint Texture_Orc;
+    GLuint Texture_01_A;
     GLuint Texture_Food_Cooked;
     GLuint Texture_Food_Uncooked;
     

@@ -100,7 +100,7 @@ void Shape::render()
     // Get texture from the singleton instance
     cTextureLoader& textureLoader = cTextureLoader::GetInstance();
 
-    if (textureLoader.Texture_Orc == 0) {
+    if (textureLoader.Texture_01_A == 0) {
         std::cout << "Shape::render() - Texture ID is invalid!" << std::endl;
     }
     

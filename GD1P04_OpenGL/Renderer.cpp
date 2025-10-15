@@ -95,7 +95,7 @@ void Renderer::RenderAllMeshModels()
 
             // Bind texture (you can customize this per model if needed)
             glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, cTextureLoader::GetInstance().Texture_Food_Uncooked);
+            glBindTexture(GL_TEXTURE_2D, cTextureLoader::GetInstance().Texture_01_A);
 
             // Render the model
             model->Render();
@@ -297,7 +297,7 @@ void Renderer::RenderAllAnimated()
 
             // Bind texture for animation
             glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, cTextureLoader::GetInstance().Texture_Orc);
+            glBindTexture(GL_TEXTURE_2D, cTextureLoader::GetInstance().Texture_01_A);
 
             // Render the shape
             shape->bind();

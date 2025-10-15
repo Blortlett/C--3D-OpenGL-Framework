@@ -12,6 +12,8 @@ public:
 
 	virtual void Update(float _DeltaTime);
 	virtual void Render();
+	void bind();
+	void unbind();
 
 	// Transform methods
 	void SetPosition(glm::vec3 _Position);

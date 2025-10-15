@@ -19,7 +19,7 @@
 
 cTextureLoader::cTextureLoader()
 {
-    LoadTexture("Elite Orc-Walk.png");
+    LoadTexture("Texture_01_A.png");
     LoadTexture("Uncooked.png");
     LoadTexture("Cooked.png");
 }
@@ -51,8 +51,8 @@ void cTextureLoader::LoadTexture(const char* fileName)
     // Create and bind a new texture variable
     if (TimesRun == 0)
     {
-        glGenTextures(1, &Texture_Orc);
-        glBindTexture(GL_TEXTURE_2D, Texture_Orc);
+        glGenTextures(1, &Texture_01_A);
+        glBindTexture(GL_TEXTURE_2D, Texture_01_A);
     } 
     else if (TimesRun == 1)
     {

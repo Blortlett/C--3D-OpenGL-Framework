@@ -53,7 +53,7 @@ cOrbitalCamera Camera1(glm::vec2(800, 800));
 void InitialSetup()
 {
     // Set the color of the window for when the buffer is cleared
-    glClearColor(0.01f, 0.01f, 0.05f, 1.0f); // Black
+    glClearColor(0.49f, 0.5f, 0.51f, 1.0f); // MidGrey
     // Maps the range of the window size to NDC (-1 -> 1)
     glViewport(0, 0, 800, 800);
 
@@ -79,34 +79,10 @@ void CreateShapes(cCamera& _SceneCamera)
     // Create renderers for different shader programs
     renderer = new Renderer(Program_Shader, _SceneCamera);
     animatedRenderer = new Renderer(Program_Animated, _SceneCamera);
-    
-    // Static Item Quad (uses TextureMix shader)
-    glm::vec3 quadPosition = glm::vec3(-0.7f, -1.0f, 0.0f);
-    glm::vec3 quadScale = glm::vec3(1.0f, 1.0f, 1.0f);
-    float quadRotation = 0.0f;
-    QuadItem = new Quad(quadPosition, quadScale, quadRotation);
-    QuadItem->initialize();
-    renderer->addShape(QuadItem);
-    
-    // Animated Quad (uses TextureAnimate shader)
-    quadPosition = glm::vec3(1.0f, 1.0f, 0.0f);
-    quadScale = glm::vec3(1.0f, 1.0f, 1.0f);
-    quadRotation = 0.0f;
-    QuadAnimated = new Quad(quadPosition, quadScale, quadRotation);
-    QuadAnimated->initialize();
-    animatedRenderer->addShape(QuadAnimated);
-
-    // Create Cube (uses TextureMix shader)
-    glm::vec3 cubePosition = glm::vec3(0.2f, 0.3f, -5.0f);
-    glm::vec3 cubeScale = glm::vec3(1.0f, 1.0f, 1.0f);
-    float cubeRotation = 0.f;
-    Cube1 = new Cube(cubePosition, cubeScale, cubeRotation);
-    Cube1->initialize();
-    renderer->addShape(Cube1);
 
     // Create and add a mesh model from OBJ file
-    glm::vec3 modelPosition = glm::vec3(0.0f, 0.0f, -3.0f);
-    glm::vec3 modelScale = glm::vec3(10.0f, 10.0f, 10.0f);
+    glm::vec3 modelPosition = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 modelScale = glm::vec3(1.f, 1.f, 1.f);
     float modelRotation = 0.0f;
 
     MyModel = new cMeshModel("Resources/Models/SM_Item_Chalice_01.obj",
@@ -123,22 +99,13 @@ void Update()
     renderer->updateTime(currentTime);
     animatedRenderer->updateTime(currentTime);
 
-    // Animate cube
-    Cube1->setRotation(Cube1->getRotation() + 1.0f, glm::vec3(0,1,.3f));
-
-    // Oscilate camera
+    // Update camera
     Camera1.Update(currentTime);
 }
 
 void Render()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    // Render static objects (TextureMix shader)
-    renderer->renderAll();
-    
-    // Render animated objects (TextureAnimate shader)
-    animatedRenderer->RenderAllAnimated();
 
     // Render mesh models
     renderer->RenderAllMeshModels();
