@@ -15,6 +15,7 @@
 #include "Renderer.h"
 #include "cCamera.h"
 #include "cTextureLoader.h"
+#include "cSkybox.h"
 
 #include <iostream>
 #include <ostream>
@@ -237,112 +238,8 @@ void Renderer::renderAll()
 
 void Renderer::RenderSkybox()
 {
-    // Get skybox texture
-    GLuint TextureID_Skybox = cTextureLoader::GetInstance().Cubemap_Texture;
-
-    glUseProgram(Skybox_Program);
-
-    // Bind the Skybox Texture as a cube map
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, TextureID_Skybox);
-    glUniform1i(glGetUniformLocation(Skybox_Program, "Texture_Skybox"), 0);
-
-    // Setup the camera matrices
-    glm::mat4 CamMatView = glm::mat4(glm::mat3(mCamera.GetViewMat()));
-    glm::mat4 CamMatProj = mCamera.GetProjectionMat();
-    glUniformMatrix4fv(glGetUniformLocation(Skybox_Program, "VP"), 1, GL_FALSE, glm::value_ptr(CamMatProj * CamMatView));
-
-    // Render the skybox mesh
-    glBindVertexArray(VAO);
-    glDrawElements(DrawType, DrawCount, GL_UNSIGNED_INT, 0);
-
-    // Unbind all objects
-    glBindVertexArray(0);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-    glUseProgram(0);
-}
-
-void Renderer::RenderAllAnimated()
-{
-    glUseProgram(Render_Program);
-
-    // Send current time to shader
-    GLint currentTimeLoc = glGetUniformLocation(Render_Program, "CurrentTime");
-    if (currentTimeLoc != -1)
+    if (mSkybox)
     {
-        glUniform1f(currentTimeLoc, currentTime);
+        mSkybox->Render(Skybox_Program);
     }
-
-    // Send spritesheet parameters
-    GLint sheetSizeLoc = glGetUniformLocation(Render_Program, "SheetSize");
-    if (sheetSizeLoc != -1)
-    {
-        glUniform2f(sheetSizeLoc, 4.0f, 2.0f); // Spritesheet XY Dimensions
-    }
-
-    GLint animSpeedLoc = glGetUniformLocation(Render_Program, "AnimSpeed");
-    if (animSpeedLoc != -1)
-    {
-        glUniform1f(animSpeedLoc, 12.0f); // FPS
-    }
-
-    GLint totalFramesLoc = glGetUniformLocation(Render_Program, "TotalFrames");
-    if (totalFramesLoc != -1)
-    {
-        glUniform1i(totalFramesLoc, 8); // Total frames in 4x4 grid
-    }
-
-    // Set up animated texture uniform
-    GLint textureLoc = glGetUniformLocation(Render_Program, "AnimatedTexture");
-    if (textureLoc != -1)
-    {
-        glUniform1i(textureLoc, 0); // Texture unit 0
-    }
-
-    // Render all shapes with animation
-    for (auto& shape : shapes)
-    {
-        if (shape)
-        {
-            // Update transforms
-            shape->updateTransforms();
-
-            // Set up matrices
-            glm::mat4 modelMat = shape->getTranslationMatrix() * 
-                               shape->getRotationMatrix() * 
-                               shape->getScaleMatrix();
-            glm::mat4 viewMat = mCamera.GetViewMat();
-            glm::mat4 projectionMat = mCamera.GetProjectionMat();
-
-            // Send matrices to shader
-            GLint modelMatLoc = glGetUniformLocation(Render_Program, "ModelMat");
-            GLint viewMatLoc = glGetUniformLocation(Render_Program, "ViewMat");
-            GLint projMatLoc = glGetUniformLocation(Render_Program, "ProjectionMat");
-
-            if (modelMatLoc != -1)
-                glUniformMatrix4fv(modelMatLoc, 1, GL_FALSE, glm::value_ptr(modelMat));
-            if (viewMatLoc != -1)
-                glUniformMatrix4fv(viewMatLoc, 1, GL_FALSE, glm::value_ptr(viewMat));
-            if (projMatLoc != -1)
-                glUniformMatrix4fv(projMatLoc, 1, GL_FALSE, glm::value_ptr(projectionMat));
-
-            // Bind texture for animation
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, cTextureLoader::GetInstance().Texture_01_A);
-
-            // Render the shape
-            shape->bind();
-            if (!shape->getIndices().empty())
-            {
-                glDrawElements(GL_TRIANGLES, (GLsizei)shape->getIndices().size(), GL_UNSIGNED_INT, 0);
-            }
-            else if (!shape->getVertices().empty())
-            {
-                glDrawArrays(GL_TRIANGLES, 0, (GLsizei)(shape->getVertices().size() / 8));
-            }
-            shape->unbind();
-        }
-    }
-
-    glUseProgram(0);
 }

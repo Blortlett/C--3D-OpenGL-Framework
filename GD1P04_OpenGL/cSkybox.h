@@ -1,17 +1,26 @@
 #pragma once
-#include "Cube.h"
+#include "cSkyCube.h"
 #include <string>
 #include "cCamera.h"
+#include <glew.h>
+#include <gtc/type_ptr.hpp>
+#include <iostream>
 
 class cSkybox
 {
 private:
-	Cube mSkyCube;
+	cSkyCube mSkyCube;
 	cCamera* mCamera;
-	glm::vec3 mPosition;
+	GLuint mCubemapTexture;
+
+	int mIndiciesCount;
+	int mVerticiesCount;
 
 public:
-	cSkybox(cCamera* _Camera, std::string _Filepaths[6]);
+	cSkybox(cCamera* _Camera, GLuint _CubemapTexture);
 
 	void Render(GLuint _Skybox_Program);
+
+	// Accessors if needed
+	cSkyCube& GetSkyCube() { return mSkyCube; }
 };

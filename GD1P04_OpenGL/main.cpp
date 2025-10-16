@@ -12,6 +12,20 @@
  ************************************************/
 
 
+/************************************************
+ Bachelor of Software Engineering
+ Media Design School
+ Auckland
+ New Zealand
+ (c)
+ 2024 Media Design School
+ File Name : main
+ Description : Program start and main loop where updating/rendering takes place
+ Author : Matthew Bartlett
+ Mail : Matthew.Bartlett@mds.ac.nz
+ ************************************************/
+
+
 #include <glew.h>
 #include <glfw3.h>
 #include <iostream>
@@ -21,6 +35,7 @@
 #include "cMeshModel.h"
 #include "Quad.h"
 #include "Cube.h"
+#include "cSkybox.h"
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
@@ -76,12 +91,8 @@ void InitialSetup()
 
 void CreateShapes(cCamera& _SceneCamera)
 {
-    cTextureLoader::GetInstance().LoadCubemap("Skybox");
-
-
     // Create renderers for different shader programs
     renderer = new Renderer(Program_Shader, Program_Skybox, _SceneCamera);
-    //animatedRenderer = new Renderer(Program_Animated, _SceneCamera);
 
     // Create and add a mesh model from OBJ file
     glm::vec3 modelPosition = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -91,6 +102,22 @@ void CreateShapes(cCamera& _SceneCamera)
     MyModel = new cMeshModel("Resources/Models/SM_Item_Chalice_01.obj",
         modelPosition, modelScale, modelRotation);
     renderer->addMeshModel(MyModel);
+
+    // DEBUG: Check if cubemap texture is loaded
+    GLuint cubemapID = cTextureLoader::GetInstance().Cubemap_Texture;
+    std::cout << "Cubemap Texture ID from loader: " << cubemapID << std::endl;
+
+    if (cubemapID == 0)
+    {
+        std::cout << "ERROR: Cubemap texture not loaded! Make sure cTextureLoader loads the cubemap." << std::endl;
+    }
+
+    // Create and add skybox
+    cSkybox* skybox = new cSkybox(&Camera1, cubemapID);
+    renderer->setSkybox(skybox);
+
+    // Additional debug
+    std::cout << "Skybox set in renderer" << std::endl;
 }
 
 void Update()
@@ -110,8 +137,11 @@ void Render()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // Render mesh models
+    // Render mesh models FIRST
     renderer->RenderAllMeshModels();
+
+    // Render skybox LAST
+    renderer->RenderSkybox();
 
     glfwSwapBuffers(Window);
 }
@@ -156,8 +186,8 @@ int main()
     // Static texture mixing shader
     Program_Shader = ShaderLoader::CreateProgram(   "Resources/Shaders/ClipSpace.vert",
                                                     "Resources/Shaders/Texture.frag");
-    Program_Skybox = ShaderLoader::CreateProgram(   "Resources/Shaders/",
-                                                    "Resources/Shaders/"); // TODO: Add the shader .vert n .frag
+    Program_Skybox = ShaderLoader::CreateProgram(   "Resources/Shaders/Skybox.vert",
+                                                    "Resources/Shaders/Skybox.frag");
     
     
     if (Program_Shader == 0 || Program_Skybox == 0)

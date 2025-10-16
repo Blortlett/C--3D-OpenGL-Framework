@@ -52,11 +52,6 @@ public:
     glm::vec3 getScale() const { return scale; }
     float getRotation() const { return rotationAngle; }
 
-    // Matrix getters
-    glm::mat4 getTranslationMatrix() const { return translationMat; }
-    glm::mat4 getRotationMatrix() const { return rotationMat; }
-    glm::mat4 getScaleMatrix() const { return scaleMat; }
-
     // Update transform matrices
     virtual void updateTransforms();
 
@@ -70,4 +65,30 @@ public:
     virtual void regenerate(); // Regenerate vertices and buffers
     const std::vector<GLfloat>& getVertices() const { return vertices; }
     const std::vector<GLuint>& getIndices() const { return indices; }
+
+    // Matrix getters
+    glm::mat4 getTranslationMatrix() const { return translationMat; }
+    glm::mat4 getRotationMatrix() const { return rotationMat; }
+    glm::mat4 getScaleMatrix() const { return scaleMat; }
+
+    // Getter for VAO, VBO, EBO
+    GLuint GetVAO() const {
+        return VAO;
+    }
+    GLuint GetVBO() const {
+        return VBO;
+    }
+    GLuint GetEBO() const {
+        return EBO;
+    }
+
+    // Getter for DrawType/Vertices
+    const std::vector<GLfloat>& GetVertices() const {
+        return vertices;
+    }
+
+    // Getter for DrawCount/Indices
+    const std::vector<GLuint>& GetIndices() const {
+        return indices;
+    }
 };

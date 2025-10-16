@@ -104,9 +104,6 @@
     <ClCompile Include="cSkybox.cpp">
       <Filter>Mesh\Skybox</Filter>
     </ClCompile>
-    <ClCompile Include="cSkyCube.cpp">
-      <Filter>Shapes\SkyCube</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Hexagon.h">
@@ -181,6 +178,12 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="Resources\Shaders\TextureMix.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\Skybox.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\Skybox.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

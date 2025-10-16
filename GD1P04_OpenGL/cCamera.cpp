@@ -58,11 +58,6 @@ void cCamera::LookAtDirection()
 {
     // Calculate view matrix
     mViewMat = glm::lookAt(CameraPos, CameraPos + CameraLookDir, CameraUp);
-
-    /*std::cout << "View Matrix:\n";
-    for (int i = 0; i < 4; ++i) {
-        std::cout << mViewMat[i][0] << " " << mViewMat[i][1] << " " << mViewMat[i][2] << " " << mViewMat[i][3] << "\n";
-    }*/
 }
 
 void cCamera::LookAtTarget()

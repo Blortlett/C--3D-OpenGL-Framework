@@ -24,8 +24,5 @@ public:
         CameraPos.y = mOrbitHeight;
         CameraPos.z = cos(mOrbitAngle) * mOrbitRadius;
         LookAtTarget();
-
-        std::cout << "CameraPos: (" << CameraPos.x << ", " << CameraPos.y << ", " << CameraPos.z << ")\n";
-        std::cout << "TargetPos: (" << CameraTargetPos.x << ", " << CameraTargetPos.y << ", " << CameraTargetPos.z << ")\n";
     }
 };

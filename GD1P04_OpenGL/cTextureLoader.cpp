@@ -22,6 +22,8 @@ cTextureLoader::cTextureLoader()
     LoadTexture("Texture_01_A.png");
     LoadTexture("Uncooked.png");
     LoadTexture("Cooked.png");
+
+    LoadCubemap("Cubemap");
 }
 
 void cTextureLoader::LoadCubemap(const char* _folderName)

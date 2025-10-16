@@ -20,6 +20,7 @@
 #include "Shape.h"
 #include "cMeshModel.h"
 
+class cSkybox;
 class cCamera;
 
 class Renderer
@@ -32,6 +33,8 @@ private:
     float currentTime;
 
     cCamera& mCamera;
+
+    cSkybox* mSkybox;
 
 public:
     Renderer(GLuint& _Program,GLuint& _Skybox_Program, cCamera& _Camera);
@@ -53,4 +56,10 @@ public:
     void RenderSkybox();
     void RenderAllMeshModels();
     void RenderAllAnimated();
+
+    // Skybox
+    void setSkybox(cSkybox* skybox)
+    {
+        mSkybox = skybox;
+    }
 };
