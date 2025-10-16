@@ -34,9 +34,9 @@ cCamera::cCamera(glm::vec2 _WindowSize)
     // Init View Matrix - Default Camera View
     CameraPos = glm::vec3(0, 0, 3);
     CameraLookDir = glm::vec3(0, 0, -1);
-    CameraTargetPos = glm::vec3(0, 0, 3);
+    CameraTargetPos = glm::vec3(0, 0, 0);
     CameraUp = glm::vec3(0, 1, 0);
-    LookAtDirection();
+    LookAtTarget();
 
     // Init Projection Matrix
     SetProjectionPerspec(_WindowSize);

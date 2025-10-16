@@ -155,6 +155,7 @@
     <ClCompile Include="cCamera.cpp" />
     <ClCompile Include="cInputSystem.cpp" />
     <ClCompile Include="cMeshModel.cpp" />
+    <ClCompile Include="cSkybox.cpp" />
     <ClCompile Include="cTextureLoader.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Hexagon.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="cMeshModel.h" />
     <ClInclude Include="cOrbitalCamera.h" />
     <ClInclude Include="cOscilatingCamera.h" />
+    <ClInclude Include="cSkybox.h" />
     <ClInclude Include="cTextureLoader.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Hexagon.h" />

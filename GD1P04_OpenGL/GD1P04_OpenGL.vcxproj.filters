@@ -57,6 +57,12 @@
     <Filter Include="Mesh">
       <UniqueIdentifier>{0fff9c56-24ae-4d0a-922d-9fdc93e0431e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Mesh\Skybox">
+      <UniqueIdentifier>{09f57407-aee0-41cf-8610-b18004d262d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mesh\MeshModel">
+      <UniqueIdentifier>{7ac2cf90-b6a6-47f3-8622-52ab046b7284}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -90,7 +96,10 @@
       <Filter>Components\Camera\BaseClass</Filter>
     </ClCompile>
     <ClCompile Include="cMeshModel.cpp">
-      <Filter>Mesh</Filter>
+      <Filter>Mesh\MeshModel</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkybox.cpp">
+      <Filter>Mesh\Skybox</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -130,11 +139,14 @@
     <ClInclude Include="VertexStandard.h">
       <Filter>Structures</Filter>
     </ClInclude>
-    <ClInclude Include="cMeshModel.h">
-      <Filter>Mesh</Filter>
-    </ClInclude>
     <ClInclude Include="tiny_obj_loader.h">
       <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="cMeshModel.h">
+      <Filter>Mesh\MeshModel</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkybox.h">
+      <Filter>Mesh\Skybox</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
