@@ -24,6 +24,67 @@ cTextureLoader::cTextureLoader()
     LoadTexture("Cooked.png");
 }
 
+void cTextureLoader::LoadCubemap(const char* _folderName)
+{
+    // Array of cubemap face filenames in OpenGL order: +X, -X, +Y, -Y, +Z, -Z
+    const char* faceNames[] = {
+        "_px.png", "_nx.png",
+        "_py.png", "_ny.png",
+        "_pz.png", "_nz.png"
+    };
+
+    // Generate full folder path
+    std::string folderPath = mResourcePath + _folderName + "/";
+
+    // Generate and bind cubemap texture
+    glGenTextures(1, &Cubemap_Texture);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, Cubemap_Texture);
+
+    // Load each face
+    int ImageWidth, ImageHeight, ImageComponents;
+    for (int i = 0; i < 6; i++)
+    {
+        std::string fullPath = folderPath + faceNames[i];
+
+        // Load texture data
+        unsigned char* ImageData = stbi_load(
+            fullPath.c_str(),
+            &ImageWidth, &ImageHeight, &ImageComponents, 0
+        );
+
+        if (!ImageData)
+        {
+            std::cout << "Failed to load cubemap texture: " << fullPath << std::endl;
+            glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+            return;
+        }
+
+        // Cubemap should be full color (RGB)
+        GLint LoadedComponents = (ImageComponents == 4) ? GL_RGBA : GL_RGB;
+
+        // Load texture data into cubemap face
+        glTexImage2D(
+            GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, // Face target
+            0, LoadedComponents, ImageWidth, ImageHeight, 0,
+            LoadedComponents, GL_UNSIGNED_BYTE, ImageData
+        );
+
+        // Free image data
+        stbi_image_free(ImageData);
+    }
+
+    // Set texture parameters for cubemap
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+    // Generate mipmaps and unbind
+    glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+}
+
 void cTextureLoader::LoadTexture(const char* fileName)
 {
     // Texture properties (Assigned by stbi_load())

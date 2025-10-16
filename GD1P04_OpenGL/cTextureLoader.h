@@ -36,6 +36,7 @@ public:
     GLuint Texture_01_A;
     GLuint Texture_Food_Cooked;
     GLuint Texture_Food_Uncooked;
+    GLuint Cubemap_Texture;
     
     // Singleton access point
     static cTextureLoader& GetInstance()
@@ -44,5 +45,6 @@ public:
         return instance;
     }
 
+    void LoadCubemap(const char* _folderName);
     void LoadTexture(const char* fileName);
 };

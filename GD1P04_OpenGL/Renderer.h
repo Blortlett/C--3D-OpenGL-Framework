@@ -28,12 +28,13 @@ private:
     std::vector<Shape*> shapes;
     std::vector<cMeshModel*> meshModels;
     GLuint& Render_Program;
+    GLuint& Skybox_Program;
     float currentTime;
 
     cCamera& mCamera;
 
 public:
-    Renderer(GLuint& _Program, cCamera& _Camera);
+    Renderer(GLuint& _Program,GLuint& _Skybox_Program, cCamera& _Camera);
     ~Renderer();
 
     // Shape management
@@ -49,6 +50,7 @@ public:
     // Rendering
     void updateTime(float time);
     void renderAll();
+    void RenderSkybox();
     void RenderAllMeshModels();
     void RenderAllAnimated();
 };

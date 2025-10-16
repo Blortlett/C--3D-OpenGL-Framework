@@ -19,7 +19,11 @@
 #include <iostream>
 #include <ostream>
 
-Renderer::Renderer(GLuint& _Program, cCamera& _Camera) : Render_Program(_Program), currentTime(0.0f), mCamera(_Camera)
+Renderer::Renderer(GLuint& _Program, GLuint& _Skybox_Program, cCamera& _Camera) 
+    : Render_Program(_Program)
+    , Skybox_Program(_Skybox_Program)
+    , currentTime(0.0f)
+    , mCamera(_Camera)
 {};
 
 Renderer::~Renderer()
@@ -63,12 +67,6 @@ void Renderer::RenderAllMeshModels()
     {
         glUniform1i(textureLoc, 0); // Texture unit 0
     }
-
-    //// TEMPORARY: Override texture with a solid color for testing
-    //GLint useColorLoc = glGetUniformLocation(Render_Program, "UseDebugColor");
-    //if (useColorLoc != -1) {
-    //    glUniform1i(useColorLoc, 1); // Enable debug color mode
-    //}
 
     // Render all mesh models
     for (auto& model : meshModels)
@@ -234,6 +232,33 @@ void Renderer::renderAll()
         }
     }
 
+    glUseProgram(0);
+}
+
+void Renderer::RenderSkybox()
+{
+    // Get skybox texture
+    GLuint TextureID_Skybox = cTextureLoader::GetInstance().Cubemap_Texture;
+
+    glUseProgram(Skybox_Program);
+
+    // Bind the Skybox Texture as a cube map
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, TextureID_Skybox);
+    glUniform1i(glGetUniformLocation(Skybox_Program, "Texture_Skybox"), 0);
+
+    // Setup the camera matrices
+    glm::mat4 CamMatView = glm::mat4(glm::mat3(mCamera.GetViewMat()));
+    glm::mat4 CamMatProj = mCamera.GetProjectionMat();
+    glUniformMatrix4fv(glGetUniformLocation(Skybox_Program, "VP"), 1, GL_FALSE, glm::value_ptr(CamMatProj * CamMatView));
+
+    // Render the skybox mesh
+    glBindVertexArray(VAO);
+    glDrawElements(DrawType, DrawCount, GL_UNSIGNED_INT, 0);
+
+    // Unbind all objects
+    glBindVertexArray(0);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
     glUseProgram(0);
 }
 

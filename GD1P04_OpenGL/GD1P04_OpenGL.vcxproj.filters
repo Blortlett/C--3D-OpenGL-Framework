@@ -63,6 +63,9 @@
     <Filter Include="Mesh\MeshModel">
       <UniqueIdentifier>{7ac2cf90-b6a6-47f3-8622-52ab046b7284}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shapes\SkyCube">
+      <UniqueIdentifier>{6373a423-4f2e-4d60-a888-185e696c106a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -100,6 +103,9 @@
     </ClCompile>
     <ClCompile Include="cSkybox.cpp">
       <Filter>Mesh\Skybox</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkyCube.cpp">
+      <Filter>Shapes\SkyCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -147,6 +153,9 @@
     </ClInclude>
     <ClInclude Include="cSkybox.h">
       <Filter>Mesh\Skybox</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkyCube.h">
+      <Filter>Shapes\SkyCube</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

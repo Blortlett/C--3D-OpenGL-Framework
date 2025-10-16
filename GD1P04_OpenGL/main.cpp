@@ -45,7 +45,7 @@ cMeshModel* MyModel;
 
 // Shader programs
 GLuint Program_Shader;
-GLuint Program_Animated;
+GLuint Program_Skybox;
 
 // Camera
 cOrbitalCamera Camera1(glm::vec2(800, 800));
@@ -76,8 +76,11 @@ void InitialSetup()
 
 void CreateShapes(cCamera& _SceneCamera)
 {
+    cTextureLoader::GetInstance().LoadCubemap("Skybox");
+
+
     // Create renderers for different shader programs
-    renderer = new Renderer(Program_Shader, _SceneCamera);
+    renderer = new Renderer(Program_Shader, Program_Skybox, _SceneCamera);
     //animatedRenderer = new Renderer(Program_Animated, _SceneCamera);
 
     // Create and add a mesh model from OBJ file
@@ -151,22 +154,18 @@ int main()
 
     // -= SHADER PROGRAMS =-
     // Static texture mixing shader
-    Program_Shader = ShaderLoader::CreateProgram("Resources/Shaders/ClipSpace.vert",
-                                              "Resources/Shaders/Texture.frag");
+    Program_Shader = ShaderLoader::CreateProgram(   "Resources/Shaders/ClipSpace.vert",
+                                                    "Resources/Shaders/Texture.frag");
+    Program_Skybox = ShaderLoader::CreateProgram(   "Resources/Shaders/",
+                                                    "Resources/Shaders/"); // TODO: Add the shader .vert n .frag
     
-    // Animated spritesheet shader
-    Program_Animated = ShaderLoader::CreateProgram("Resources/Shaders/ClipSpace.vert",
-                                                 "Resources/Shaders/TextureAnimate.frag");
     
-    if (Program_Shader == 0 || Program_Animated == 0)
+    if (Program_Shader == 0 || Program_Skybox == 0)
     {
         std::cout << "Failed to create shader programs. Terminating." << std::endl;
         glfwTerminate();
         return -1;
     }
-
-    // Create Scene Camera
-    //Camera1(glm::vec2(800, 800));
     
     // Create shapes
     CreateShapes(Camera1);
