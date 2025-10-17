@@ -1,3 +1,17 @@
+/************************************************
+ Bachelor of Software Engineering
+ Media Design School
+ Auckland
+ New Zealand
+ (c)
+ 2024 Media Design School
+ File Name : ShaderLoader
+ Description : This class loads shaders to be used by main or the renderer class
+ Author : MDS
+ Mail : Matthew.Bartlett@mds.ac.nz
+ ************************************************/
+
+
 #include "ShaderLoader.h" 
 #include<iostream>
 #include<fstream>
@@ -23,7 +37,7 @@ GLuint ShaderLoader::CreateProgram(const char* vertexShaderFilename, const char*
 	glGetProgramiv(program, GL_LINK_STATUS, &link_result);
 	if (link_result == GL_FALSE)
 	{
-		std::string programName = vertexShaderFilename + *fragmentShaderFilename;
+		std::string programName = std::string(vertexShaderFilename) + fragmentShaderFilename;
 		PrintErrorDetails(false, program, programName.c_str());
 		return 0;
 	}

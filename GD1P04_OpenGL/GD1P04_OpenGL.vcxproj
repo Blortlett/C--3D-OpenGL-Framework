@@ -71,19 +71,20 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)/Dependencies/GLFW;$(ProjectDir)/Dependencies/GLEW;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)/Dependencies/GLFW;$(ProjectDir)/Dependencies/GLEW;$(ProjectDir)/Dependencies/GLM;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)/Dependencies/GLFW;$(ProjectDir)/Dependencies/GLEW;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(ProjectDir)/Dependencies/GLFW;$(ProjectDir)/Dependencies/GLEW;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)/Dependencies/GLFW;$(ProjectDir)/Dependencies/GLEW;$(ProjectDir)/Dependencies/GLM;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)/Dependencies/GLFW;$(ProjectDir)/Dependencies/GLEW;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)/Dependencies/GLFW;$(ProjectDir)/Dependencies/GLEW;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)/Dependencies/GLFW;$(ProjectDir)/Dependencies/GLEW;$(ProjectDir)/Dependencies/GLM;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)/Dependencies/GLFW;$(ProjectDir)/Dependencies/GLEW;$(LibraryPath)</LibraryPath>
+    <OutDir>$(ProjectDir)</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)/Dependencies/GLFW;$(ProjectDir)/Dependencies/GLEW;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)/Dependencies/GLFW;$(ProjectDir)/Dependencies/GLEW;$(ProjectDir)/Dependencies/GLM;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)/Dependencies/GLFW;$(ProjectDir)/Dependencies/GLEW;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -92,6 +93,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\STB;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -107,6 +109,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\STB;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -122,6 +125,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\STB;Dependencies\TINY%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -137,6 +141,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\STB;Dependencies\TINY%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -147,17 +152,59 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cCamera.cpp" />
+    <ClCompile Include="cInputSystem.cpp" />
+    <ClCompile Include="cMeshModel.cpp" />
+    <ClCompile Include="cReflectiveMeshModel.cpp" />
+    <ClCompile Include="cSkybox.cpp" />
+    <ClCompile Include="cTextureLoader.cpp" />
+    <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="cUIQuad.cpp" />
+    <ClCompile Include="Hexagon.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Quad.cpp" />
+    <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ShaderLoader.cpp" />
+    <ClCompile Include="Shape.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cCamera.h" />
+    <ClInclude Include="cInputSystem.h" />
+    <ClInclude Include="cMeshModel.h" />
+    <ClInclude Include="cObjectMover.h" />
+    <ClInclude Include="cOrbitalCamera.h" />
+    <ClInclude Include="cOscilatingCamera.h" />
+    <ClInclude Include="cReflectiveMeshModel.h" />
+    <ClInclude Include="cSkybox.h" />
+    <ClInclude Include="cSkyCube.h" />
+    <ClInclude Include="cTextureLoader.h" />
+    <ClInclude Include="Cube.h" />
+    <ClInclude Include="cUIQuad.h" />
+    <ClInclude Include="Hexagon.h" />
+    <ClInclude Include="Quad.h" />
+    <ClInclude Include="Renderer.h" />
     <ClInclude Include="ShaderLoader.h" />
+    <ClInclude Include="Shape.h" />
+    <ClInclude Include="tiny_obj_loader.h" />
+    <ClInclude Include="VertexStandard.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Shaders\ClipSpace.vert" />
     <None Include="Resources\Shaders\FixedColor.frag" />
     <None Include="Resources\Shaders\FixedTriangle.vert" />
     <None Include="Resources\Shaders\PositionOnly.vert" />
+    <None Include="Resources\Shaders\Reflection.frag" />
+    <None Include="Resources\Shaders\Reflection.vert" />
+    <None Include="Resources\Shaders\Skybox.frag" />
+    <None Include="Resources\Shaders\Skybox.vert" />
+    <None Include="Resources\Shaders\Texture.frag" />
+    <None Include="Resources\Shaders\TextureMix.frag" />
     <None Include="Resources\Shaders\VertexColorFade.frag" />
+    <None Include="Resources\Shaders\WorldSpace.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Shaders\ClipSpace.vert" />
+    <Content Include="Resources\Shaders\TextureAnimate.frag" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

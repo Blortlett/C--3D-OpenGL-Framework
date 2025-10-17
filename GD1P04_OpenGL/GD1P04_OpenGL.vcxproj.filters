@@ -5,10 +5,6 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
@@ -16,18 +12,171 @@
     <Filter Include="Resource Files\Shaders">
       <UniqueIdentifier>{a29cc21e-56ae-47dd-ba51-e709910041b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shapes">
+      <UniqueIdentifier>{71375e23-6a29-4b55-a857-81d4eb1485e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shapes\Quad">
+      <UniqueIdentifier>{0920596d-a90a-4d0c-a406-d58ce9b1f5a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shapes\Hexagon">
+      <UniqueIdentifier>{42f9d4d8-b6cf-4783-9a05-747ee99f15db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System">
+      <UniqueIdentifier>{4952ade9-469d-4539-b844-e1b2682bf155}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System\Renderer">
+      <UniqueIdentifier>{2ba66b91-0bd1-4c6a-9b9c-ba25863ec012}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System\ShaderLoader">
+      <UniqueIdentifier>{53d6a317-3ee5-4f0d-b758-71a45813cb15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System\TextureLoader">
+      <UniqueIdentifier>{96c60848-bf71-4c38-9392-2640d27abdad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shapes\Cube">
+      <UniqueIdentifier>{eeeb2e23-ad91-4e91-ba01-fe67c81b733a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{52155dbd-3c62-4733-80ff-2d9c602b0c06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Camera">
+      <UniqueIdentifier>{7555ac40-1507-4b23-aa6d-b019379c971e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System\InputSystem">
+      <UniqueIdentifier>{a4fffe8f-2bc3-4981-a38a-e9d88f5f7f54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Camera\BaseClass">
+      <UniqueIdentifier>{ba2a66f7-443d-4c00-a2cd-9f74e83ff0f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Camera\Cameras">
+      <UniqueIdentifier>{fca01cef-5b05-40ae-a52f-c048e5cd2df0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Structures">
+      <UniqueIdentifier>{add29aa3-cb4d-4351-af85-cfe10602dda4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mesh">
+      <UniqueIdentifier>{0fff9c56-24ae-4d0a-922d-9fdc93e0431e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mesh\Skybox">
+      <UniqueIdentifier>{09f57407-aee0-41cf-8610-b18004d262d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mesh\MeshModel">
+      <UniqueIdentifier>{7ac2cf90-b6a6-47f3-8622-52ab046b7284}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shapes\SkyCube">
+      <UniqueIdentifier>{6373a423-4f2e-4d60-a888-185e696c106a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mesh\ReflectiveMesh">
+      <UniqueIdentifier>{2349e383-1bee-4962-ab3b-ae76f6e09c8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\ObjectMover">
+      <UniqueIdentifier>{62830bc8-c7f2-40b8-8ea2-a8f40307c3c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shapes\UIQuad">
+      <UniqueIdentifier>{e47bbc23-adaa-4b38-922a-09530dd133a7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ShaderLoader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Hexagon.cpp">
+      <Filter>Shapes\Hexagon</Filter>
+    </ClCompile>
+    <ClCompile Include="Shape.cpp">
+      <Filter>Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderLoader.cpp">
+      <Filter>System\ShaderLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="Quad.cpp">
+      <Filter>Shapes\Quad</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>System\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="cTextureLoader.cpp">
+      <Filter>System\TextureLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>Shapes\Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="cInputSystem.cpp">
+      <Filter>System\InputSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="cCamera.cpp">
+      <Filter>Components\Camera\BaseClass</Filter>
+    </ClCompile>
+    <ClCompile Include="cMeshModel.cpp">
+      <Filter>Mesh\MeshModel</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkybox.cpp">
+      <Filter>Mesh\Skybox</Filter>
+    </ClCompile>
+    <ClCompile Include="cReflectiveMeshModel.cpp">
+      <Filter>Mesh\ReflectiveMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="cUIQuad.cpp">
+      <Filter>Shapes\UIQuad</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Hexagon.h">
+      <Filter>Shapes\Hexagon</Filter>
+    </ClInclude>
+    <ClInclude Include="Quad.h">
+      <Filter>Shapes\Quad</Filter>
+    </ClInclude>
+    <ClInclude Include="Shape.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
     <ClInclude Include="ShaderLoader.h">
-      <Filter>Header Files</Filter>
+      <Filter>System\ShaderLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>System\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="cTextureLoader.h">
+      <Filter>System\TextureLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>Shapes\Cube</Filter>
+    </ClInclude>
+    <ClInclude Include="cInputSystem.h">
+      <Filter>System\InputSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="cOscilatingCamera.h">
+      <Filter>Components\Camera\Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="cOrbitalCamera.h">
+      <Filter>Components\Camera\Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="cCamera.h">
+      <Filter>Components\Camera\BaseClass</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexStandard.h">
+      <Filter>Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="tiny_obj_loader.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="cMeshModel.h">
+      <Filter>Mesh\MeshModel</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkybox.h">
+      <Filter>Mesh\Skybox</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkyCube.h">
+      <Filter>Shapes\SkyCube</Filter>
+    </ClInclude>
+    <ClInclude Include="cReflectiveMeshModel.h">
+      <Filter>Mesh\ReflectiveMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="cObjectMover.h">
+      <Filter>Components\ObjectMover</Filter>
+    </ClInclude>
+    <ClInclude Include="cUIQuad.h">
+      <Filter>Shapes\UIQuad</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -41,6 +190,30 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="Resources\Shaders\VertexColorFade.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\WorldSpace.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\ClipSpace.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\Texture.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\TextureMix.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\Skybox.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\Skybox.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\Reflection.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\Reflection.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>
