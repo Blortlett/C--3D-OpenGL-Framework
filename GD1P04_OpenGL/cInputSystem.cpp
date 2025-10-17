@@ -48,7 +48,11 @@ int cInputSystem::Get_Key1()
 {
     if (glfwGetKey(mWindow, GLFW_KEY_1) == GLFW_PRESS)
     {
-        return true;
+        return IsKeyPressedOnce(1);
+    }
+    else
+    {
+        isKey1Held = false;
     }
 
     return false;
@@ -58,7 +62,11 @@ int cInputSystem::Get_Key2()
 {
     if (glfwGetKey(mWindow, GLFW_KEY_2) == GLFW_PRESS)
     {
-        return true;
+        return IsKeyPressedOnce(2);
+    }
+    else
+    {
+        isKey2Held = false;
     }
 
     return false;
@@ -68,7 +76,11 @@ int cInputSystem::Get_Key3()
 {
     if (glfwGetKey(mWindow, GLFW_KEY_3) == GLFW_PRESS)
     {
-        return true;
+        return IsKeyPressedOnce(3);
+    }
+    else
+    {
+        isKey3Held = false;
     }
 
     return false;
@@ -76,5 +88,43 @@ int cInputSystem::Get_Key3()
 
 glm::fvec2 cInputSystem::GetMousePosition()
 {
-    return glm::fvec2();
+    double xpos, ypos;
+    glfwGetCursorPos(mWindow, &xpos, &ypos);
+    return glm::fvec2(static_cast<float>(xpos), static_cast<float>(ypos));
+}
+
+bool cInputSystem::IsKeyPressedOnce(int _Key)
+{
+    switch (_Key)
+    {
+    case 1:
+    {
+        if (!isKey1Held)
+        {
+            isKey1Held = true;
+            return true;
+        }
+        return false;
+    }
+    case 2:
+    {
+        if (!isKey2Held)
+        {
+            isKey2Held = true;
+            return true;
+        }
+        return false;
+    }
+    case 3:
+    {
+        if (!isKey3Held)
+        {
+            isKey3Held = true;
+            return true;
+        }
+        return false;
+    }
+    }
+
+    return false;
 }

@@ -134,10 +134,6 @@ void Renderer::RenderAllMeshModels()
 
 void Renderer::RenderAllReflectiveMeshModels()
 {
-    std::cout << "-= RenderAllReflectiveMeshModels called =-" << std::endl;
-    std::cout << "Number of reflective models: " << reflectiveMeshModels.size() << std::endl;
-    std::cout << "Reflection Program ID: " << Reflection_Program << std::endl;
-
     if (Reflection_Program == 0)
     {
         std::cout << "Warning: Reflection program not set!" << std::endl;
@@ -152,7 +148,6 @@ void Renderer::RenderAllReflectiveMeshModels()
 
     // Get camera position for reflection calculations
     glm::vec3 cameraPos = mCamera.GetPosition();
-    std::cout << "Camera Position: " << cameraPos.x << ", " << cameraPos.y << ", " << cameraPos.z << std::endl;
 
     // Set up camera position uniform
     GLint cameraPosLoc = glGetUniformLocation(Reflection_Program, "CameraPosition");
@@ -194,7 +189,6 @@ void Renderer::RenderAllReflectiveMeshModels()
     {
         if (model)
         {
-            std::cout << "Rendering reflective model..." << std::endl;
 
             // Update transforms
             model->UpdateTransforms();

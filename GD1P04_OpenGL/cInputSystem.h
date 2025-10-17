@@ -1,5 +1,6 @@
 #pragma once
 #include <glm.hpp>
+#include <map>
 
 class GLFWwindow;
 
@@ -29,8 +30,14 @@ public:
 
 
 private:
+    bool isKey1Held = false;
+    bool isKey2Held = false;
+    bool isKey3Held = false;
+
     // Private constructor to prevent instantiation
     cInputSystem() {}
     GLFWwindow* mWindow = nullptr;
+
+    bool IsKeyPressedOnce(int key);
 
 };

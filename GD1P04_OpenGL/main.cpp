@@ -61,6 +61,10 @@ float PreivousFrameTime = 0.f;
 // Camera
 cOrbitalCamera Camera1(glm::vec2(800, 800));
 
+
+// Player input variables
+bool WireframeModeActive = false;
+
 void InitialSetup()
 {
     // Set the color of the window for when the buffer is cleared
@@ -118,7 +122,7 @@ void CreateShapes(cCamera& _SceneCamera)
 
     // Load Chalice (reflective)
     modelPosition = glm::vec3(0.0f, 0.0f, 0.0f);
-    ReflectiveModel = new cReflectiveMeshModel("Resources/Models/SM_Item_Chalice_01.obj",
+    ReflectiveModel = new cReflectiveMeshModel("Resources/Models/SM_Prop_Crank_01.obj",
         &Camera1, renderer->getSkybox(), modelPosition, modelScale, modelRotation);
     renderer->addReflectiveMeshModel(ReflectiveModel);
 
@@ -142,6 +146,43 @@ void Update()
 
     // Update camera
     Camera1.Update(deltaTime);
+
+
+    // -= User Input =-
+    // Key 1 toggles mouse visibility
+    if (cInputSystem::GetInstance().Get_Key1())
+    {
+        int currentMode = glfwGetInputMode(Window, GLFW_CURSOR);
+        if (currentMode == GLFW_CURSOR_NORMAL)
+        {
+            glfwSetInputMode(Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        }
+        else
+        {
+            glfwSetInputMode(Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        }
+    }
+    // Key 1 toggles wireframe mode
+    if (cInputSystem::GetInstance().Get_Key2())
+    {
+        // Toggle wireframe mode
+        WireframeModeActive = !WireframeModeActive;
+
+        if (WireframeModeActive)
+        {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        }
+        else
+        {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        }
+    }
+    // Key 3 prints current screen coordinates
+    if (cInputSystem::GetInstance().Get_Key3())
+    {
+        glm::fvec2 mousePos = cInputSystem::GetInstance().GetMousePosition();
+        std::cout << "Mouse coordinates: (" << mousePos.x << ", " << mousePos.y << ")" << std::endl;
+    }
 }
 
 void Render()
