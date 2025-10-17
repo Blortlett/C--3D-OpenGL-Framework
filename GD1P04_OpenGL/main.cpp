@@ -115,7 +115,7 @@ void CreateShapes(cCamera& _SceneCamera)
     renderer->setSkybox(skybox);
 
     // Create and add a mesh model from OBJ file
-    glm::vec3 modelPosition = glm::vec3(2.f, -1.f, 1.f);
+    glm::vec3 modelPosition = glm::vec3(1.f, -1.f, -1.f);
     glm::vec3 modelScale = glm::vec3(1.f, 1.f, 1.f);
     float modelRotation = 0.0f;
 

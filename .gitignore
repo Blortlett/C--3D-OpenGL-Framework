@@ -2,3 +2,5 @@
 x64
 .vs
 GD1P04_OpenGL/Dependencies/GLM
+GD1P04_OpenGL/GD1P04_OpenGL.exe
+GD1P04_OpenGL/GD1P04_OpenGL.pdb
