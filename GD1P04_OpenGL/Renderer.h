@@ -52,10 +52,8 @@ public:
 
     // Rendering
     void updateTime(float time);
-    void renderAll();
     void RenderSkybox();
     void RenderAllMeshModels();
-    void RenderAllAnimated();
 
     // Skybox
     void setSkybox(cSkybox* skybox)

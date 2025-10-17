@@ -12,6 +12,8 @@ out vec3 FragTexCoords;
 // Shader Functionality
 void main()
 {
-	gl_Position = VP * vec4(Position, 1.0f);
+	vec4 pos = VP * vec4(Position, 1.0f);
+	// Set z = w so that after perspective divide, z/w = 1.0 (maximum depth)
+	gl_Position = pos.xyww;
 	FragTexCoords = vec3(Position.xyz);
 }

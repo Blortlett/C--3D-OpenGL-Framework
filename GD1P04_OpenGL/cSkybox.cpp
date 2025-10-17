@@ -22,14 +22,21 @@ void cSkybox::Render(GLuint _Skybox_Program)
         return;
     }
 
-    // CRITICAL: Disable face culling for skybox
-    glDisable(GL_CULL_FACE);
+    // Save current OpenGL state
+    GLboolean depthMaskEnabled;
+    GLint depthFunc;
+    GLboolean cullFaceEnabled;
+    GLint cullFaceMode;
 
-    // Disable depth writing so skybox doesn't block other objects
-    glDepthMask(GL_FALSE);
+    glGetBooleanv(GL_DEPTH_WRITEMASK, &depthMaskEnabled);
+    glGetIntegerv(GL_DEPTH_FUNC, &depthFunc);
+    glGetBooleanv(GL_CULL_FACE, &cullFaceEnabled);
+    glGetIntegerv(GL_CULL_FACE_MODE, &cullFaceMode);
 
-    // Change depth function to render skybox at maximum depth
-    glDepthFunc(GL_LEQUAL);
+    // Set skybox-specific state
+    glDepthMask(GL_FALSE);      // Disable depth writing
+    glDepthFunc(GL_LEQUAL);     // Render at maximum depth
+    glDisable(GL_CULL_FACE);    // Disable face culling for skybox
 
     glUseProgram(_Skybox_Program);
 
@@ -40,10 +47,6 @@ void cSkybox::Render(GLuint _Skybox_Program)
     if (texLoc != -1)
     {
         glUniform1i(texLoc, 0);
-    }
-    else
-    {
-        std::cout << "Warning: Texture_Skybox uniform not found in shader!" << std::endl;
     }
 
     // Setup the camera matrices
@@ -57,29 +60,26 @@ void cSkybox::Render(GLuint _Skybox_Program)
     {
         glUniformMatrix4fv(vpLoc, 1, GL_FALSE, glm::value_ptr(VP));
     }
-    else
-    {
-        std::cout << "Warning: VP uniform not found in shader!" << std::endl;
-    }
 
-    // Render the skybox using the cSkyCube's render method
+    // Render the skybox
     mSkyCube.bind();
 
     if (!mSkyCube.getIndices().empty())
     {
         glDrawElements(GL_TRIANGLES, (GLsizei)mSkyCube.getIndices().size(), GL_UNSIGNED_INT, 0);
     }
-    else
-    {
-        std::cout << "Warning: No indices in skybox cube!" << std::endl;
-    }
 
     mSkyCube.unbind();
 
-    // CRITICAL: Restore OpenGL state for normal rendering
-    glDepthFunc(GL_LESS);        // Restore default depth function
-    glDepthMask(GL_TRUE);        // Re-enable depth writing (THIS WAS MISSING!)
-    glEnable(GL_CULL_FACE);      // Re-enable face culling
+    // Restore previous OpenGL state
+    glDepthFunc(depthFunc);
+    glDepthMask(depthMaskEnabled);
+
+    if (cullFaceEnabled)
+    {
+        glEnable(GL_CULL_FACE);
+        glCullFace(cullFaceMode);
+    }
 
     // Unbind texture and program
     glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
