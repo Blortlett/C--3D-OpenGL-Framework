@@ -13,6 +13,7 @@
 
 
 #include "Quad.h"
+#include <iostream>
 
 Quad::Quad(glm::vec3 pos, glm::vec3 scl, float rotAngle)
     : Shape(pos, scl, rotAngle)
@@ -59,4 +60,31 @@ void Quad::initialize()
 {
     generateVertices();
     setupBuffers();
+}
+
+void Quad::render()
+{
+    bind();
+
+    // Don't bind any textures here - let the caller handle texture binding
+    // This allows cUIQuad to control which texture is used
+
+    if (!indices.empty())
+    {
+        glDrawElements(GL_TRIANGLES, (GLsizei)indices.size(), GL_UNSIGNED_INT, 0);
+    }
+    else
+    {
+        // Ensure vertices is not empty to avoid division by zero or invalid access
+        if (!vertices.empty())
+        {
+            glDrawArrays(GL_TRIANGLES, 0, (GLsizei)(vertices.size() / 8)); // 8 floats per vertex
+        }
+        else
+        {
+            std::cout << "Error: No vertices to render!" << std::endl;
+        }
+    }
+
+    unbind();
 }
