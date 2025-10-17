@@ -69,6 +69,9 @@
     <Filter Include="Mesh\ReflectiveMesh">
       <UniqueIdentifier>{2349e383-1bee-4962-ab3b-ae76f6e09c8f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Components\ObjectMover">
+      <UniqueIdentifier>{62830bc8-c7f2-40b8-8ea2-a8f40307c3c9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -162,6 +165,9 @@
     </ClInclude>
     <ClInclude Include="cReflectiveMeshModel.h">
       <Filter>Mesh\ReflectiveMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="cObjectMover.h">
+      <Filter>Components\ObjectMover</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -11,21 +11,6 @@
  Mail : Matthew.Bartlett@mds.ac.nz
  ************************************************/
 
-
-/************************************************
- Bachelor of Software Engineering
- Media Design School
- Auckland
- New Zealand
- (c)
- 2024 Media Design School
- File Name : main
- Description : Program start and main loop where updating/rendering takes place
- Author : Matthew Bartlett
- Mail : Matthew.Bartlett@mds.ac.nz
- ************************************************/
-
-
 #include <glew.h>
 #include <glfw3.h>
 #include <iostream>
@@ -45,6 +30,8 @@
 #include "cTextureLoader.h"
 #include "cOrbitalCamera.h"
 
+#include "cObjectMover.h"
+
 // Window variable
 GLFWwindow* Window;
 
@@ -60,11 +47,16 @@ Cube* Cube1;
 cMeshModel* MyModel;
 // Reflective Mesh Model
 cReflectiveMeshModel* ReflectiveModel;
+// Object mover
+cObjectMover* ObjectMover;
 
 // Shader programs
 GLuint Program_Shader;
 GLuint Program_Reflection;
 GLuint Program_Skybox;
+
+// Delta Time variables
+float PreivousFrameTime = 0.f;
 
 // Camera
 cOrbitalCamera Camera1(glm::vec2(800, 800));
@@ -130,22 +122,26 @@ void CreateShapes(cCamera& _SceneCamera)
         &Camera1, renderer->getSkybox(), modelPosition, modelScale, modelRotation);
     renderer->addReflectiveMeshModel(ReflectiveModel);
 
-
-    // Additional debug
-    std::cout << "Skybox set in renderer" << std::endl;
+    // Add in object mover
+    ObjectMover = new cObjectMover(ReflectiveModel);
 }
 
 void Update()
 {
     glfwPollEvents();
-
-    // Get the current time and update both renderers
+    // Get the current time 
     float currentTime = (float)glfwGetTime();
-    renderer->updateTime(currentTime);
-    //animatedRenderer->updateTime(currentTime);
+    float deltaTime = currentTime - PreivousFrameTime;
+    PreivousFrameTime = currentTime;
+
+    // Update Object mover
+    ObjectMover->Update(deltaTime);
+
+    // update renderer
+    renderer->updateTime(deltaTime);
 
     // Update camera
-    Camera1.Update(currentTime);
+    Camera1.Update(deltaTime);
 }
 
 void Render()
@@ -229,6 +225,10 @@ int main()
         // Render all the objects
         Render();
     }
+
+    // cleanup
+    delete ObjectMover;
+    ObjectMover = nullptr;
 
     // When main loop breaks, terminate program properly
     glfwTerminate();

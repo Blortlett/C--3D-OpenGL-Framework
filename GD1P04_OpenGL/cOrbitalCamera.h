@@ -17,12 +17,12 @@ public:
 
     void Update(float _DeltaTime)
     {
-        glm::ivec2 moveInput = cInputSystem::GetInstance().Get_WASD();
+        /*glm::ivec2 moveInput = cInputSystem::GetInstance().Get_WASD();
         mOrbitAngle += moveInput.x * _DeltaTime * mMoveSpeed;
 
         CameraPos.x = sin(mOrbitAngle) * mOrbitRadius;
         CameraPos.y = mOrbitHeight;
-        CameraPos.z = cos(mOrbitAngle) * mOrbitRadius;
+        CameraPos.z = cos(mOrbitAngle) * mOrbitRadius;*/
         LookAtTarget();
     }
 };

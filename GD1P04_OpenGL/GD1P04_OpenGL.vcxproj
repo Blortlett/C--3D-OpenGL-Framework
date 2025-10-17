@@ -170,6 +170,7 @@
     <ClInclude Include="cCamera.h" />
     <ClInclude Include="cInputSystem.h" />
     <ClInclude Include="cMeshModel.h" />
+    <ClInclude Include="cObjectMover.h" />
     <ClInclude Include="cOrbitalCamera.h" />
     <ClInclude Include="cOscilatingCamera.h" />
     <ClInclude Include="cReflectiveMeshModel.h" />

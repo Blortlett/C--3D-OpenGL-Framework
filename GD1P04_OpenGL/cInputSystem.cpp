@@ -16,11 +16,11 @@ glm::ivec2 cInputSystem::Get_WASD()
 
     // Get Forward/Backward component for vector
 	int WSweight = 0;
-    if (glfwGetKey(mWindow, GLFW_KEY_W) == GLFW_PRESS)
+    if (glfwGetKey(mWindow, GLFW_KEY_S) == GLFW_PRESS)
     {
         WSweight += 1;
     }
-    if (glfwGetKey(mWindow, GLFW_KEY_S) == GLFW_PRESS)
+    if (glfwGetKey(mWindow, GLFW_KEY_W) == GLFW_PRESS)
     {
         WSweight -= 1;
     }
