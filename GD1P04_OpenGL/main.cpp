@@ -19,7 +19,7 @@
 #include "Renderer.h"
 #include "cMeshModel.h"
 #include "cReflectiveMeshModel.h"
-#include "Quad.h"
+#include "cUIQuad.h"
 #include "Cube.h"
 #include "cSkybox.h"
 #include <glm.hpp>
@@ -34,6 +34,7 @@
 
 // Window variable
 GLFWwindow* Window;
+glm::vec2 WindowSize(800, 800);
 
 // Renderers for different shader programs
 Renderer* renderer;
@@ -43,6 +44,7 @@ Renderer* renderer;
 Quad* QuadItem;
 Quad* QuadAnimated;
 Cube* Cube1;
+cUIQuad* uiQuad;
 // Mesh Model
 cMeshModel* MyModel;
 // Reflective Mesh Model
@@ -128,6 +130,23 @@ void CreateShapes(cCamera& _SceneCamera)
 
     // Add in object mover
     ObjectMover = new cObjectMover(ReflectiveModel);
+
+    // Create UI quad (positioned at bottom-left corner, 150x150 pixels)
+    glm::vec2 uiPosition(50.0f, 50.0f);   // 50 pixels from left and bottom
+    glm::vec2 uiSize(150.0f, 150.0f);      // 150x150 pixel quad
+
+    uiQuad = new cUIQuad(
+        uiPosition,
+        uiSize,
+        cTextureLoader::GetInstance().Texture_01_A,  // Normal texture
+        cTextureLoader::GetInstance().Texture_01_B   // Hover texture
+    );
+
+    // Update orthographic projection for UI
+    uiQuad->UpdateOrthoProjection(WindowSize);
+
+    // Set UI quad in renderer
+    renderer->SetUIQuad(uiQuad);
 }
 
 void Update()
@@ -183,6 +202,14 @@ void Update()
         glm::fvec2 mousePos = cInputSystem::GetInstance().GetMousePosition();
         std::cout << "Mouse coordinates: (" << mousePos.x << ", " << mousePos.y << ")" << std::endl;
     }
+
+    // Update UI
+    // Get mouse position and button state
+    glm::vec2 mousePos = cInputSystem::GetInstance().GetMousePosition();
+    bool mousePressed = cInputSystem::GetInstance().GetMouseButton();
+
+    // Update UI (checks hover and click)
+    renderer->UpdateUI(mousePos, WindowSize, mousePressed);
 }
 
 void Render()
@@ -195,6 +222,9 @@ void Render()
 
     // Render skybox last
     renderer->RenderSkybox();
+
+    // Render UI last (on top of everything)
+    renderer->RenderUI();
 
     glfwSwapBuffers(Window);
 }
@@ -268,6 +298,8 @@ int main()
     }
 
     // cleanup
+    delete uiQuad;
+    uiQuad = nullptr;
     delete ObjectMover;
     ObjectMover = nullptr;
 

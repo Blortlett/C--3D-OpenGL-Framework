@@ -24,6 +24,7 @@ public:
     int Get_Key1();
     int Get_Key2();
     int Get_Key3();
+    bool GetMouseButton();
 
     // Get screenspace mouse position
     glm::fvec2 GetMousePosition();

@@ -27,6 +27,8 @@ Renderer::Renderer(GLuint& _Program, GLuint& _Skybox_Program, cCamera& _Camera)
     , currentTime(0.0f)
     , mCamera(_Camera)
     , mSkybox(nullptr)
+    , mUIQuad(nullptr)
+    , mUseAlternateTexture(false)
 {
 };
 
@@ -120,9 +122,16 @@ void Renderer::RenderAllMeshModels()
             if (projMatLoc != -1)
                 glUniformMatrix4fv(projMatLoc, 1, GL_FALSE, glm::value_ptr(projectionMat));
 
-            // Bind texture (you can customize this per model if needed)
+            // Bind texture based on toggle state
             glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, cTextureLoader::GetInstance().Texture_01_A);
+            if (mUseAlternateTexture)
+            {
+                glBindTexture(GL_TEXTURE_2D, cTextureLoader::GetInstance().Texture_01_B);
+            }
+            else
+            {
+                glBindTexture(GL_TEXTURE_2D, cTextureLoader::GetInstance().Texture_01_A);
+            }
 
             // Render the model
             model->Render();
@@ -210,9 +219,16 @@ void Renderer::RenderAllReflectiveMeshModels()
             if (projMatLoc != -1)
                 glUniformMatrix4fv(projMatLoc, 1, GL_FALSE, glm::value_ptr(projectionMat));
 
-            // Bind the base texture to texture unit 0
+            // Bind the base texture to texture unit 0 (toggle between textures)
             glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, cTextureLoader::GetInstance().Texture_01_A);
+            if (mUseAlternateTexture)
+            {
+                glBindTexture(GL_TEXTURE_2D, cTextureLoader::GetInstance().Texture_01_B);
+            }
+            else
+            {
+                glBindTexture(GL_TEXTURE_2D, cTextureLoader::GetInstance().Texture_01_A);
+            }
 
             // Bind the cubemap texture to texture unit 1
             if (mSkybox)
@@ -357,5 +373,39 @@ void Renderer::RenderSkybox()
     if (mSkybox)
     {
         mSkybox->Render(Skybox_Program);
+    }
+}
+
+void Renderer::RenderUI()
+{
+    if (mUIQuad)
+    {
+        // Disable depth testing for UI so it always renders on top
+        glDisable(GL_DEPTH_TEST);
+
+        mUIQuad->Render(Render_Program);
+
+        // Re-enable depth testing
+        glEnable(GL_DEPTH_TEST);
+    }
+}
+
+void Renderer::UpdateUI(glm::vec2 mousePos, glm::vec2 windowSize, bool mouseButtonPressed)
+{
+    if (mUIQuad)
+    {
+        // Update hover state every frame
+        mUIQuad->CheckHover(mousePos, windowSize);
+
+        // Check if the UI quad was clicked
+        bool wasClicked = mUIQuad->CheckClick(mousePos, windowSize, mouseButtonPressed);
+
+        // If clicked, toggle the texture used by 3D objects
+        if (wasClicked)
+        {
+            ToggleAlternateTexture();
+            std::cout << "UI Quad clicked! Texture toggled to: "
+                << (mUseAlternateTexture ? "Texture_01_B" : "Texture_01_A") << std::endl;
+        }
     }
 }

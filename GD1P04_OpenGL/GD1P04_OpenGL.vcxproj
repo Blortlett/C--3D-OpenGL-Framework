@@ -159,6 +159,7 @@
     <ClCompile Include="cSkybox.cpp" />
     <ClCompile Include="cTextureLoader.cpp" />
     <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="cUIQuad.cpp" />
     <ClCompile Include="Hexagon.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Quad.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="cSkyCube.h" />
     <ClInclude Include="cTextureLoader.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="cUIQuad.h" />
     <ClInclude Include="Hexagon.h" />
     <ClInclude Include="Quad.h" />
     <ClInclude Include="Renderer.h" />

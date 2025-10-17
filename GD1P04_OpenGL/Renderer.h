@@ -18,6 +18,7 @@
 #include "Shape.h"
 #include "cMeshModel.h"
 #include "cReflectiveMeshModel.h"
+#include "cUIQuad.h"
 
 class cCamera;
 class cSkybox;
@@ -59,6 +60,15 @@ public:
     // Reflection shader program setter
     void setReflectionProgram(GLuint _Program) { Reflection_Program = _Program; }
 
+    // // UI methods
+    void SetUIQuad(cUIQuad* uiQuad) { mUIQuad = uiQuad; }
+    void RenderUI();
+    void UpdateUI(glm::vec2 mousePos, glm::vec2 windowSize, bool mouseButtonPressed);
+
+    // Texture swap
+    void ToggleAlternateTexture() { mUseAlternateTexture = !mUseAlternateTexture; }
+    bool IsUsingAlternateTexture() const { return mUseAlternateTexture; }
+
 private:
     GLuint& Render_Program;
     GLuint& Skybox_Program;
@@ -71,4 +81,8 @@ private:
     std::vector<Shape*> shapes;
     std::vector<cMeshModel*> meshModels;
     std::vector<cReflectiveMeshModel*> reflectiveMeshModels;
+    cUIQuad* mUIQuad;
+
+
+    bool mUseAlternateTexture;
 };

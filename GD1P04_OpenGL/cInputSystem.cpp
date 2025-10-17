@@ -93,6 +93,11 @@ glm::fvec2 cInputSystem::GetMousePosition()
     return glm::fvec2(static_cast<float>(xpos), static_cast<float>(ypos));
 }
 
+bool cInputSystem::GetMouseButton()
+{
+    return glfwGetMouseButton(mWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS;
+}
+
 bool cInputSystem::IsKeyPressedOnce(int _Key)
 {
     switch (_Key)

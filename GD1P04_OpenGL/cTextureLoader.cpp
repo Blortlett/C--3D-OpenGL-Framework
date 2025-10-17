@@ -20,8 +20,9 @@
 cTextureLoader::cTextureLoader()
 {
     LoadTexture("Texture_01_A.png");
-    LoadTexture("Uncooked.png");
+    LoadTexture("Texture_01_B.png");
     LoadTexture("Cooked.png");
+    LoadTexture("Uncooked.png");
     LoadTexture("Reflection_Map.png");
 
     LoadCubemap("Cubemap");
@@ -117,18 +118,23 @@ void cTextureLoader::LoadTexture(const char* fileName)
     {
         glGenTextures(1, &Texture_01_A);
         glBindTexture(GL_TEXTURE_2D, Texture_01_A);
-    } 
+    }
     else if (TimesRun == 1)
+    {
+        glGenTextures(1, &Texture_01_B);
+        glBindTexture(GL_TEXTURE_2D, Texture_01_B);
+    }
+    else if (TimesRun == 2)
     {
         glGenTextures(1, &Texture_Food_Cooked);
         glBindTexture(GL_TEXTURE_2D, Texture_Food_Cooked);
     }
-    else if (TimesRun == 2)
+    else if (TimesRun == 3)
     {
         glGenTextures(1, &Texture_Food_Uncooked);
         glBindTexture(GL_TEXTURE_2D, Texture_Food_Uncooked);
     }
-    else if (TimesRun == 3)
+    else if (TimesRun == 4)
     {
         glGenTextures(1, &Reflection_Map);
         glBindTexture(GL_TEXTURE_2D, Reflection_Map);

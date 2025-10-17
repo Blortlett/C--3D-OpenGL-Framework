@@ -72,6 +72,9 @@
     <Filter Include="Components\ObjectMover">
       <UniqueIdentifier>{62830bc8-c7f2-40b8-8ea2-a8f40307c3c9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shapes\UIQuad">
+      <UniqueIdentifier>{e47bbc23-adaa-4b38-922a-09530dd133a7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -112,6 +115,9 @@
     </ClCompile>
     <ClCompile Include="cReflectiveMeshModel.cpp">
       <Filter>Mesh\ReflectiveMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="cUIQuad.cpp">
+      <Filter>Shapes\UIQuad</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -168,6 +174,9 @@
     </ClInclude>
     <ClInclude Include="cObjectMover.h">
       <Filter>Components\ObjectMover</Filter>
+    </ClInclude>
+    <ClInclude Include="cUIQuad.h">
+      <Filter>Shapes\UIQuad</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
