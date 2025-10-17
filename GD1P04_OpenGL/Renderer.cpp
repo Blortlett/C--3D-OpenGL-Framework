@@ -175,11 +175,18 @@ void Renderer::RenderAllReflectiveMeshModels()
         glUniform1i(skyboxTexLoc, 1); // Texture unit 1 for cubemap
     }
 
-    // Optional: Set reflection strength
+    // Set up reflection map uniform (texture unit 2)
+    GLint reflectionMapLoc = glGetUniformLocation(Reflection_Program, "ReflectionMap");
+    if (reflectionMapLoc != -1)
+    {
+        glUniform1i(reflectionMapLoc, 2); // Texture unit 2 for reflection map
+    }
+
+    // Set reflection strength (global multiplier - adjust this value as needed)
     GLint reflectionStrengthLoc = glGetUniformLocation(Reflection_Program, "ReflectionStrength");
     if (reflectionStrengthLoc != -1)
     {
-        glUniform1f(reflectionStrengthLoc, 0.5f); // 50% blend
+        glUniform1f(reflectionStrengthLoc, 1.0f); // 100% - reflection map controls the blend
     }
 
     // Render all reflective mesh models
@@ -219,6 +226,10 @@ void Renderer::RenderAllReflectiveMeshModels()
                 glActiveTexture(GL_TEXTURE1);
                 glBindTexture(GL_TEXTURE_CUBE_MAP, cTextureLoader::GetInstance().Cubemap_Texture);
             }
+
+            // Bind the reflection map to texture unit 2
+            glActiveTexture(GL_TEXTURE2);
+            glBindTexture(GL_TEXTURE_2D, cTextureLoader::GetInstance().Reflection_Map);
 
             // Render the model
             model->Render();

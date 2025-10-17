@@ -22,6 +22,7 @@ cTextureLoader::cTextureLoader()
     LoadTexture("Texture_01_A.png");
     LoadTexture("Uncooked.png");
     LoadTexture("Cooked.png");
+    LoadTexture("Reflection_Map.png");
 
     LoadCubemap("Cubemap");
 }
