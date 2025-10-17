@@ -1,3 +1,16 @@
+/************************************************
+ Bachelor of Software Engineering
+ Media Design School
+ Auckland
+ New Zealand
+ (c)
+ 2024 Media Design School
+ File Name : cSkybox
+ Description : cSkybox contains data and functions to render and display a skybox in a 3D scene.
+ Author : Matthew Bartlett
+ Mail : Matthew.Bartlett@mds.ac.nz
+ ************************************************/
+
 #include "cSkybox.h"
 #include "cTextureLoader.h"
 

@@ -1,3 +1,16 @@
+/************************************************
+ Bachelor of Software Engineering
+ Media Design School
+ Auckland
+ New Zealand
+ (c)
+ 2024 Media Design School
+ File Name : cInputSystem
+ Description : This class creates a singleton object for any part of the codebase to easily interperate user input
+ Author : Matthew Bartlett
+ Mail : Matthew.Bartlett@mds.ac.nz
+ ************************************************/
+
 #include "cInputSystem.h"
 #include <glfw3.h>
 

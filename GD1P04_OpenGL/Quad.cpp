@@ -66,9 +66,6 @@ void Quad::render()
 {
     bind();
 
-    // Don't bind any textures here - let the caller handle texture binding
-    // This allows cUIQuad to control which texture is used
-
     if (!indices.empty())
     {
         glDrawElements(GL_TRIANGLES, (GLsizei)indices.size(), GL_UNSIGNED_INT, 0);

@@ -98,8 +98,7 @@ void cTextureLoader::LoadTexture(const char* fileName)
     // Generate full filepath
     std::string fullPath = mResourcePath + fileName;
 
-    // Set stb to flip textures so they align with the way OpenGL reads textures... deletable
-    // TAKE THIS OUT IF DOING SKYBOX STUFF
+    // Set stb to flip textures so they align with the way OpenGL reads textures
     stbi_set_flip_vertically_on_load(true);
 
     // Load Texture

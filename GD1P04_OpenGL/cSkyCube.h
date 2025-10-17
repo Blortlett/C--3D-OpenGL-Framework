@@ -1,3 +1,16 @@
+/************************************************
+ Bachelor of Software Engineering
+ Media Design School
+ Auckland
+ New Zealand
+ (c)
+ 2024 Media Design School
+ File Name : cSkyCube
+ Description : This class sets up the geometry for a cube to be used as a skybox
+ Author : Matthew Bartlett
+ Mail : Matthew.Bartlett@mds.ac.nz
+ ************************************************/
+
 #pragma once
 #include "Shape.h"
 #include <string>

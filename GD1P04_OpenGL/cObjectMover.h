@@ -1,3 +1,17 @@
+/************************************************
+ Bachelor of Software Engineering
+ Media Design School
+ Auckland
+ New Zealand
+ (c)
+ 2024 Media Design School
+ File Name : cObjectMover
+ Description : cObjectMover contains functions to demonstrate functionality required by assignment specifications
+ Author : Matthew Bartlett
+ Mail : Matthew.Bartlett@mds.ac.nz
+ ************************************************/
+
+
 #pragma once
 #include <glm.hpp>
 #include "cInputSystem.h"

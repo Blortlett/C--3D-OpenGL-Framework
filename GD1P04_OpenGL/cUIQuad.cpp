@@ -1,3 +1,16 @@
+/************************************************
+ Bachelor of Software Engineering
+ Media Design School
+ Auckland
+ New Zealand
+ (c)
+ 2024 Media Design School
+ File Name : cUIQuad
+ Description : Extends base class: Quad. Stores information and functionality required to render a Quad in ortho projection to be used as UI
+ Author : Matthew Bartlett
+ Mail : Matthew.Bartlett@mds.ac.nz
+ ************************************************/
+
 #include "cUIQuad.h"
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
@@ -14,7 +27,7 @@ cUIQuad::cUIQuad(glm::vec2 screenPos, glm::vec2 quadSize, GLuint normalTex, GLui
 {
     // Create a quad at origin with scale of 1,1,1
     quad = new Quad(glm::vec3(0.0f), glm::vec3(1.0f), 0.0f);
-    quad->setUniformColor(glm::vec3(1.0f, 1.0f, 1.0f)); // White to not tint texture
+    quad->setUniformColor(glm::vec3(1.0f, 1.0f, 1.0f));
     quad->initialize();
 }
 

@@ -1,3 +1,16 @@
+/************************************************
+ Bachelor of Software Engineering
+ Media Design School
+ Auckland
+ New Zealand
+ (c)
+ 2024 Media Design School
+ File Name : cReflectiveMeshModel
+ Description : cReflectiveMeshModel extends cMeshModel and contains extra data and functions to render and display a reflective mesh in a 3D scene.
+ Author : Matthew Bartlett
+ Mail : Matthew.Bartlett@mds.ac.nz
+ ************************************************/
+
 #pragma once
 #include "cMeshModel.h"
 

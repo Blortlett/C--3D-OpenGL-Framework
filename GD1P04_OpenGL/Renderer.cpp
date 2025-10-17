@@ -86,7 +86,7 @@ void Renderer::RenderAllMeshModels()
         glUniform1f(currentTimeLoc, currentTime);
     }
 
-    // Set up texture uniform (assuming single texture for now)
+    // Set up texture uniform
     GLint textureLoc = glGetUniformLocation(Render_Program, "Texture0");
     if (textureLoc != -1)
     {
@@ -186,11 +186,11 @@ void Renderer::RenderAllReflectiveMeshModels()
         glUniform1i(reflectionMapLoc, 2); // Texture unit 2 for reflection map
     }
 
-    // Set reflection strength (global multiplier - adjust this value as needed)
+    // Set reflection strength
     GLint reflectionStrengthLoc = glGetUniformLocation(Reflection_Program, "ReflectionStrength");
     if (reflectionStrengthLoc != -1)
     {
-        glUniform1f(reflectionStrengthLoc, 1.0f); // 100% - reflection map controls the blend
+        glUniform1f(reflectionStrengthLoc, 1.0f); // 100% reflection
     }
 
     // Render all reflective mesh models

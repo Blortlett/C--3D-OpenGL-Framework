@@ -38,7 +38,6 @@ glm::vec2 WindowSize(800, 800);
 
 // Renderers for different shader programs
 Renderer* renderer;
-//Renderer* animatedRenderer;
 
 // Shapes
 Quad* QuadItem;
@@ -86,9 +85,6 @@ void InitialSetup()
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT); // (BUG: Unwinding anticlockwise somehow? : Hack culling the front face)
     glFrontFace(GL_CW); // Unwind mesh Clockwise
-
-    // DEBUG
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // Wireframe
 }
 
 void CreateShapes(cCamera& _SceneCamera)
@@ -105,7 +101,7 @@ void CreateShapes(cCamera& _SceneCamera)
 
     if (cubemapID == 0)
     {
-        std::cout << "ERROR: Cubemap texture not loaded! Make sure cTextureLoader loads the cubemap." << std::endl;
+        std::cout << "Cubemap texture not loaded!" << std::endl;
     }
 
     // Create and add skybox
@@ -122,7 +118,7 @@ void CreateShapes(cCamera& _SceneCamera)
         modelPosition, modelScale, modelRotation);
     renderer->addMeshModel(MyModel);
 
-    // Load Chalice (reflective)
+    // Load Crank (reflective)
     modelPosition = glm::vec3(0.0f, 0.0f, 0.0f);
     ReflectiveModel = new cReflectiveMeshModel("Resources/Models/SM_Prop_Crank_01.obj",
         &Camera1, renderer->getSkybox(), modelPosition, modelScale, modelRotation);
@@ -131,8 +127,8 @@ void CreateShapes(cCamera& _SceneCamera)
     // Add in object mover
     ObjectMover = new cObjectMover(ReflectiveModel);
 
-    // Create UI quad (positioned at bottom-left corner, 150x150 pixels)
-    glm::vec2 uiPosition(50.0f, 50.0f);   // 50 pixels from left and bottom
+    // Create UI quad
+    glm::vec2 uiPosition(50.0f, 50.0f);   // 50 pixels padding
     glm::vec2 uiSize(150.0f, 150.0f);      // 150x150 pixel quad
 
     uiQuad = new cUIQuad(

@@ -1,3 +1,16 @@
+/************************************************
+ Bachelor of Software Engineering
+ Media Design School
+ Auckland
+ New Zealand
+ (c)
+ 2024 Media Design School
+ File Name : cUIQuad
+ Description : Extends base class: Quad. Stores information and functionality required to render a Quad in ortho projection to be used as UI
+ Author : Matthew Bartlett
+ Mail : Matthew.Bartlett@mds.ac.nz
+ ************************************************/
+
 #pragma once
 #include "Quad.h"
 #include <glm.hpp>

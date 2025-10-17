@@ -1,3 +1,16 @@
+/************************************************
+ Bachelor of Software Engineering
+ Media Design School
+ Auckland
+ New Zealand
+ (c)
+ 2024 Media Design School
+ File Name : cReflectiveMeshModel
+ Description : cReflectiveMeshModel extends cMeshModel and contains extra data and functions to render and display a reflective mesh in a 3D scene.
+ Author : Matthew Bartlett
+ Mail : Matthew.Bartlett@mds.ac.nz
+ ************************************************/
+
 #include "cReflectiveMeshModel.h"
 #include "cCamera.h"
 #include "cSkybox.h"
@@ -23,15 +36,10 @@ void cReflectiveMeshModel::Update(float _DeltaTime)
 {
     // Call base class update
     cMeshModel::Update(_DeltaTime);
-
-    // Add any reflective-specific update logic here if needed
 }
 
 void cReflectiveMeshModel::Render()
 {
-    // The actual rendering is still done by calling the base class render
-    // But this method exists so the Renderer can set up reflection-specific uniforms
-    // before calling this render method
-
+    // Call base class render
     cMeshModel::Render();
 }
