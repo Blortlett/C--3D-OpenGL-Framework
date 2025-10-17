@@ -66,6 +66,9 @@
     <Filter Include="Shapes\SkyCube">
       <UniqueIdentifier>{6373a423-4f2e-4d60-a888-185e696c106a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Mesh\ReflectiveMesh">
+      <UniqueIdentifier>{2349e383-1bee-4962-ab3b-ae76f6e09c8f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -103,6 +106,9 @@
     </ClCompile>
     <ClCompile Include="cSkybox.cpp">
       <Filter>Mesh\Skybox</Filter>
+    </ClCompile>
+    <ClCompile Include="cReflectiveMeshModel.cpp">
+      <Filter>Mesh\ReflectiveMesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -153,6 +159,9 @@
     </ClInclude>
     <ClInclude Include="cSkyCube.h">
       <Filter>Shapes\SkyCube</Filter>
+    </ClInclude>
+    <ClInclude Include="cReflectiveMeshModel.h">
+      <Filter>Mesh\ReflectiveMesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

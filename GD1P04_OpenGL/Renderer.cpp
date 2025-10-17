@@ -20,9 +20,10 @@
 #include <iostream>
 #include <ostream>
 
-Renderer::Renderer(GLuint& _Program, GLuint& _Skybox_Program, cCamera& _Camera) 
+Renderer::Renderer(GLuint& _Program, GLuint& _Skybox_Program, GLuint& _Program_Reflective, cCamera& _Camera)
     : Render_Program(_Program)
     , Skybox_Program(_Skybox_Program)
+    , Reflective_Program(_Program_Reflective)
     , currentTime(0.0f)
     , mCamera(_Camera)
 {};

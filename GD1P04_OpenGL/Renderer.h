@@ -29,6 +29,7 @@ private:
     std::vector<Shape*> shapes;
     std::vector<cMeshModel*> meshModels;
     GLuint& Render_Program;
+    GLuint& Reflective_Program;
     GLuint& Skybox_Program;
     float currentTime;
 
@@ -37,7 +38,7 @@ private:
     cSkybox* mSkybox;
 
 public:
-    Renderer(GLuint& _Program,GLuint& _Skybox_Program, cCamera& _Camera);
+    Renderer(GLuint& _Program,GLuint& _Skybox_Program, GLuint& _Program_Reflective, cCamera& _Camera);
     ~Renderer();
 
     // Shape management
@@ -60,4 +61,5 @@ public:
     {
         mSkybox = skybox;
     }
+    cSkybox* GetSkybox() { return mSkybox; }
 };

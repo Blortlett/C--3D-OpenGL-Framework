@@ -33,6 +33,7 @@
 #include "ShaderLoader.h"
 #include "Renderer.h"
 #include "cMeshModel.h"
+#include "cReflectiveMeshModel.h"
 #include "Quad.h"
 #include "Cube.h"
 #include "cSkybox.h"
@@ -57,9 +58,12 @@ Quad* QuadAnimated;
 Cube* Cube1;
 // Mesh Model
 cMeshModel* MyModel;
+// Reflective Mesh Model
+cReflectiveMeshModel* ReflectiveModel;
 
 // Shader programs
 GLuint Program_Shader;
+GLuint Program_Reflective;
 GLuint Program_Skybox;
 
 // Camera
@@ -92,16 +96,22 @@ void InitialSetup()
 void CreateShapes(cCamera& _SceneCamera)
 {
     // Create renderers for different shader programs
-    renderer = new Renderer(Program_Shader, Program_Skybox, _SceneCamera);
+    renderer = new Renderer(Program_Shader, Program_Skybox, Program_Reflective, _SceneCamera);
 
     // Create and add a mesh model from OBJ file
-    glm::vec3 modelPosition = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 modelPosition = glm::vec3(2.f, 0.f, 1.f);
     glm::vec3 modelScale = glm::vec3(1.f, 1.f, 1.f);
     float modelRotation = 0.0f;
 
-    MyModel = new cMeshModel("Resources/Models/SM_Item_Chalice_01.obj",
+    // Load Seaweed
+    MyModel = new cMeshModel("Resources/Models/SM_Env_Seaweed_01.obj",
         modelPosition, modelScale, modelRotation);
     renderer->addMeshModel(MyModel);
+
+    // Load Chalice (reflective)
+    modelPosition = glm::vec3(0.0f, 0.0f, 0.0f);
+    ReflectiveModel = new cReflectiveMeshModel("Resources/Models/SM_Item_Chalice_01.obj",
+        &Camera1, renderer->GetSkybox(), modelPosition, modelScale, modelRotation);
 
     // DEBUG: Check if cubemap texture is loaded
     GLuint cubemapID = cTextureLoader::GetInstance().Cubemap_Texture;
@@ -184,13 +194,15 @@ int main()
 
     // -= SHADER PROGRAMS =-
     // Static texture mixing shader
-    Program_Shader = ShaderLoader::CreateProgram(   "Resources/Shaders/ClipSpace.vert",
-                                                    "Resources/Shaders/Texture.frag");
-    Program_Skybox = ShaderLoader::CreateProgram(   "Resources/Shaders/Skybox.vert",
-                                                    "Resources/Shaders/Skybox.frag");
+    Program_Shader = ShaderLoader::CreateProgram(       "Resources/Shaders/ClipSpace.vert",
+                                                        "Resources/Shaders/Texture.frag");
+    Program_Reflective = ShaderLoader::CreateProgram(   "Resources/Shaders/",
+                                                        "Resources/Shaders/");
+    Program_Skybox = ShaderLoader::CreateProgram(       "Resources/Shaders/Skybox.vert",
+                                                        "Resources/Shaders/Skybox.frag");
     
     
-    if (Program_Shader == 0 || Program_Skybox == 0)
+    if (Program_Shader == 0 || Program_Skybox == 0 || Program_Reflective == 0)
     {
         std::cout << "Failed to create shader programs. Terminating." << std::endl;
         glfwTerminate();

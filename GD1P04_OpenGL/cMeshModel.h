@@ -3,6 +3,8 @@
 #include <glew.h>
 #include <glm.hpp>
 
+class cCamera;
+
 class cMeshModel
 {
 public:
