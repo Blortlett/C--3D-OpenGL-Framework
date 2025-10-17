@@ -13,32 +13,19 @@
 
 
 #pragma once
-#include <vector>
-#include <memory>
 #include <glew.h>
-#include <gtc/type_ptr.hpp>
+#include <vector>
 #include "Shape.h"
 #include "cMeshModel.h"
+#include "cReflectiveMeshModel.h"
 
-class cSkybox;
 class cCamera;
+class cSkybox;
 
 class Renderer
 {
-private:
-    std::vector<Shape*> shapes;
-    std::vector<cMeshModel*> meshModels;
-    GLuint& Render_Program;
-    GLuint& Reflective_Program;
-    GLuint& Skybox_Program;
-    float currentTime;
-
-    cCamera& mCamera;
-
-    cSkybox* mSkybox;
-
 public:
-    Renderer(GLuint& _Program,GLuint& _Skybox_Program, GLuint& _Program_Reflective, cCamera& _Camera);
+    Renderer(GLuint& _Program, GLuint& _Skybox_Program, cCamera& _Camera);
     ~Renderer();
 
     // Shape management
@@ -46,20 +33,42 @@ public:
     void removeShape(Shape* shape);
     void clearShapes();
 
-    // Mesh models Management
+    // Regular mesh model management
     void addMeshModel(cMeshModel* model);
     void removeMeshModel(cMeshModel* model);
     void clearMeshModels();
 
-    // Rendering
-    void updateTime(float time);
-    void RenderSkybox();
-    void RenderAllMeshModels();
+    // Reflective mesh model management
+    void addReflectiveMeshModel(cReflectiveMeshModel* model);
+    void removeReflectiveMeshModel(cReflectiveMeshModel* model);
+    void clearReflectiveMeshModels();
 
-    // Skybox
-    void setSkybox(cSkybox* skybox)
-    {
-        mSkybox = skybox;
-    }
-    cSkybox* GetSkybox() { return mSkybox; }
+    // Rendering
+    void renderAll();
+    void RenderAllMeshModels();
+    void RenderAllReflectiveMeshModels();
+    void RenderSkybox();
+
+    // Time update
+    void updateTime(float time);
+
+    // Skybox management
+    void setSkybox(cSkybox* skybox) { mSkybox = skybox; }
+    cSkybox* getSkybox() const { return mSkybox; }
+
+    // Reflection shader program setter
+    void setReflectionProgram(GLuint _Program) { Reflection_Program = _Program; }
+
+private:
+    GLuint& Render_Program;
+    GLuint& Skybox_Program;
+    GLuint Reflection_Program;
+
+    float currentTime;
+    cCamera& mCamera;
+    cSkybox* mSkybox;
+
+    std::vector<Shape*> shapes;
+    std::vector<cMeshModel*> meshModels;
+    std::vector<cReflectiveMeshModel*> reflectiveMeshModels;
 };

@@ -34,6 +34,10 @@ public:
 	// Update transform matrices
 	void UpdateTransforms();
 
+	// Getters
+	GLuint GetDrawCount() { return DrawCount; }
+	GLenum GetDrawType() { return DrawType; }
+
 protected:
 	GLuint VAO;
 	GLuint VBO;

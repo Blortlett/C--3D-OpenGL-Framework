@@ -50,6 +50,9 @@ public:
     // Accessors
     glm::mat4& GetProjectionMat();
     glm::mat4& GetViewMat();
+    
+    // Getters
+    glm::vec3 GetPosition() { return CameraPos; }
 
     // Virtual update method - override in derived classes
     virtual void Update(float _DeltaTime) = 0;

@@ -57,8 +57,23 @@ cMeshModel::cMeshModel(std::string _FilePath, glm::vec3 _Position,
 					Attrib.vertices[3 * size_t(TinyObjVertex.vertex_index) + 2],
 				};
 
+				// Get normal data (if available)
+				if (TinyObjVertex.normal_index >= 0)
+				{
+					Vertex.normal = {
+						Attrib.normals[3 * size_t(TinyObjVertex.normal_index) + 0],
+						Attrib.normals[3 * size_t(TinyObjVertex.normal_index) + 1],
+						Attrib.normals[3 * size_t(TinyObjVertex.normal_index) + 2],
+					};
+				}
+				else
+				{
+					// Default normal if not provided
+					Vertex.normal = glm::vec3(0.0f, 1.0f, 0.0f);
+				}
+
 				// Get texture coordinate data (if available)
-				if (TinyObjVertex.texcoord_index >= 0) // Negative states no texCoordData
+				if (TinyObjVertex.texcoord_index >= 0)
 				{
 					Vertex.texcoord = {
 						Attrib.texcoords[2 * size_t(TinyObjVertex.texcoord_index) + 0],
@@ -85,15 +100,19 @@ cMeshModel::cMeshModel(std::string _FilePath, glm::vec3 _Position,
 	glBufferData(GL_ARRAY_BUFFER, sizeof(VertexStandard) * Vertices.size(),
 		Vertices.data(), GL_STATIC_DRAW);
 
-	// -= Setup VertexAttribPointers for Position and Texture coordinates =-
-	// VertexStandard layout: vec3 position (12 bytes) + vec2 texcoord (8 bytes) = 20 bytes total
+	// -= Setup VertexAttribPointers for Position, Normal, and Texture coordinates =-
+	// VertexStandard layout: vec3 position (12 bytes) + vec3 normal (12 bytes) + vec2 texcoord (8 bytes) = 32 bytes total
 
 	// Position attribute (location = 0)
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexStandard), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
 
+	// Normal attribute (location = 1)
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(VertexStandard),
+		(GLvoid*)offsetof(VertexStandard, normal));
+	glEnableVertexAttribArray(1);
+
 	// Texture coordinate attribute (location = 2)
-	// Offset: Skip past the position (3 floats = 12 bytes)
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(VertexStandard),
 		(GLvoid*)offsetof(VertexStandard, texcoord));
 	glEnableVertexAttribArray(2);
@@ -101,7 +120,6 @@ cMeshModel::cMeshModel(std::string _FilePath, glm::vec3 _Position,
 	glBindVertexArray(0);
 
 	std::cout << "Loaded OBJ model: " << _FilePath << " (" << DrawCount << " vertices)" << std::endl;
-
 }
 
 cMeshModel::~cMeshModel()
