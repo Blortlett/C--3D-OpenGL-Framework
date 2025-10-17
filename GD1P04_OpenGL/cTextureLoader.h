@@ -34,6 +34,7 @@ private:
 
 public:
     GLuint Texture_01_A;
+    GLuint Reflection_Map;
     GLuint Texture_Food_Cooked;
     GLuint Texture_Food_Uncooked;
     GLuint Cubemap_Texture;

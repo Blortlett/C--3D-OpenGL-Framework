@@ -127,6 +127,11 @@ void cTextureLoader::LoadTexture(const char* fileName)
         glGenTextures(1, &Texture_Food_Uncooked);
         glBindTexture(GL_TEXTURE_2D, Texture_Food_Uncooked);
     }
+    else if (TimesRun == 3)
+    {
+        glGenTextures(1, &Reflection_Map);
+        glBindTexture(GL_TEXTURE_2D, Reflection_Map);
+    }
 
     // Check how many components the loaded image has (RGBA or RGB?)
     GLint LoadedComponents = (ImageComponents == 4) ? GL_RGBA : GL_RGB;
