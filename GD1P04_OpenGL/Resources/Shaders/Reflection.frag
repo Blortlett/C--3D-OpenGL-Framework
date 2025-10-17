@@ -8,6 +8,8 @@ in vec2 FragTexCoords;
 // Uniforms
 uniform vec3 CameraPosition;
 uniform samplerCube Texture_Skybox;
+uniform sampler2D Texture0;  // Add the object's base texture
+uniform float ReflectionStrength;  // Optional: control blend amount
 
 // Output
 out vec4 FinalColor;
@@ -24,9 +26,13 @@ void main()
     // reflect() expects incident vector (from camera to fragment), so negate viewDir
     vec3 reflectionDir = reflect(-viewDir, normal);
     
-    // Sample the cubemap using the reflection direction
-    vec3 reflectionColor = texture(Texture_Skybox, reflectionDir).rgb;
+    // Sample the object's base texture
+    vec4 objectTexture = texture(Texture0, FragTexCoords);
     
-    // Output the reflection color
-    FinalColor = vec4(reflectionColor, 1.0);
+    // Sample the cubemap using the reflection direction
+    vec4 reflectionTexture = texture(Texture_Skybox, reflectionDir);
+    
+    // Blend the textures (0.5 = 50/50 mix)
+    // You can also use ReflectionStrength uniform for dynamic control
+    FinalColor = mix(objectTexture, reflectionTexture, 0.5f);
 }

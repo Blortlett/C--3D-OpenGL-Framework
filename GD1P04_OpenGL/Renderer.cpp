@@ -134,7 +134,7 @@ void Renderer::RenderAllMeshModels()
 
 void Renderer::RenderAllReflectiveMeshModels()
 {
-    std::cout << "=== RenderAllReflectiveMeshModels called ===" << std::endl;
+    std::cout << "-= RenderAllReflectiveMeshModels called =-" << std::endl;
     std::cout << "Number of reflective models: " << reflectiveMeshModels.size() << std::endl;
     std::cout << "Reflection Program ID: " << Reflection_Program << std::endl;
 
@@ -161,11 +161,25 @@ void Renderer::RenderAllReflectiveMeshModels()
         glUniform3fv(cameraPosLoc, 1, glm::value_ptr(cameraPos));
     }
 
-    // Set up cubemap texture uniform
+    // Set up base texture uniform (texture unit 0)
+    GLint baseTexLoc = glGetUniformLocation(Reflection_Program, "Texture0");
+    if (baseTexLoc != -1)
+    {
+        glUniform1i(baseTexLoc, 0); // Texture unit 0 for base texture
+    }
+
+    // Set up cubemap texture uniform (texture unit 1)
     GLint skyboxTexLoc = glGetUniformLocation(Reflection_Program, "Texture_Skybox");
     if (skyboxTexLoc != -1)
     {
-        glUniform1i(skyboxTexLoc, 0); // Texture unit 0
+        glUniform1i(skyboxTexLoc, 1); // Texture unit 1 for cubemap
+    }
+
+    // Optional: Set reflection strength
+    GLint reflectionStrengthLoc = glGetUniformLocation(Reflection_Program, "ReflectionStrength");
+    if (reflectionStrengthLoc != -1)
+    {
+        glUniform1f(reflectionStrengthLoc, 0.5f); // 50% blend
     }
 
     // Render all reflective mesh models
@@ -174,7 +188,7 @@ void Renderer::RenderAllReflectiveMeshModels()
         if (model)
         {
             std::cout << "Rendering reflective model..." << std::endl;
-            std::cout << "DrawCount: " << model->GetDrawCount() << std::endl;  // You may need to make DrawCount public or add a getter
+
             // Update transforms
             model->UpdateTransforms();
 
@@ -195,12 +209,15 @@ void Renderer::RenderAllReflectiveMeshModels()
             if (projMatLoc != -1)
                 glUniformMatrix4fv(projMatLoc, 1, GL_FALSE, glm::value_ptr(projectionMat));
 
-            // Bind the cubemap texture from skybox
+            // Bind the base texture to texture unit 0
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, cTextureLoader::GetInstance().Texture_01_A);
+
+            // Bind the cubemap texture to texture unit 1
             if (mSkybox)
             {
-                glActiveTexture(GL_TEXTURE0);
-                glBindTexture(GL_TEXTURE_CUBE_MAP,
-                    cTextureLoader::GetInstance().Cubemap_Texture);
+                glActiveTexture(GL_TEXTURE1);
+                glBindTexture(GL_TEXTURE_CUBE_MAP, cTextureLoader::GetInstance().Cubemap_Texture);
             }
 
             // Render the model
